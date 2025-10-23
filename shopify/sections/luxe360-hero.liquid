@@ -1,0 +1,60 @@
+{% comment %}
+  LUXE 360° Hero Section
+  This is a Shopify 2.0 section for the hero/landing area
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-subtitle">{{ section.settings.subtitle }}</div>
+    <h1>{{ section.settings.title | newline_to_br }}</h1>
+    <p class="hero-tagline">{{ section.settings.tagline }}</p>
+    {% if section.settings.cta_text != blank %}
+      <a href="{{ section.settings.cta_link }}" class="hero-cta">{{ section.settings.cta_text }}</a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LUXE 360° Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Premium 360° Photo Booth"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Main Title",
+      "default": "ELEVATE\nYOUR EVENT"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Where Elegance Meets Innovation"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Book Your Experience"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link",
+      "default": "#contact"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Hero"
+    }
+  ]
+}
+{% endschema %}
