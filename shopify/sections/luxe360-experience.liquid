@@ -1,0 +1,131 @@
+{% comment %}
+  LUXE 360° Experience Section
+  This is a Shopify 2.0 section for the experience/features area
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<section class="experience" id="experience">
+  <div class="section-header">
+    <div class="section-subtitle">{{ section.settings.subtitle }}</div>
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-description">{{ section.settings.description }}</p>
+  </div>
+
+  <div class="experience-grid">
+    {% for block in section.blocks %}
+      <div class="experience-card" {{ block.shopify_attributes }}>
+        <div class="experience-icon">{{ block.settings.icon }}</div>
+        <h3>{{ block.settings.title }}</h3>
+        <p>{{ block.settings.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LUXE 360° Experience",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The Luxe Difference"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Unforgettable Moments"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Transform your event into a cinematic experience with our state-of-the-art 360° photo booth technology"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji or symbol)",
+          "default": "🎬"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Cinematic Quality"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Feature Description",
+          "default": "Professional-grade cameras capture stunning slow-motion videos from every angle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Experience",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🎬",
+            "title": "Cinematic Quality",
+            "description": "Professional-grade cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "✨",
+            "title": "Instant Sharing",
+            "description": "Guests receive their videos instantly via QR code, ready to share on Instagram, TikTok, and all social platforms"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🎨",
+            "title": "Custom Branding",
+            "description": "Personalized overlays, logos, and music perfectly tailored to match your event's aesthetic and brand identity"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "💎",
+            "title": "Luxury Setup",
+            "description": "Elegant platform design with professional lighting that enhances every moment and complements your venue"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "🎭",
+            "title": "Premium Props",
+            "description": "Curated selection of sophisticated props and accessories to elevate your guests' experience"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "👔",
+            "title": "Professional Host",
+            "description": "Dedicated booth attendant ensures seamless operation and guides guests to create their perfect moment"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

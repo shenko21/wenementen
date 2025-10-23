@@ -1,0 +1,172 @@
+{% comment %}
+  LUXE 360° Footer
+  This is a Shopify 2.0 section for the footer
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<footer class="luxe360-footer">
+  <div class="footer-content">
+    <div>
+      <div class="footer-brand">{{ section.settings.brand_name }}</div>
+      <p class="footer-tagline">{{ section.settings.tagline }}</p>
+      <div class="social-icons">
+        {% if section.settings.instagram_url != blank %}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" title="Instagram">📷</a>
+        {% endif %}
+        {% if section.settings.tiktok_url != blank %}
+          <a href="{{ section.settings.tiktok_url }}" target="_blank" title="TikTok">🎵</a>
+        {% endif %}
+        {% if section.settings.facebook_url != blank %}
+          <a href="{{ section.settings.facebook_url }}" target="_blank" title="Facebook">👤</a>
+        {% endif %}
+        {% if section.settings.linkedin_url != blank %}
+          <a href="{{ section.settings.linkedin_url }}" target="_blank" title="LinkedIn">💼</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% for block in section.blocks %}
+      {% if block.type == 'footer_column' %}
+        <div class="footer-section" {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.heading }}</h4>
+          <ul class="footer-links">
+            {% assign links = block.settings.links | newline_to_br | split: '<br />' %}
+            {% for link in links %}
+              {% if link != blank %}
+                <li>{{ link }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="footer-bottom">
+    <p>{{ section.settings.copyright_text }}</p>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+{% if section.settings.whatsapp_number != blank %}
+  <a href="https://wa.me/{{ section.settings.whatsapp_number }}" class="whatsapp-float" target="_blank" title="WhatsApp Us">
+    💬
+  </a>
+{% endif %}
+
+{{ 'luxe360.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "LUXE 360° Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "LUXE 360°"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Creating unforgettable moments through innovative 360° photo booth experiences. Where luxury meets technology."
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "header",
+      "content": "WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp Number",
+      "info": "Format: 31612345678 (country code + number, no spaces)",
+      "default": "31612345678"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "html",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "&copy; 2025 LUXE 360°. All Rights Reserved. | <a href=\"#\">Privacy Policy</a> | <a href=\"#\">Terms & Conditions</a>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "footer_column",
+      "name": "Footer Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "textarea",
+          "id": "links",
+          "label": "Links (one per line)",
+          "info": "Use HTML for links: <a href=\"#\">Link Text</a>",
+          "default": "<a href=\"#packages\">Packages</a>\n<a href=\"#experience\">Our Experience</a>\n<a href=\"#gallery\">Portfolio</a>\n<a href=\"#contact\">Book Now</a>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Footer",
+      "blocks": [
+        {
+          "type": "footer_column",
+          "settings": {
+            "heading": "Services",
+            "links": "<a href=\"#packages\">Packages</a>\n<a href=\"#experience\">Our Experience</a>\n<a href=\"#gallery\">Portfolio</a>\n<a href=\"#contact\">Book Now</a>"
+          }
+        },
+        {
+          "type": "footer_column",
+          "settings": {
+            "heading": "Events",
+            "links": "<a href=\"#\">Weddings</a>\n<a href=\"#\">Corporate</a>\n<a href=\"#\">Private Parties</a>\n<a href=\"#\">Brand Activations</a>"
+          }
+        },
+        {
+          "type": "footer_column",
+          "settings": {
+            "heading": "Contact",
+            "links": "📍 Almere, Nederland\n📧 hello@luxe360.nl\n📱 +31 6 12345678\n🕐 Mon-Sun: 9:00-22:00"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

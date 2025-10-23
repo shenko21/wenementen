@@ -1,0 +1,111 @@
+{% comment %}
+  LUXE 360° Navigation & Announcement Bar
+  This is a Shopify 2.0 section for the top navigation
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<!-- Navigation -->
+<nav class="luxe360-nav">
+  <div class="logo">{{ section.settings.logo_text }}</div>
+  <ul class="nav-links">
+    {% for block in section.blocks %}
+      {% if block.type == 'nav_link' %}
+        <li {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link }}">{{ block.settings.label }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+
+<!-- Announcement Bar -->
+{% if section.settings.show_announcement %}
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span class="announcement-text">{{ section.settings.announcement_text }}</span>
+      <span class="announcement-text">{{ section.settings.announcement_text }}</span>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "LUXE 360° Navigation",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "LUXE 360°"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link Label",
+          "default": "Home"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL",
+          "default": "#"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Navigation",
+      "blocks": [
+        {
+          "type": "nav_link",
+          "settings": {
+            "label": "Experience",
+            "link": "#experience"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "label": "Packages",
+            "link": "#packages"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "label": "Gallery",
+            "link": "#gallery"
+          }
+        },
+        {
+          "type": "nav_link",
+          "settings": {
+            "label": "Contact",
+            "link": "#contact"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
