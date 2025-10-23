@@ -1,0 +1,168 @@
+{% comment %}
+  LUXE 360° Packages Section
+  This is a Shopify 2.0 section for pricing packages
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<section class="packages" id="packages">
+  <div class="section-header">
+    <div class="section-subtitle" style="color: var(--gold)">{{ section.settings.subtitle }}</div>
+    <h2 class="section-title" style="color: var(--white)">{{ section.settings.title }}</h2>
+    <p class="section-description" style="color: var(--champagne)">{{ section.settings.description }}</p>
+  </div>
+
+  <div class="packages-grid">
+    {% for block in section.blocks %}
+      <div class="package-card {% if block.settings.featured %}featured{% endif %}" data-package="{{ block.settings.package_id }}" {{ block.shopify_attributes }}>
+        {% if block.settings.badge != blank %}
+          <div class="package-badge">{{ block.settings.badge }}</div>
+        {% endif %}
+
+        <h3 class="package-name">{{ block.settings.name }}</h3>
+        <div class="package-price">{{ block.settings.price }}</div>
+        <div class="package-duration">{{ block.settings.duration }}</div>
+
+        <ul class="package-features">
+          {% assign features = block.settings.features | newline_to_br | split: '<br />' %}
+          {% for feature in features %}
+            {% if feature != blank %}
+              <li>{{ feature }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <a href="{{ block.settings.cta_link }}" class="package-btn">{{ block.settings.cta_text }}</a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{{ 'luxe360.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "LUXE 360° Packages",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Investment Options"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Tailored Packages"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Select the perfect package for your celebration"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "package",
+      "name": "Package",
+      "settings": [
+        {
+          "type": "text",
+          "id": "package_id",
+          "label": "Package ID",
+          "default": "package",
+          "info": "Used for form selection (e.g., essence, prestige, opulence)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Package Name",
+          "default": "Essence"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "€495"
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "3 Hours"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Features (one per line)",
+          "default": "360° Video Recording\nProfessional Lighting\nInstant Digital Sharing\nBasic Overlay Design\nSetup & Breakdown\n50km Travel Included"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text (optional)",
+          "default": "",
+          "info": "e.g., 'Most Popular' - leave empty for no badge"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured Package",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Text",
+          "default": "Select Package"
+        },
+        {
+          "type": "text",
+          "id": "cta_link",
+          "label": "Button Link",
+          "default": "#contact",
+          "info": "Use # for anchor links (e.g., #contact) or full URLs"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Packages",
+      "blocks": [
+        {
+          "type": "package",
+          "settings": {
+            "package_id": "essence",
+            "name": "Essence",
+            "price": "€495",
+            "duration": "3 Hours"
+          }
+        },
+        {
+          "type": "package",
+          "settings": {
+            "package_id": "prestige",
+            "name": "Prestige",
+            "price": "€795",
+            "duration": "5 Hours",
+            "badge": "Most Popular",
+            "featured": true
+          }
+        },
+        {
+          "type": "package",
+          "settings": {
+            "package_id": "opulence",
+            "name": "Opulence",
+            "price": "€1,295",
+            "duration": "Full Day"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

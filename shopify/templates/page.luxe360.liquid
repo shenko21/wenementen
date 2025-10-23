@@ -1,0 +1,298 @@
+{% comment %}
+  LUXE 360° - Premium Photo Booth Landing Page
+  Template file: templates/page.luxe360.liquid
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<div class="luxe360-page">
+  <!-- Navigation -->
+  <nav class="luxe360-nav">
+    <div class="logo">LUXE 360°</div>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
+      <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-subtitle">Premium 360° Photo Booth</div>
+      <h1>ELEVATE<br>YOUR EVENT</h1>
+      <p class="hero-tagline">Where Elegance Meets Innovation</p>
+      <a href="#contact" class="hero-cta">Book Your Experience</a>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="experience" id="experience">
+    <div class="section-header">
+      <div class="section-subtitle">The Luxe Difference</div>
+      <h2 class="section-title">Unforgettable Moments</h2>
+      <p class="section-description">Transform your event into a cinematic experience with our state-of-the-art 360° photo booth technology</p>
+    </div>
+
+    <div class="experience-grid">
+      <div class="experience-card">
+        <div class="experience-icon">🎬</div>
+        <h3>Cinematic Quality</h3>
+        <p>Professional-grade cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet</p>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-icon">✨</div>
+        <h3>Instant Sharing</h3>
+        <p>Guests receive their videos instantly via QR code, ready to share on Instagram, TikTok, and all social platforms</p>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-icon">🎨</div>
+        <h3>Custom Branding</h3>
+        <p>Personalized overlays, logos, and music perfectly tailored to match your event's aesthetic and brand identity</p>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-icon">💎</div>
+        <h3>Luxury Setup</h3>
+        <p>Elegant platform design with professional lighting that enhances every moment and complements your venue</p>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-icon">🎭</div>
+        <h3>Premium Props</h3>
+        <p>Curated selection of sophisticated props and accessories to elevate your guests' experience</p>
+      </div>
+
+      <div class="experience-card">
+        <div class="experience-icon">👔</div>
+        <h3>Professional Host</h3>
+        <p>Dedicated booth attendant ensures seamless operation and guides guests to create their perfect moment</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages Section -->
+  <section class="packages" id="packages">
+    <div class="section-header">
+      <div class="section-subtitle" style="color: var(--gold)">Investment Options</div>
+      <h2 class="section-title" style="color: var(--white)">Tailored Packages</h2>
+      <p class="section-description" style="color: var(--champagne)">Select the perfect package for your celebration</p>
+    </div>
+
+    <div class="packages-grid">
+      <div class="package-card" data-package="essence">
+        <h3 class="package-name">Essence</h3>
+        <div class="package-price">€495</div>
+        <div class="package-duration">3 Hours</div>
+        <ul class="package-features">
+          <li>360° Video Recording</li>
+          <li>Professional Lighting</li>
+          <li>Instant Digital Sharing</li>
+          <li>Basic Overlay Design</li>
+          <li>Setup & Breakdown</li>
+          <li>50km Travel Included</li>
+        </ul>
+        <a href="#contact" class="package-btn">Select Package</a>
+      </div>
+
+      <div class="package-card featured" data-package="prestige">
+        <div class="package-badge">Most Popular</div>
+        <h3 class="package-name">Prestige</h3>
+        <div class="package-price">€795</div>
+        <div class="package-duration">5 Hours</div>
+        <ul class="package-features">
+          <li>Everything in Essence</li>
+          <li>Professional Host</li>
+          <li>Custom Branding & Logo</li>
+          <li>Premium Props Collection</li>
+          <li>Music Integration</li>
+          <li>Unlimited Recordings</li>
+          <li>Red Carpet Setup</li>
+          <li>100km Travel Included</li>
+        </ul>
+        <a href="#contact" class="package-btn">Select Package</a>
+      </div>
+
+      <div class="package-card" data-package="opulence">
+        <h3 class="package-name">Opulence</h3>
+        <div class="package-price">€1,295</div>
+        <div class="package-duration">Full Day</div>
+        <ul class="package-features">
+          <li>Everything in Prestige</li>
+          <li>Extended 8-Hour Service</li>
+          <li>Multiple Overlay Designs</li>
+          <li>Luxury Backdrop Options</li>
+          <li>Same-Day Highlight Reel</li>
+          <li>Priority Support</li>
+          <li>Nationwide Travel</li>
+          <li>Dedicated Event Coordinator</li>
+        </ul>
+        <a href="#contact" class="package-btn">Select Package</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <div class="section-header">
+      <div class="section-subtitle">Our Portfolio</div>
+      <h2 class="section-title">Recent Events</h2>
+      <p class="section-description">A glimpse of the extraordinary moments we've captured</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gallery-placeholder">💍</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">🎉</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">🏢</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">✨</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">🎭</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">🥂</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">🎪</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">💎</div></div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="section-header">
+      <div class="section-subtitle">Get In Touch</div>
+      <h2 class="section-title">Reserve Your Date</h2>
+      <p class="section-description">Let's create something extraordinary together</p>
+    </div>
+
+    {% form 'contact' %}
+      {% if form.posted_successfully? %}
+        <div class="form-success">
+          <p>Thank you for your inquiry! We will contact you shortly to discuss your luxury 360° experience.</p>
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="form-errors">
+          <p>Please correct the following errors:</p>
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      <div class="contact-container">
+        <div class="form-group">
+          <label for="contact-name">Full Name *</label>
+          <input type="text" id="contact-name" name="contact[name]" required placeholder="Your name">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-email">Email Address *</label>
+          <input type="email" id="contact-email" name="contact[email]" required placeholder="your@email.com">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-phone">Phone Number</label>
+          <input type="tel" id="contact-phone" name="contact[phone]" placeholder="+31 6 12345678">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-event-type">Event Type *</label>
+          <select id="contact-event-type" name="contact[event-type]" required>
+            <option value="">Select event type</option>
+            <option value="wedding">Wedding</option>
+            <option value="corporate">Corporate Event</option>
+            <option value="birthday">Birthday Celebration</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-date">Event Date</label>
+          <input type="date" id="contact-date" name="contact[date]">
+        </div>
+
+        <div class="form-group">
+          <label for="contact-package">Package Interest *</label>
+          <select id="contact-package" name="contact[package]" required>
+            <option value="">Select package</option>
+            <option value="essence">Essence - €495</option>
+            <option value="prestige">Prestige - €795</option>
+            <option value="opulence">Opulence - €1,295</option>
+            <option value="custom">Custom Package</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-message">Additional Details</label>
+          <textarea id="contact-message" name="contact[body]" placeholder="Tell us about your event vision..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Inquiry</button>
+      </div>
+    {% endform %}
+  </section>
+
+  <!-- Footer -->
+  <footer class="luxe360-footer">
+    <div class="footer-content">
+      <div>
+        <div class="footer-brand">LUXE 360°</div>
+        <p class="footer-tagline">Creating unforgettable moments through innovative 360° photo booth experiences. Where luxury meets technology.</p>
+        <div class="social-icons">
+          <a href="#" title="Instagram">📷</a>
+          <a href="#" title="TikTok">🎵</a>
+          <a href="#" title="Facebook">👤</a>
+          <a href="#" title="LinkedIn">💼</a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#experience">Our Experience</a></li>
+          <li><a href="#gallery">Portfolio</a></li>
+          <li><a href="#contact">Book Now</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Events</h4>
+        <ul class="footer-links">
+          <li><a href="#">Weddings</a></li>
+          <li><a href="#">Corporate</a></li>
+          <li><a href="#">Private Parties</a></li>
+          <li><a href="#">Brand Activations</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li>📍 Almere, Nederland</li>
+          <li>📧 hello@luxe360.nl</li>
+          <li>📱 +31 6 12345678</li>
+          <li>🕐 Mon-Sun: 9:00-22:00</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 LUXE 360°. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/31612345678" class="whatsapp-float" target="_blank" title="WhatsApp Us">
+    💬
+  </a>
+</div>
+
+{{ 'luxe360.js' | asset_url | script_tag }}

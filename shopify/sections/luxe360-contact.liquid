@@ -1,0 +1,173 @@
+{% comment %}
+  LUXE 360° Contact Section
+  This is a Shopify 2.0 section for the contact form
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<section class="contact" id="contact">
+  <div class="section-header">
+    <div class="section-subtitle">{{ section.settings.subtitle }}</div>
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-description">{{ section.settings.description }}</p>
+  </div>
+
+  {% form 'contact' %}
+    {% if form.posted_successfully? %}
+      <div class="form-success">
+        <p>{{ section.settings.success_message }}</p>
+      </div>
+    {% endif %}
+
+    {% if form.errors %}
+      <div class="form-errors">
+        <p>Please correct the following errors:</p>
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+
+    <div class="contact-container">
+      <div class="form-group">
+        <label for="contact-name">Full Name *</label>
+        <input type="text" id="contact-name" name="contact[name]" required placeholder="Your name">
+      </div>
+
+      <div class="form-group">
+        <label for="contact-email">Email Address *</label>
+        <input type="email" id="contact-email" name="contact[email]" required placeholder="your@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="contact-phone">Phone Number</label>
+        <input type="tel" id="contact-phone" name="contact[phone]" placeholder="+31 6 12345678">
+      </div>
+
+      <div class="form-group">
+        <label for="contact-event-type">Event Type *</label>
+        <select id="contact-event-type" name="contact[event-type]" required>
+          <option value="">Select event type</option>
+          <option value="wedding">Wedding</option>
+          <option value="corporate">Corporate Event</option>
+          <option value="birthday">Birthday Celebration</option>
+          <option value="anniversary">Anniversary</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="contact-date">Event Date</label>
+        <input type="date" id="contact-date" name="contact[date]">
+      </div>
+
+      <div class="form-group">
+        <label for="contact-package">Package Interest *</label>
+        <select id="contact-package" name="contact[package]" required>
+          <option value="">Select package</option>
+          {% for block in section.blocks %}
+            <option value="{{ block.settings.value }}">{{ block.settings.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="contact-message">Additional Details</label>
+        <textarea id="contact-message" name="contact[body]" placeholder="Tell us about your event vision..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">{{ section.settings.button_text }}</button>
+    </div>
+  {% endform %}
+</section>
+
+{% schema %}
+{
+  "name": "LUXE 360° Contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Get In Touch"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Reserve Your Date"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Let's create something extraordinary together"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Submit Button Text",
+      "default": "Submit Inquiry"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for your inquiry! We will contact you shortly to discuss your luxury 360° experience."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "package_option",
+      "name": "Package Option",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Package Label",
+          "default": "Essence - €495"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Package Value",
+          "default": "essence"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Contact",
+      "blocks": [
+        {
+          "type": "package_option",
+          "settings": {
+            "label": "Essence - €495",
+            "value": "essence"
+          }
+        },
+        {
+          "type": "package_option",
+          "settings": {
+            "label": "Prestige - €795",
+            "value": "prestige"
+          }
+        },
+        {
+          "type": "package_option",
+          "settings": {
+            "label": "Opulence - €1,295",
+            "value": "opulence"
+          }
+        },
+        {
+          "type": "package_option",
+          "settings": {
+            "label": "Custom Package",
+            "value": "custom"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

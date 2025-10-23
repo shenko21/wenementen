@@ -1,0 +1,142 @@
+{% comment %}
+  LUXE 360° Gallery Section
+  This is a Shopify 2.0 section for the portfolio/gallery
+{% endcomment %}
+
+{{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+<section class="gallery" id="gallery">
+  <div class="section-header">
+    <div class="section-subtitle">{{ section.settings.subtitle }}</div>
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-description">{{ section.settings.description }}</p>
+  </div>
+
+  <div class="gallery-grid">
+    {% for block in section.blocks %}
+      <div class="gallery-item" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.alt_text }}
+        {% else %}
+          <div class="gallery-placeholder">{{ block.settings.placeholder_icon }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LUXE 360° Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Our Portfolio"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Recent Events"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "A glimpse of the extraordinary moments we've captured"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_item",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Image Alt Text",
+          "default": "Event photo"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_icon",
+          "label": "Placeholder Icon (if no image)",
+          "default": "💎",
+          "info": "Emoji shown when no image is uploaded"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LUXE 360° Gallery",
+      "blocks": [
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "💍"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "🎉"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "🏢"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "✨"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "🎭"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "🥂"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "🎪"
+          }
+        },
+        {
+          "type": "gallery_item",
+          "settings": {
+            "placeholder_icon": "💎"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
