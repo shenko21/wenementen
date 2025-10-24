@@ -1,0 +1,1828 @@
+{% comment %}
+  LUXE 360° V2 - Premium Photo Booth Landing Page
+  Enhanced version with modern features and animations
+{% endcomment %}
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} - {{ shop.name }}</title>
+
+  <!-- Preconnect for faster loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  {{ content_for_header }}
+
+  <style>
+    /* ========== VARIABLES ========== */
+    :root {
+      --gold: #D4AF37;
+      --dark-gold: #B8941F;
+      --light-gold: #F0E5C9;
+      --champagne: #F7E7CE;
+      --black: #0A0A0A;
+      --charcoal: #2C2C2C;
+      --dark-gray: #1A1A1A;
+      --white: #FFFFFF;
+      --cream: #FAF8F5;
+      --success: #10B981;
+      --error: #EF4444;
+
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 40px rgba(212, 175, 55, 0.15);
+      --shadow-xl: 0 20px 60px rgba(212, 175, 55, 0.2);
+    }
+
+    /* ========== RESET & BASE ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      line-height: 1.6;
+      color: var(--charcoal);
+      background: var(--cream);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ========== LOADING ANIMATION ========== */
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-size: 3rem;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      letter-spacing: 5px;
+      background: linear-gradient(135deg, var(--gold), var(--light-gold), var(--gold));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* ========== NAVIGATION ========== */
+    .luxe-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      transition: transform 0.3s var(--transition-smooth), background 0.3s;
+    }
+
+    .luxe-nav.scrolled {
+      background: rgba(10, 10, 10, 0.98);
+      padding: 15px 5%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .luxe-nav.hidden {
+      transform: translateY(-100%);
+    }
+
+    .nav-logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--light-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: var(--champagne);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gold);
+      transition: width 0.3s, left 0.3s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--gold);
+    }
+
+    .nav-menu a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .nav-cta {
+      padding: 12px 30px !important;
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      color: var(--black) !important;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      transition: all 0.3s var(--transition-bounce);
+    }
+
+    .nav-cta::after {
+      display: none;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .mobile-toggle span {
+      width: 28px;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+
+    .mobile-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .mobile-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 50%, var(--charcoal) 100%);
+      overflow: hidden;
+      padding: 150px 20px 100px;
+    }
+
+    /* Animated Background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+
+    /* Particles Effect */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="%23D4AF37" opacity="0.4"/></svg>');
+      animation: twinkle 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    .hero-content {
+      text-align: center;
+      color: var(--white);
+      z-index: 2;
+      max-width: 1100px;
+      animation: fadeInUp 1s var(--transition-smooth);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 30px;
+      animation: fadeInUp 1s 0.2s backwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      line-height: 1.1;
+      animation: fadeInUp 1s 0.4s backwards;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-gradient-text {
+      background: linear-gradient(135deg, var(--white), var(--gold), var(--white));
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 5s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 300;
+      margin-bottom: 50px;
+      color: var(--champagne);
+      font-style: italic;
+      animation: fadeInUp 1s 0.6s backwards;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 1s 0.8s backwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s var(--transition-smooth);
+      cursor: pointer;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      color: var(--black);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+
+    .btn-secondary:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-3px);
+    }
+
+    /* Stats Section */
+    .hero-stats {
+      display: flex;
+      gap: 60px;
+      justify-content: center;
+      margin-top: 80px;
+      animation: fadeInUp 1s 1s backwards;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold);
+      font-family: var(--font-heading);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--champagne);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ========== FEATURES/EXPERIENCE SECTION ========== */
+    .section {
+      padding: 120px 5%;
+    }
+
+    .section-cream {
+      background: var(--cream);
+    }
+
+    .section-dark {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--black);
+    }
+
+    .section-dark .section-title {
+      color: var(--white);
+    }
+
+    .section-description {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: var(--charcoal);
+      font-weight: 300;
+    }
+
+    .section-dark .section-description {
+      color: var(--champagne);
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      padding: 50px 30px;
+      background: var(--white);
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      transition: all 0.4s var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--gold);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 25px;
+      display: inline-block;
+      filter: grayscale(1) brightness(0.7);
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover .feature-icon {
+      filter: grayscale(0) brightness(1);
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: var(--black);
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--charcoal);
+      font-weight: 300;
+    }
+
+    /* ========== PACKAGES/PRICING SECTION ========== */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--charcoal);
+      padding: 50px 40px;
+      border-radius: 20px;
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      text-align: center;
+      transition: all 0.4s var(--transition-smooth);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .pricing-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%);
+      border-color: var(--gold);
+      border-width: 3px;
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured:hover {
+      transform: translateY(-10px) scale(1.07);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--black);
+      padding: 8px 25px;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .pricing-card.selected::after {
+      content: '✓ SELECTED';
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: var(--success);
+      color: var(--white);
+      padding: 8px 15px;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      border-radius: 50px;
+    }
+
+    .pricing-name {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .pricing-price {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      font-weight: 300;
+      color: var(--white);
+      font-family: var(--font-heading);
+    }
+
+    .pricing-duration {
+      font-size: 1rem;
+      color: var(--champagne);
+      margin-bottom: 40px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .pricing-features li {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      color: var(--champagne);
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    /* ========== GALLERY SECTION ========== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--charcoal), var(--black));
+    }
+
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 1;
+    }
+
+    .gallery-item:hover::before {
+      opacity: 1;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--transition-smooth);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-placeholder {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      filter: grayscale(1) brightness(0.5);
+      transition: all 0.3s;
+    }
+
+    .gallery-item:hover .gallery-placeholder {
+      transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+    }
+
+    /* ========== TESTIMONIALS SECTION ========== */
+    .testimonials-slider {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .testimonial-card {
+      background: var(--white);
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+    }
+
+    .testimonial-text {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: var(--charcoal);
+      font-style: italic;
+      margin-bottom: 30px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .testimonial-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    .testimonial-info h4 {
+      font-size: 1.1rem;
+      color: var(--black);
+      margin-bottom: 5px;
+    }
+
+    .testimonial-info p {
+      font-size: 0.9rem;
+      color: var(--charcoal);
+    }
+
+    /* ========== FAQ SECTION ========== */
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--white);
+      margin-bottom: 20px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      transition: all 0.3s;
+    }
+
+    .faq-item:hover {
+      border-color: var(--gold);
+      box-shadow: var(--shadow-md);
+    }
+
+    .faq-question {
+      padding: 25px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .faq-icon {
+      font-size: 1.5rem;
+      color: var(--gold);
+      transition: transform 0.3s;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s, padding 0.3s;
+      padding: 0 30px;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 30px 25px;
+    }
+
+    .faq-answer p {
+      color: var(--charcoal);
+      line-height: 1.7;
+    }
+
+    /* ========== CONTACT FORM ========== */
+    .contact-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--white);
+      padding: 60px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: var(--charcoal);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      background: var(--cream);
+      font-family: inherit;
+      font-size: 1rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+      color: var(--charcoal);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      color: var(--black);
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s var(--transition-smooth);
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+    }
+
+    .form-success,
+    .form-error {
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .form-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--success);
+      color: var(--success);
+    }
+
+    .form-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid var(--error);
+      color: var(--error);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: var(--black);
+      color: var(--champagne);
+      padding: 80px 5% 40px;
+    }
+
+    .footer-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand-name {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--light-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .footer-tagline {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-icon {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: all 0.3s var(--transition-bounce);
+    }
+
+    .social-icon:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-3px) rotate(5deg);
+    }
+
+    .footer-section h4 {
+      color: var(--gold);
+      margin-bottom: 25px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: var(--champagne);
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+      transform: translateX(5px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* ========== FLOATING ELEMENTS ========== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 65px;
+      height: 65px;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 2rem;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+      cursor: pointer;
+      transition: all 0.3s var(--transition-bounce);
+      z-index: 999;
+      text-decoration: none;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+    }
+
+    /* Scroll to Top Button */
+    .scroll-top {
+      position: fixed;
+      bottom: 110px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--black);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1200px) {
+      .features-grid,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-stats {
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+        transition: left 0.3s;
+        padding: 40px;
+      }
+
+      .nav-menu.active {
+        left: 0;
+      }
+
+      .nav-menu a {
+        font-size: 1.5rem;
+      }
+
+      .hero {
+        padding: 120px 20px 80px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .section {
+        padding: 80px 5%;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-container {
+        padding: 40px 30px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div class="page-loader">
+  <div class="loader-logo">LUXE 360°</div>
+</div>
+
+<!-- Navigation -->
+<nav class="luxe-nav">
+  <div class="nav-logo">LUXE 360°</div>
+  <ul class="nav-menu">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+  <div class="mobile-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✨ Premium 360° Photo Booth Experience</div>
+    <h1>
+      <span class="hero-gradient-text">ELEVATE</span><br>
+      YOUR EVENT
+    </h1>
+    <p class="hero-tagline">
+      Where Luxury Meets Innovation - Create Unforgettable Cinematic Moments
+    </p>
+    <div class="hero-cta-group">
+      <a href="#contact" class="btn btn-primary">
+        <span>Book Your Event</span>
+        <span>→</span>
+      </a>
+      <a href="#packages" class="btn btn-secondary">
+        <span>View Packages</span>
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Events Hosted</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">50K+</div>
+        <div class="stat-label">Videos Created</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience/Features Section -->
+<section class="section section-cream" id="experience">
+  <div class="section-header">
+    <div class="section-badge">Why Choose Us</div>
+    <h2 class="section-title">The LUXE Difference</h2>
+    <p class="section-description">
+      Transform your event into a cinematic masterpiece with our state-of-the-art 360° photo booth technology
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <h3>Cinematic Quality</h3>
+      <p>Professional 4K cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">✨</div>
+      <h3>Instant Sharing</h3>
+      <p>Guests receive their videos instantly via QR code or email, ready to share on Instagram, TikTok, and all social platforms</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <h3>Custom Branding</h3>
+      <p>Personalized overlays, logos, music, and effects perfectly tailored to match your event's aesthetic and brand identity</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💎</div>
+      <h3>Luxury Setup</h3>
+      <p>Elegant LED platform with professional studio lighting that enhances every moment and complements your venue</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🎭</div>
+      <h3>Premium Props</h3>
+      <p>Curated collection of sophisticated props and accessories designed to elevate your guests' experience</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">👔</div>
+      <h3>Professional Host</h3>
+      <p>Dedicated booth attendant ensures seamless operation, guides guests, and creates the perfect experience</p>
+    </div>
+  </div>
+</section>
+
+<!-- Packages Section -->
+<section class="section section-dark" id="packages">
+  <div class="section-header">
+    <div class="section-badge">Pricing</div>
+    <h2 class="section-title">Tailored Packages</h2>
+    <p class="section-description">
+      Select the perfect package for your celebration - flexible options to suit any event
+    </p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card" data-package="essence">
+      <h3 class="pricing-name">Essence</h3>
+      <div class="pricing-price">€495</div>
+      <div class="pricing-duration">3 Hours Service</div>
+      <ul class="pricing-features">
+        <li>360° Video Recording</li>
+        <li>Professional LED Lighting</li>
+        <li>Instant Digital Sharing</li>
+        <li>Basic Overlay Design</li>
+        <li>Full Setup & Breakdown</li>
+        <li>50km Travel Included</li>
+        <li>Unlimited Sessions</li>
+      </ul>
+      <a href="#contact" class="btn btn-secondary">Select Package</a>
+    </div>
+
+    <div class="pricing-card featured" data-package="prestige">
+      <div class="pricing-badge">Most Popular</div>
+      <h3 class="pricing-name">Prestige</h3>
+      <div class="pricing-price">€795</div>
+      <div class="pricing-duration">5 Hours Service</div>
+      <ul class="pricing-features">
+        <li>Everything in Essence</li>
+        <li>Professional Host Attendant</li>
+        <li>Custom Branding & Logo</li>
+        <li>Premium Props Collection</li>
+        <li>Music Integration</li>
+        <li>Unlimited Recordings</li>
+        <li>Red Carpet Setup Option</li>
+        <li>100km Travel Included</li>
+        <li>Priority Booking</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary">Select Package</a>
+    </div>
+
+    <div class="pricing-card" data-package="opulence">
+      <h3 class="pricing-name">Opulence</h3>
+      <div class="pricing-price">€1,295</div>
+      <div class="pricing-duration">Full Day (8 Hours)</div>
+      <ul class="pricing-features">
+        <li>Everything in Prestige</li>
+        <li>Extended 8-Hour Service</li>
+        <li>Multiple Overlay Designs</li>
+        <li>Luxury Backdrop Options</li>
+        <li>Same-Day Highlight Reel</li>
+        <li>24/7 Priority Support</li>
+        <li>Nationwide Travel</li>
+        <li>Dedicated Event Coordinator</li>
+        <li>Extra Props & Accessories</li>
+      </ul>
+      <a href="#contact" class="btn btn-secondary">Select Package</a>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="section section-cream" id="gallery">
+  <div class="section-header">
+    <div class="section-badge">Portfolio</div>
+    <h2 class="section-title">Recent Events</h2>
+    <p class="section-description">
+      A glimpse of the extraordinary moments we've captured for our clients
+    </p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item"><div class="gallery-placeholder">💍</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">🎉</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">🏢</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">✨</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">🎭</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">🥂</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">🎪</div></div>
+    <div class="gallery-item"><div class="gallery-placeholder">💎</div></div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="section section-dark" id="testimonials">
+  <div class="section-header">
+    <div class="section-badge">Reviews</div>
+    <h2 class="section-title">What Clients Say</h2>
+    <p class="section-description">
+      Don't just take our word for it - hear from our satisfied clients
+    </p>
+  </div>
+
+  <div class="testimonials-slider">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">
+        "Absolutely amazing! The LUXE 360° booth was the highlight of our wedding. Our guests couldn't stop talking about it and the videos turned out incredible. Professional, fun, and so worth it!"
+      </p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">S</div>
+        <div class="testimonial-info">
+          <h4>Sarah & Mark</h4>
+          <p>Wedding, Amsterdam</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="section section-cream" id="faq">
+  <div class="section-header">
+    <div class="section-badge">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-description">
+      Everything you need to know about our 360° photo booth service
+    </p>
+  </div>
+
+  <div class="faq-container">
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How much space do you need for the booth?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>We recommend a minimum space of 3m x 3m (10ft x 10ft) for optimal setup. This includes the platform, lighting equipment, and enough room for guests to move around comfortably.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How long does setup take?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Setup typically takes 60-90 minutes. We arrive early to ensure everything is ready before your event starts. Breakdown takes approximately 30-45 minutes after your event ends.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Can we customize the videos with our branding?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Absolutely! We offer custom overlays, logos, colors, and even music to match your event theme or brand. Our team will work with you to create the perfect design before your event.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>How do guests receive their videos?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Videos are shared instantly via QR code or email within seconds of recording. Guests can download, share directly to social media, or save to their phones immediately.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>What's included in the price?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>All packages include the 360° booth, professional lighting, instant sharing, setup/breakdown, and travel within the specified radius. Premium packages include additional features like props, branding, and extended service hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section section-dark" id="contact">
+  <div class="section-header">
+    <div class="section-badge">Get Started</div>
+    <h2 class="section-title">Reserve Your Date</h2>
+    <p class="section-description">
+      Let's create something extraordinary together - fill out the form and we'll get back to you within 24 hours
+    </p>
+  </div>
+
+  {% form 'contact' %}
+    {% if form.posted_successfully? %}
+      <div class="form-success">
+        ✓ Thank you! We'll contact you within 24 hours to discuss your event.
+      </div>
+    {% endif %}
+
+    {% if form.errors %}
+      <div class="form-error">
+        ⚠ Please correct the errors below and try again.
+      </div>
+    {% endif %}
+
+    <div class="contact-container">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="contact[name]" required placeholder="John Doe">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="contact[email]" required placeholder="john@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="contact[phone]" placeholder="+31 6 12345678">
+        </div>
+
+        <div class="form-group">
+          <label for="event-type">Event Type *</label>
+          <select id="event-type" name="contact[event-type]" required>
+            <option value="">Select event type</option>
+            <option value="wedding">Wedding</option>
+            <option value="corporate">Corporate Event</option>
+            <option value="birthday">Birthday Party</option>
+            <option value="anniversary">Anniversary</option>
+            <option value="product-launch">Product Launch</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="event-date">Event Date</label>
+          <input type="date" id="event-date" name="contact[date]">
+        </div>
+
+        <div class="form-group">
+          <label for="package">Package Interest *</label>
+          <select id="package" name="contact[package]" required>
+            <option value="">Select package</option>
+            <option value="essence">Essence - €495</option>
+            <option value="prestige">Prestige - €795 (Most Popular)</option>
+            <option value="opulence">Opulence - €1,295</option>
+            <option value="custom">Custom Package</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="message">Tell Us About Your Event</label>
+          <textarea id="message" name="contact[body]" placeholder="Share your vision, expected guest count, venue details, or any special requests..."></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="form-submit">Send Inquiry</button>
+    </div>
+  {% endform %}
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">LUXE 360°</div>
+      <p class="footer-tagline">
+        Creating unforgettable cinematic moments through innovative 360° photo booth experiences. Where luxury meets technology.
+      </p>
+      <div class="social-icons">
+        <a href="#" class="social-icon" title="Instagram">📷</a>
+        <a href="#" class="social-icon" title="TikTok">🎵</a>
+        <a href="#" class="social-icon" title="Facebook">👥</a>
+        <a href="#" class="social-icon" title="LinkedIn">💼</a>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <h4>Services</h4>
+      <ul class="footer-links">
+        <li><a href="#packages">View Packages</a></li>
+        <li><a href="#experience">Our Experience</a></li>
+        <li><a href="#gallery">Portfolio</a></li>
+        <li><a href="#contact">Book Event</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Events</h4>
+      <ul class="footer-links">
+        <li><a href="#">Weddings</a></li>
+        <li><a href="#">Corporate Events</a></li>
+        <li><a href="#">Private Parties</a></li>
+        <li><a href="#">Brand Activations</a></li>
+        <li><a href="#">Product Launches</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Contact</h4>
+      <ul class="footer-links">
+        <li>📍 Almere, Nederland</li>
+        <li>📧 hello@luxe360.nl</li>
+        <li>📱 +31 6 12345678</li>
+        <li>🕐 Mon-Sun: 9:00-22:00</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 LUXE 360°. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+  </div>
+</footer>
+
+<!-- Floating Action Buttons -->
+<a href="https://wa.me/31612345678?text=Hi%20LUXE%20360%C2%B0!%20I'm%20interested%20in%20booking%20your%20photo%20booth"
+   class="whatsapp-float"
+   target="_blank"
+   title="WhatsApp Us">
+  💬
+</a>
+
+<div class="scroll-top" title="Back to top">
+  ↑
+</div>
+
+<script>
+  // ========== PAGE LOADER ==========
+  window.addEventListener('load', () => {
+    const loader = document.querySelector('.page-loader');
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 500);
+  });
+
+  // ========== MOBILE MENU ==========
+  const mobileToggle = document.querySelector('.mobile-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+
+  mobileToggle?.addEventListener('click', () => {
+    mobileToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+
+  // Close mobile menu when clicking a link
+  document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+
+  // ========== STICKY NAVIGATION ==========
+  let lastScroll = 0;
+  const nav = document.querySelector('.luxe-nav');
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    // Add scrolled class
+    if (currentScroll > 100) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    // Hide/show on scroll
+    if (currentScroll > lastScroll && currentScroll > 300) {
+      nav.classList.add('hidden');
+    } else {
+      nav.classList.remove('hidden');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  // ========== SMOOTH SCROLL ==========
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const headerOffset = 100;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // ========== PACKAGE SELECTION ==========
+  const pricingCards = document.querySelectorAll('.pricing-card');
+  const packageSelect = document.getElementById('package');
+
+  pricingCards.forEach(card => {
+    card.addEventListener('click', function() {
+      // Remove selected from all
+      pricingCards.forEach(c => c.classList.remove('selected'));
+
+      // Add selected to clicked
+      this.classList.add('selected');
+
+      // Update form dropdown
+      if (packageSelect) {
+        const packageType = this.getAttribute('data-package');
+        if (packageType) {
+          packageSelect.value = packageType;
+        }
+      }
+
+      // Scroll to contact form
+      setTimeout(() => {
+        document.getElementById('contact')?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 300);
+    });
+  });
+
+  // ========== FAQ ACCORDION ==========
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+      const faqItem = question.parentElement;
+      const isActive = faqItem.classList.contains('active');
+
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // Open clicked if it wasn't active
+      if (!isActive) {
+        faqItem.classList.add('active');
+      }
+    });
+  });
+
+  // ========== SCROLL ANIMATIONS ==========
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Observe elements
+  document.querySelectorAll('.feature-card, .pricing-card, .gallery-item, .testimonial-card, .faq-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // ========== SCROLL TO TOP ==========
+  const scrollTopBtn = document.querySelector('.scroll-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 500) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+
+  scrollTopBtn?.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // ========== FORM ENHANCEMENTS ==========
+  const form = document.querySelector('form[action*="contact"]');
+
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      const submitBtn = this.querySelector('.form-submit');
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+    });
+  }
+
+  // ========== CONSOLE GREETING ==========
+  console.log('%c🎬 LUXE 360° ', 'font-size: 20px; font-weight: bold; color: #D4AF37;');
+  console.log('%cWebsite loaded successfully!', 'font-size: 14px; color: #2C2C2C;');
+</script>
+
+</body>
+</html>
