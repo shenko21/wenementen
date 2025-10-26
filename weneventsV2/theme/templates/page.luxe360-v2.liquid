@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   {{ content_for_header }}
 
@@ -35,7 +35,12 @@
       --error: #EF4444;
 
       --font-heading: 'Playfair Display', Georgia, serif;
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Logo Settings - Replace with your logo URL */
+      --logo-url: 'https://via.placeholder.com/200x60/D4AF37/FFFFFF?text=YOUR+LOGO';
+      --logo-height: 60px;
+      --logo-height-mobile: 45px;
 
       --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
       --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -100,6 +105,14 @@
     }
 
     .loader-logo {
+      height: 80px;
+      width: auto;
+      max-width: 300px;
+      object-fit: contain;
+      animation: shimmer 2s ease-in-out infinite;
+    }
+
+    .loader-logo.text-logo {
       font-size: 3rem;
       font-family: var(--font-heading);
       font-weight: 700;
@@ -109,7 +122,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 2s ease-in-out infinite;
+      height: auto;
     }
 
     @keyframes shimmer {
@@ -144,6 +157,15 @@
     }
 
     .nav-logo {
+      height: var(--logo-height);
+      width: auto;
+      max-width: 250px;
+      object-fit: contain;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-logo.text-logo {
       font-size: 1.8rem;
       font-weight: 700;
       letter-spacing: 3px;
@@ -151,8 +173,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      transition: transform 0.3s;
-      cursor: pointer;
+      height: auto;
     }
 
     .nav-logo:hover {
@@ -981,6 +1002,14 @@
     }
 
     .footer-brand-name {
+      height: 70px;
+      width: auto;
+      max-width: 280px;
+      object-fit: contain;
+      margin-bottom: 20px;
+    }
+
+    .footer-brand-name.text-logo {
       font-size: 2.5rem;
       font-weight: 700;
       letter-spacing: 3px;
@@ -988,7 +1017,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 20px;
+      height: auto;
     }
 
     .footer-tagline {
@@ -1151,6 +1180,21 @@
     }
 
     @media (max-width: 768px) {
+      .nav-logo {
+        height: var(--logo-height-mobile);
+        max-width: 180px;
+      }
+
+      .loader-logo {
+        height: 60px;
+        max-width: 220px;
+      }
+
+      .footer-brand-name {
+        height: 50px;
+        max-width: 200px;
+      }
+
       .mobile-toggle {
         display: flex;
       }
@@ -1221,12 +1265,18 @@
 
 <!-- Page Loader -->
 <div class="page-loader">
-  <div class="loader-logo">LUXE 360°</div>
+  <!-- Replace src with your logo URL. For animated logos (GIF/SVG), just change the src -->
+  <img src="https://via.placeholder.com/200x60/D4AF37/FFFFFF?text=YOUR+LOGO" alt="Logo" class="loader-logo">
+  <!-- Alternative: Use text logo by uncommenting below and removing img tag above -->
+  <!-- <div class="loader-logo text-logo">LUXE 360°</div> -->
 </div>
 
 <!-- Navigation -->
 <nav class="luxe-nav">
-  <div class="nav-logo">LUXE 360°</div>
+  <!-- Replace src with your logo URL. For animated logos (GIF/SVG), just change the src -->
+  <img src="https://via.placeholder.com/200x60/D4AF37/FFFFFF?text=YOUR+LOGO" alt="Logo" class="nav-logo">
+  <!-- Alternative: Use text logo by uncommenting below and removing img tag above -->
+  <!-- <div class="nav-logo text-logo">LUXE 360°</div> -->
   <ul class="nav-menu">
     <li><a href="#experience">Experience</a></li>
     <li><a href="#packages">Packages</a></li>
@@ -1590,7 +1640,10 @@
 <footer class="footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="footer-brand-name">LUXE 360°</div>
+      <!-- Replace src with your logo URL. For animated logos (GIF/SVG), just change the src -->
+      <img src="https://via.placeholder.com/200x60/D4AF37/FFFFFF?text=YOUR+LOGO" alt="Logo" class="footer-brand-name">
+      <!-- Alternative: Use text logo by uncommenting below and removing img tag above -->
+      <!-- <div class="footer-brand-name text-logo">LUXE 360°</div> -->
       <p class="footer-tagline">
         Creating unforgettable cinematic moments through innovative 360° photo booth experiences. Where luxury meets technology.
       </p>
