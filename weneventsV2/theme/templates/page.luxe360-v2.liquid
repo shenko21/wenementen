@@ -135,21 +135,21 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(10, 10, 10, 0.95);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
       padding: 20px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
       transition: transform 0.3s var(--transition-smooth), background 0.3s;
     }
 
     .luxe-nav.scrolled {
-      background: rgba(10, 10, 10, 0.98);
+      background: rgba(255, 255, 255, 0.98);
       padding: 15px 5%;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .luxe-nav.hidden {
@@ -189,7 +189,7 @@
 
     .nav-menu a {
       text-decoration: none;
-      color: var(--champagne);
+      color: var(--charcoal);
       font-size: 0.95rem;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -265,6 +265,42 @@
 
     .mobile-toggle.active span:nth-child(3) {
       transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* Language Toggle */
+    .lang-toggle {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      margin-left: 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border-radius: 50px;
+      padding: 5px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .lang-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--charcoal);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .lang-btn.active {
+      background: var(--gold);
+      color: var(--black);
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+    }
+
+    .lang-btn:hover:not(.active) {
+      background: rgba(212, 175, 55, 0.2);
     }
 
     /* ========== HERO SECTION ========== */
@@ -647,13 +683,14 @@
       position: absolute;
       top: 25px;
       right: 25px;
-      background: var(--success);
-      color: var(--white);
+      background: var(--gold);
+      color: var(--black);
       padding: 8px 15px;
       font-size: 0.7rem;
       letter-spacing: 1px;
       font-weight: 700;
       border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     }
 
     .pricing-name {
@@ -979,10 +1016,189 @@
       color: var(--success);
     }
 
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      animation: successBounce 0.6s ease-out;
+    }
+
+    @keyframes successBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .form-success h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--success);
+    }
+
     .form-error {
       background: rgba(239, 68, 68, 0.1);
       border: 2px solid var(--error);
       color: var(--error);
+    }
+
+    .error-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+
+    /* Quick Contact Buttons */
+    .quick-contact {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .quick-contact-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 15px 25px;
+      background: var(--cream);
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      border-radius: 50px;
+      text-decoration: none;
+      color: var(--charcoal);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+
+    .quick-contact-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .quick-contact-btn.whatsapp:hover {
+      background: #25D366;
+      color: white;
+      border-color: #25D366;
+    }
+
+    .quick-contact-btn .icon {
+      font-size: 1.5rem;
+    }
+
+    /* Form Divider */
+    .form-divider {
+      text-align: center;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: rgba(212, 175, 55, 0.3);
+    }
+
+    .form-divider::before {
+      left: 0;
+    }
+
+    .form-divider::after {
+      right: 0;
+    }
+
+    .form-divider span {
+      background: var(--white);
+      padding: 0 15px;
+      color: var(--charcoal);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Field Hints */
+    .field-hint {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.85rem;
+      color: #666;
+      font-style: italic;
+    }
+
+    .field-error {
+      display: block;
+      margin-top: 5px;
+      color: var(--error);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Form Footer */
+    .form-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .form-privacy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-privacy input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+
+    .form-privacy label {
+      font-size: 0.9rem;
+      color: var(--charcoal);
+    }
+
+    .form-privacy a {
+      color: var(--gold);
+      text-decoration: underline;
+    }
+
+    .form-submit {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      transition: transform 0.3s;
+    }
+
+    .form-submit:hover .btn-icon {
+      transform: translateX(5px);
+    }
+
+    /* Form Note */
+    .form-note {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border-radius: 10px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .form-note p {
+      margin: 0;
+      color: var(--charcoal);
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
     /* ========== FOOTER ========== */
@@ -1199,6 +1415,18 @@
         display: flex;
       }
 
+      .lang-toggle {
+        position: absolute;
+        top: 20px;
+        right: 70px;
+        margin-left: 0;
+      }
+
+      .lang-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+
       .nav-menu {
         position: fixed;
         top: 80px;
@@ -1278,13 +1506,17 @@
   <!-- Alternative: Use text logo by uncommenting below and removing img tag above -->
   <!-- <div class="nav-logo text-logo">LUXE 360°</div> -->
   <ul class="nav-menu">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#packages">Packages</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#testimonials">Reviews</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+    <li><a href="#experience" data-translate="nav.experience">Experience</a></li>
+    <li><a href="#packages" data-translate="nav.packages">Packages</a></li>
+    <li><a href="#gallery" data-translate="nav.gallery">Gallery</a></li>
+    <li><a href="#testimonials" data-translate="nav.testimonials">Reviews</a></li>
+    <li><a href="#faq" data-translate="nav.faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta" data-translate="nav.cta">Book Now</a></li>
   </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn" data-lang="nl">NL</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
   <div class="mobile-toggle">
     <span></span>
     <span></span>
@@ -1295,35 +1527,35 @@
 <!-- Hero Section -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">✨ Premium 360° Photo Booth Experience</div>
+    <div class="hero-badge" data-translate="hero.badge">✨ Premium 360° Photo Booth Experience</div>
     <h1>
-      <span class="hero-gradient-text">ELEVATE</span><br>
-      YOUR EVENT
+      <span class="hero-gradient-text" data-translate="hero.elevate">ELEVATE</span><br>
+      <span data-translate="hero.event">YOUR EVENT</span>
     </h1>
-    <p class="hero-tagline">
+    <p class="hero-tagline" data-translate="hero.tagline">
       Where Luxury Meets Innovation - Create Unforgettable Cinematic Moments
     </p>
     <div class="hero-cta-group">
       <a href="#contact" class="btn btn-primary">
-        <span>Book Your Event</span>
+        <span data-translate="hero.cta1">Book Your Event</span>
         <span>→</span>
       </a>
       <a href="#packages" class="btn btn-secondary">
-        <span>View Packages</span>
+        <span data-translate="hero.cta2">View Packages</span>
       </a>
     </div>
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-number">500+</div>
-        <div class="stat-label">Events Hosted</div>
+        <div class="stat-label" data-translate="hero.stat1">Events Hosted</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">50K+</div>
-        <div class="stat-label">Videos Created</div>
+        <div class="stat-label" data-translate="hero.stat2">Videos Created</div>
       </div>
       <div class="stat-item">
         <div class="stat-number">100%</div>
-        <div class="stat-label">Satisfaction</div>
+        <div class="stat-label" data-translate="hero.stat3">Satisfaction</div>
       </div>
     </div>
   </div>
@@ -1332,9 +1564,9 @@
 <!-- Experience/Features Section -->
 <section class="section section-cream" id="experience">
   <div class="section-header">
-    <div class="section-badge">Why Choose Us</div>
-    <h2 class="section-title">The LUXE Difference</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="exp.badge">Why Choose Us</div>
+    <h2 class="section-title" data-translate="exp.title">The LUXE Difference</h2>
+    <p class="section-description" data-translate="exp.desc">
       Transform your event into a cinematic masterpiece with our state-of-the-art 360° photo booth technology
     </p>
   </div>
@@ -1342,38 +1574,38 @@
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-icon">🎬</div>
-      <h3>Cinematic Quality</h3>
-      <p>Professional 4K cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet</p>
+      <h3 data-translate="exp.f1.title">Cinematic Quality</h3>
+      <p data-translate="exp.f1.desc">Professional 4K cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">✨</div>
-      <h3>Instant Sharing</h3>
-      <p>Guests receive their videos instantly via QR code or email, ready to share on Instagram, TikTok, and all social platforms</p>
+      <h3 data-translate="exp.f2.title">Instant Sharing</h3>
+      <p data-translate="exp.f2.desc">Guests receive their videos instantly via QR code or email, ready to share on Instagram, TikTok, and all social platforms</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">🎨</div>
-      <h3>Custom Branding</h3>
-      <p>Personalized overlays, logos, music, and effects perfectly tailored to match your event's aesthetic and brand identity</p>
+      <h3 data-translate="exp.f3.title">Custom Branding</h3>
+      <p data-translate="exp.f3.desc">Personalized overlays, logos, music, and effects perfectly tailored to match your event's aesthetic and brand identity</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">💎</div>
-      <h3>Luxury Setup</h3>
-      <p>Elegant LED platform with professional studio lighting that enhances every moment and complements your venue</p>
+      <h3 data-translate="exp.f4.title">Luxury Setup</h3>
+      <p data-translate="exp.f4.desc">Elegant LED platform with professional studio lighting that enhances every moment and complements your venue</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">🎭</div>
-      <h3>Premium Props</h3>
-      <p>Curated collection of sophisticated props and accessories designed to elevate your guests' experience</p>
+      <h3 data-translate="exp.f5.title">Premium Props</h3>
+      <p data-translate="exp.f5.desc">Curated collection of sophisticated props and accessories designed to elevate your guests' experience</p>
     </div>
 
     <div class="feature-card">
       <div class="feature-icon">👔</div>
-      <h3>Professional Host</h3>
-      <p>Dedicated booth attendant ensures seamless operation, guides guests, and creates the perfect experience</p>
+      <h3 data-translate="exp.f6.title">Professional Host</h3>
+      <p data-translate="exp.f6.desc">Dedicated booth attendant ensures seamless operation, guides guests, and creates the perfect experience</p>
     </div>
   </div>
 </section>
@@ -1381,65 +1613,65 @@
 <!-- Packages Section -->
 <section class="section section-dark" id="packages">
   <div class="section-header">
-    <div class="section-badge">Pricing</div>
-    <h2 class="section-title">Tailored Packages</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="pkg.badge">Pricing</div>
+    <h2 class="section-title" data-translate="pkg.title">Tailored Packages</h2>
+    <p class="section-description" data-translate="pkg.desc">
       Select the perfect package for your celebration - flexible options to suit any event
     </p>
   </div>
 
   <div class="pricing-grid">
     <div class="pricing-card" data-package="essence">
-      <h3 class="pricing-name">Essence</h3>
+      <h3 class="pricing-name" data-translate="pkg.p1.name">Essence</h3>
       <div class="pricing-price">€495</div>
-      <div class="pricing-duration">3 Hours Service</div>
+      <div class="pricing-duration" data-translate="pkg.p1.duration">3 Hours Service</div>
       <ul class="pricing-features">
-        <li>360° Video Recording</li>
-        <li>Professional LED Lighting</li>
-        <li>Instant Digital Sharing</li>
-        <li>Basic Overlay Design</li>
-        <li>Full Setup & Breakdown</li>
-        <li>50km Travel Included</li>
-        <li>Unlimited Sessions</li>
+        <li data-translate="pkg.p1.f1">360° Video Recording</li>
+        <li data-translate="pkg.p1.f2">Professional LED Lighting</li>
+        <li data-translate="pkg.p1.f3">Instant Digital Sharing</li>
+        <li data-translate="pkg.p1.f4">Basic Overlay Design</li>
+        <li data-translate="pkg.p1.f5">Full Setup & Breakdown</li>
+        <li data-translate="pkg.p1.f6">50km Travel Included</li>
+        <li data-translate="pkg.p1.f7">Unlimited Sessions</li>
       </ul>
-      <a href="#contact" class="btn btn-secondary">Select Package</a>
+      <a href="#contact" class="btn btn-secondary" data-translate="pkg.cta">Select Package</a>
     </div>
 
     <div class="pricing-card featured" data-package="prestige">
-      <div class="pricing-badge">Most Popular</div>
-      <h3 class="pricing-name">Prestige</h3>
+      <div class="pricing-badge" data-translate="pkg.p2.badge">Most Popular</div>
+      <h3 class="pricing-name" data-translate="pkg.p2.name">Prestige</h3>
       <div class="pricing-price">€795</div>
-      <div class="pricing-duration">5 Hours Service</div>
+      <div class="pricing-duration" data-translate="pkg.p2.duration">5 Hours Service</div>
       <ul class="pricing-features">
-        <li>Everything in Essence</li>
-        <li>Professional Host Attendant</li>
-        <li>Custom Branding & Logo</li>
-        <li>Premium Props Collection</li>
-        <li>Music Integration</li>
-        <li>Unlimited Recordings</li>
-        <li>Red Carpet Setup Option</li>
-        <li>100km Travel Included</li>
-        <li>Priority Booking</li>
+        <li data-translate="pkg.p2.f1">Everything in Essence</li>
+        <li data-translate="pkg.p2.f2">Professional Host Attendant</li>
+        <li data-translate="pkg.p2.f3">Custom Branding & Logo</li>
+        <li data-translate="pkg.p2.f4">Premium Props Collection</li>
+        <li data-translate="pkg.p2.f5">Music Integration</li>
+        <li data-translate="pkg.p2.f6">Unlimited Recordings</li>
+        <li data-translate="pkg.p2.f7">Red Carpet Setup Option</li>
+        <li data-translate="pkg.p2.f8">100km Travel Included</li>
+        <li data-translate="pkg.p2.f9">Priority Booking</li>
       </ul>
-      <a href="#contact" class="btn btn-primary">Select Package</a>
+      <a href="#contact" class="btn btn-primary" data-translate="pkg.cta">Select Package</a>
     </div>
 
     <div class="pricing-card" data-package="opulence">
-      <h3 class="pricing-name">Opulence</h3>
+      <h3 class="pricing-name" data-translate="pkg.p3.name">Opulence</h3>
       <div class="pricing-price">€1,295</div>
-      <div class="pricing-duration">Full Day (8 Hours)</div>
+      <div class="pricing-duration" data-translate="pkg.p3.duration">Full Day (8 Hours)</div>
       <ul class="pricing-features">
-        <li>Everything in Prestige</li>
-        <li>Extended 8-Hour Service</li>
-        <li>Multiple Overlay Designs</li>
-        <li>Luxury Backdrop Options</li>
-        <li>Same-Day Highlight Reel</li>
-        <li>24/7 Priority Support</li>
-        <li>Nationwide Travel</li>
-        <li>Dedicated Event Coordinator</li>
-        <li>Extra Props & Accessories</li>
+        <li data-translate="pkg.p3.f1">Everything in Prestige</li>
+        <li data-translate="pkg.p3.f2">Extended 8-Hour Service</li>
+        <li data-translate="pkg.p3.f3">Multiple Overlay Designs</li>
+        <li data-translate="pkg.p3.f4">Luxury Backdrop Options</li>
+        <li data-translate="pkg.p3.f5">Same-Day Highlight Reel</li>
+        <li data-translate="pkg.p3.f6">24/7 Priority Support</li>
+        <li data-translate="pkg.p3.f7">Nationwide Travel</li>
+        <li data-translate="pkg.p3.f8">Dedicated Event Coordinator</li>
+        <li data-translate="pkg.p3.f9">Extra Props & Accessories</li>
       </ul>
-      <a href="#contact" class="btn btn-secondary">Select Package</a>
+      <a href="#contact" class="btn btn-secondary" data-translate="pkg.cta">Select Package</a>
     </div>
   </div>
 </section>
@@ -1447,9 +1679,9 @@
 <!-- Gallery Section -->
 <section class="section section-cream" id="gallery">
   <div class="section-header">
-    <div class="section-badge">Portfolio</div>
-    <h2 class="section-title">Recent Events</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="gal.badge">Portfolio</div>
+    <h2 class="section-title" data-translate="gal.title">Recent Events</h2>
+    <p class="section-description" data-translate="gal.desc">
       A glimpse of the extraordinary moments we've captured for our clients
     </p>
   </div>
@@ -1469,9 +1701,9 @@
 <!-- Testimonials Section -->
 <section class="section section-dark" id="testimonials">
   <div class="section-header">
-    <div class="section-badge">Reviews</div>
-    <h2 class="section-title">What Clients Say</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="test.badge">Reviews</div>
+    <h2 class="section-title" data-translate="test.title">What Clients Say</h2>
+    <p class="section-description" data-translate="test.desc">
       Don't just take our word for it - hear from our satisfied clients
     </p>
   </div>
@@ -1479,14 +1711,14 @@
   <div class="testimonials-slider">
     <div class="testimonial-card">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">
+      <p class="testimonial-text" data-translate="test.t1.text">
         "Absolutely amazing! The LUXE 360° booth was the highlight of our wedding. Our guests couldn't stop talking about it and the videos turned out incredible. Professional, fun, and so worth it!"
       </p>
       <div class="testimonial-author">
         <div class="testimonial-avatar">S</div>
         <div class="testimonial-info">
-          <h4>Sarah & Mark</h4>
-          <p>Wedding, Amsterdam</p>
+          <h4 data-translate="test.t1.name">Sarah & Mark</h4>
+          <p data-translate="test.t1.event">Wedding, Amsterdam</p>
         </div>
       </div>
     </div>
@@ -1496,9 +1728,9 @@
 <!-- FAQ Section -->
 <section class="section section-cream" id="faq">
   <div class="section-header">
-    <div class="section-badge">FAQ</div>
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="faq.badge">FAQ</div>
+    <h2 class="section-title" data-translate="faq.title">Frequently Asked Questions</h2>
+    <p class="section-description" data-translate="faq.desc">
       Everything you need to know about our 360° photo booth service
     </p>
   </div>
@@ -1506,47 +1738,47 @@
   <div class="faq-container">
     <div class="faq-item">
       <div class="faq-question">
-        <span>How much space do you need for the booth?</span>
+        <span data-translate="faq.q1">How much space do you need for the booth?</span>
         <span class="faq-icon">▼</span>
       </div>
       <div class="faq-answer">
-        <p>We recommend a minimum space of 3m x 3m (10ft x 10ft) for optimal setup. This includes the platform, lighting equipment, and enough room for guests to move around comfortably.</p>
+        <p data-translate="faq.a1">We recommend a minimum space of 3m x 3m (10ft x 10ft) for optimal setup. This includes the platform, lighting equipment, and enough room for guests to move around comfortably.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question">
-        <span>How long does setup take?</span>
+        <span data-translate="faq.q2">How long does setup take?</span>
         <span class="faq-icon">▼</span>
       </div>
       <div class="faq-answer">
-        <p>Setup typically takes 60-90 minutes. We arrive early to ensure everything is ready before your event starts. Breakdown takes approximately 30-45 minutes after your event ends.</p>
+        <p data-translate="faq.a2">Setup typically takes 60-90 minutes. We arrive early to ensure everything is ready before your event starts. Breakdown takes approximately 30-45 minutes after your event ends.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question">
-        <span>Can we customize the videos with our branding?</span>
+        <span data-translate="faq.q3">Can we customize the videos with our branding?</span>
         <span class="faq-icon">▼</span>
       </div>
       <div class="faq-answer">
-        <p>Absolutely! We offer custom overlays, logos, colors, and even music to match your event theme or brand. Our team will work with you to create the perfect design before your event.</p>
+        <p data-translate="faq.a3">Absolutely! We offer custom overlays, logos, colors, and even music to match your event theme or brand. Our team will work with you to create the perfect design before your event.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question">
-        <span>How do guests receive their videos?</span>
+        <span data-translate="faq.q4">How do guests receive their videos?</span>
         <span class="faq-icon">▼</span>
       </div>
       <div class="faq-answer">
-        <p>Videos are shared instantly via QR code or email within seconds of recording. Guests can download, share directly to social media, or save to their phones immediately.</p>
+        <p data-translate="faq.a4">Videos are shared instantly via QR code or email within seconds of recording. Guests can download, share directly to social media, or save to their phones immediately.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <div class="faq-question">
-        <span>What's included in the price?</span>
+        <span data-translate="faq.q5">What's included in the price?</span>
         <span class="faq-icon">▼</span>
       </div>
       <div class="faq-answer">
@@ -1559,9 +1791,9 @@
 <!-- Contact Section -->
 <section class="section section-dark" id="contact">
   <div class="section-header">
-    <div class="section-badge">Get Started</div>
-    <h2 class="section-title">Reserve Your Date</h2>
-    <p class="section-description">
+    <div class="section-badge" data-translate="contact.badge">Get Started</div>
+    <h2 class="section-title" data-translate="contact.title">Reserve Your Date</h2>
+    <p class="section-description" data-translate="contact.desc">
       Let's create something extraordinary together - fill out the form and we'll get back to you within 24 hours
     </p>
   </div>
@@ -1569,69 +1801,131 @@
   {% form 'contact' %}
     {% if form.posted_successfully? %}
       <div class="form-success">
-        ✓ Thank you! We'll contact you within 24 hours to discuss your event.
+        <div class="success-icon">✓</div>
+        <h3 data-translate="contact.success.title">Booking Request Received!</h3>
+        <p data-translate="contact.success.message">Thank you! We'll contact you within 24 hours to confirm your event details and availability.</p>
+        <p data-translate="contact.success.reference">Reference: #{{ 'now' | date: "%Y%m%d%H%M" }}</p>
       </div>
     {% endif %}
 
     {% if form.errors %}
       <div class="form-error">
-        ⚠ Please correct the errors below and try again.
+        <span class="error-icon">⚠</span>
+        <span data-translate="contact.error">Please correct the errors below and try again.</span>
       </div>
     {% endif %}
 
     <div class="contact-container">
+      <!-- Quick Contact Options -->
+      <div class="quick-contact">
+        <a href="tel:+31612345678" class="quick-contact-btn">
+          <span class="icon">📞</span>
+          <span data-translate="contact.quick.call">Call Us</span>
+        </a>
+        <a href="https://wa.me/31612345678?text=Hi, I'm interested in booking the LUXE 360° photo booth!" class="quick-contact-btn whatsapp">
+          <span class="icon">💬</span>
+          <span data-translate="contact.quick.whatsapp">WhatsApp</span>
+        </a>
+        <a href="mailto:bookings@luxe360.com" class="quick-contact-btn">
+          <span class="icon">✉️</span>
+          <span data-translate="contact.quick.email">Email</span>
+        </a>
+      </div>
+
+      <div class="form-divider">
+        <span data-translate="contact.divider">Or fill out the booking form</span>
+      </div>
+
       <div class="form-grid">
         <div class="form-group">
-          <label for="name">Full Name *</label>
-          <input type="text" id="name" name="contact[name]" required placeholder="John Doe">
+          <label for="name" data-translate="contact.form.name">Full Name *</label>
+          <input type="text" id="name" name="contact[name]" required placeholder="John Doe" data-translate-placeholder="contact.form.name.placeholder">
+          {% if form.errors contains 'name' %}
+            <span class="field-error">Name is required</span>
+          {% endif %}
         </div>
 
         <div class="form-group">
-          <label for="email">Email Address *</label>
-          <input type="email" id="email" name="contact[email]" required placeholder="john@example.com">
+          <label for="email" data-translate="contact.form.email">Email Address *</label>
+          <input type="email" id="email" name="contact[email]" required placeholder="john@example.com" data-translate-placeholder="contact.form.email.placeholder">
+          {% if form.errors contains 'email' %}
+            <span class="field-error">Valid email is required</span>
+          {% endif %}
         </div>
 
         <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="contact[phone]" placeholder="+31 6 12345678">
+          <label for="phone" data-translate="contact.form.phone">Phone Number *</label>
+          <input type="tel" id="phone" name="contact[phone]" required placeholder="+31 6 12345678" pattern="^(\+31|0031|0)[1-9][0-9]{8}$" title="Please enter a valid Dutch phone number">
+          <small class="field-hint" data-translate="contact.form.phone.hint">Format: +31 6 12345678</small>
         </div>
 
         <div class="form-group">
-          <label for="event-type">Event Type *</label>
+          <label for="event-type" data-translate="contact.form.eventtype">Event Type *</label>
           <select id="event-type" name="contact[event-type]" required>
-            <option value="">Select event type</option>
-            <option value="wedding">Wedding</option>
-            <option value="corporate">Corporate Event</option>
-            <option value="birthday">Birthday Party</option>
-            <option value="anniversary">Anniversary</option>
-            <option value="product-launch">Product Launch</option>
-            <option value="other">Other</option>
+            <option value="" data-translate="contact.form.eventtype.placeholder">Select event type</option>
+            <option value="wedding" data-translate="contact.form.eventtype.wedding">Wedding</option>
+            <option value="corporate" data-translate="contact.form.eventtype.corporate">Corporate Event</option>
+            <option value="birthday" data-translate="contact.form.eventtype.birthday">Birthday Party</option>
+            <option value="anniversary" data-translate="contact.form.eventtype.anniversary">Anniversary</option>
+            <option value="product-launch" data-translate="contact.form.eventtype.product">Product Launch</option>
+            <option value="other" data-translate="contact.form.eventtype.other">Other</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="event-date">Event Date</label>
-          <input type="date" id="event-date" name="contact[date]">
+          <label for="event-date" data-translate="contact.form.date">Event Date *</label>
+          <input type="date" id="event-date" name="contact[date]" required min="">
+          <small class="field-hint" data-translate="contact.form.date.hint">Preferred date for your event</small>
         </div>
 
         <div class="form-group">
-          <label for="package">Package Interest *</label>
+          <label for="guest-count" data-translate="contact.form.guests">Expected Guests *</label>
+          <input type="number" id="guest-count" name="contact[guests]" required min="10" max="1000" placeholder="50">
+          <small class="field-hint" data-translate="contact.form.guests.hint">Approximate number of attendees</small>
+        </div>
+
+        <div class="form-group">
+          <label for="package" data-translate="contact.form.package">Package Interest *</label>
           <select id="package" name="contact[package]" required>
-            <option value="">Select package</option>
-            <option value="essence">Essence - €495</option>
-            <option value="prestige">Prestige - €795 (Most Popular)</option>
-            <option value="opulence">Opulence - €1,295</option>
-            <option value="custom">Custom Package</option>
+            <option value="" data-translate="contact.form.package.placeholder">Select package</option>
+            <option value="essence" data-translate="contact.form.package.essence">Essence - €495 (3 Hours)</option>
+            <option value="prestige" data-translate="contact.form.package.prestige">Prestige - €795 (5 Hours) ⭐ Most Popular</option>
+            <option value="opulence" data-translate="contact.form.package.opulence">Opulence - €1,295 (8 Hours)</option>
+            <option value="custom" data-translate="contact.form.package.custom">Custom Package</option>
           </select>
+        </div>
+
+        <div class="form-group">
+          <label for="venue" data-translate="contact.form.venue">Venue/Location</label>
+          <input type="text" id="venue" name="contact[venue]" placeholder="Amsterdam, Netherlands" data-translate-placeholder="contact.form.venue.placeholder">
+          <small class="field-hint" data-translate="contact.form.venue.hint">City or venue name</small>
         </div>
 
         <div class="form-group full-width">
-          <label for="message">Tell Us About Your Event</label>
-          <textarea id="message" name="contact[body]" placeholder="Share your vision, expected guest count, venue details, or any special requests..."></textarea>
+          <label for="message" data-translate="contact.form.message">Tell Us About Your Event</label>
+          <textarea id="message" name="contact[body]" rows="5" placeholder="Share your vision, theme, special requests, setup requirements, or any questions..." data-translate-placeholder="contact.form.message.placeholder"></textarea>
+          <small class="field-hint" data-translate="contact.form.message.hint">Include any special requirements or questions</small>
         </div>
       </div>
 
-      <button type="submit" class="form-submit">Send Inquiry</button>
+      <div class="form-footer">
+        <div class="form-privacy">
+          <input type="checkbox" id="privacy" name="contact[privacy]" required>
+          <label for="privacy">
+            <span data-translate="contact.form.privacy">I agree to the</span>
+            <a href="/pages/privacy-policy" data-translate="contact.form.privacy.link">Privacy Policy</a>
+          </label>
+        </div>
+
+        <button type="submit" class="form-submit">
+          <span data-translate="contact.form.submit">Send Booking Request</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+
+      <div class="form-note">
+        <p data-translate="contact.form.note">💡 Booking tip: We recommend booking at least 4-6 weeks in advance for weddings and large events to ensure availability.</p>
+      </div>
     </div>
   {% endform %}
 </section>
@@ -1863,14 +2157,406 @@
 
   // ========== FORM ENHANCEMENTS ==========
   const form = document.querySelector('form[action*="contact"]');
+  const eventDateInput = document.getElementById('event-date');
+  const phoneInput = document.getElementById('phone');
 
+  // Set minimum date to today
+  if (eventDateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    eventDateInput.setAttribute('min', today);
+  }
+
+  // Phone number formatting (Dutch)
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+
+      // Auto-add +31 if starting with 0
+      if (value.startsWith('0') && value.length > 1) {
+        value = '31' + value.substring(1);
+      }
+
+      // Format: +31 6 12345678
+      if (value.startsWith('31') && value.length > 2) {
+        value = '+' + value.substring(0, 2) + ' ' + value.substring(2, 3) + ' ' + value.substring(3);
+      }
+
+      e.target.value = value.trim();
+    });
+  }
+
+  // Form submission
   if (form) {
     form.addEventListener('submit', function(e) {
       const submitBtn = this.querySelector('.form-submit');
-      submitBtn.textContent = 'Sending...';
+      const originalText = submitBtn.innerHTML;
+
+      submitBtn.innerHTML = '<span>Sending...</span>';
       submitBtn.disabled = true;
+
+      // Re-enable after 3 seconds if form doesn't submit (error case)
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }, 3000);
     });
   }
+
+  // Form validation feedback
+  const requiredInputs = document.querySelectorAll('input[required], select[required], textarea[required]');
+  requiredInputs.forEach(input => {
+    input.addEventListener('blur', function() {
+      if (!this.value) {
+        this.style.borderColor = 'var(--error)';
+      } else {
+        this.style.borderColor = '';
+      }
+    });
+
+    input.addEventListener('input', function() {
+      if (this.value) {
+        this.style.borderColor = 'var(--gold)';
+      }
+    });
+  });
+
+  // ========== LANGUAGE TRANSLATION SYSTEM ==========
+  const translations = {
+    nl: {
+      // Navigation
+      'nav.experience': 'Ervaring',
+      'nav.packages': 'Pakketten',
+      'nav.gallery': 'Galerij',
+      'nav.testimonials': 'Reviews',
+      'nav.faq': 'FAQ',
+      'nav.cta': 'Boek Nu',
+
+      // Hero Section
+      'hero.badge': '✨ Premium 360° Photo Booth Ervaring',
+      'hero.elevate': 'VERHOOG',
+      'hero.event': 'UW EVENEMENT',
+      'hero.tagline': 'Waar Luxe Innovatie Ontmoet - Creëer Onvergetelijke Filmische Momenten',
+      'hero.cta1': 'Boek Uw Evenement',
+      'hero.cta2': 'Bekijk Pakketten',
+      'hero.stat1': 'Evenementen Georganiseerd',
+      'hero.stat2': "Video's Gemaakt",
+      'hero.stat3': 'Tevredenheid',
+
+      // Experience Section
+      'exp.badge': 'Waarom Kiezen Voor Ons',
+      'exp.title': 'Het LUXE Verschil',
+      'exp.desc': 'Transformeer uw evenement in een filmisch meesterwerk met onze geavanceerde 360° photo booth technologie',
+      'exp.f1.title': 'Filmische Kwaliteit',
+      'exp.f1.desc': 'Professionele 4K camera\'s leggen prachtige slow-motion video\'s vast vanuit elke hoek, waardoor content ontstaat die de rode loper waardig is',
+      'exp.f2.title': 'Direct Delen',
+      'exp.f2.desc': 'Gasten ontvangen hun video\'s direct via QR-code of e-mail, klaar om te delen op Instagram, TikTok en alle sociale platforms',
+      'exp.f3.title': 'Aangepaste Branding',
+      'exp.f3.desc': 'Gepersonaliseerde overlays, logo\'s, muziek en effecten perfect afgestemd op de esthetiek en merkidentiteit van uw evenement',
+      'exp.f4.title': 'Luxe Opzet',
+      'exp.f4.desc': 'Elegant LED-platform met professionele studioverlichting die elk moment verbetert en uw locatie complimenteert',
+      'exp.f5.title': 'Premium Rekwisieten',
+      'exp.f5.desc': 'Samengestelde collectie van verfijnde rekwisieten en accessoires ontworpen om de ervaring van uw gasten te verheffen',
+      'exp.f6.title': 'Professionele Gastheer',
+      'exp.f6.desc': 'Toegewijde booth-begeleider zorgt voor naadloze werking, begeleidt gasten en creëert de perfecte ervaring',
+
+      // Packages Section
+      'pkg.badge': 'Prijzen',
+      'pkg.title': 'Pakketten Op Maat',
+      'pkg.desc': 'Selecteer het perfecte pakket voor uw viering - flexibele opties voor elk evenement',
+      'pkg.cta': 'Selecteer Pakket',
+      'pkg.p1.name': 'Essentie',
+      'pkg.p1.duration': '3 Uur Service',
+      'pkg.p1.f1': '360° Video Opname',
+      'pkg.p1.f2': 'Professionele LED Verlichting',
+      'pkg.p1.f3': 'Direct Digitaal Delen',
+      'pkg.p1.f4': 'Basis Overlay Ontwerp',
+      'pkg.p1.f5': 'Volledige Opbouw & Afbraak',
+      'pkg.p1.f6': '50km Reizen Inbegrepen',
+      'pkg.p1.f7': 'Onbeperkte Sessies',
+      'pkg.p2.badge': 'Meest Populair',
+      'pkg.p2.name': 'Prestige',
+      'pkg.p2.duration': '5 Uur Service',
+      'pkg.p2.f1': 'Alles in Essentie',
+      'pkg.p2.f2': 'Professionele Gastheer',
+      'pkg.p2.f3': 'Aangepaste Branding & Logo',
+      'pkg.p2.f4': 'Premium Rekwisieten Collectie',
+      'pkg.p2.f5': 'Muziek Integratie',
+      'pkg.p2.f6': 'Onbeperkte Opnames',
+      'pkg.p2.f7': 'Rode Loper Opzet Optie',
+      'pkg.p2.f8': '100km Reizen Inbegrepen',
+      'pkg.p2.f9': 'Prioriteit Boeking',
+      'pkg.p3.name': 'Weelde',
+      'pkg.p3.duration': 'Hele Dag (8 Uur)',
+      'pkg.p3.f1': 'Alles in Prestige',
+      'pkg.p3.f2': 'Verlengde 8-Uurs Service',
+      'pkg.p3.f3': 'Meerdere Overlay Ontwerpen',
+      'pkg.p3.f4': 'Luxe Achtergrond Opties',
+      'pkg.p3.f5': 'Zelfde Dag Hoogtepunten',
+      'pkg.p3.f6': '24/7 Prioriteit Ondersteuning',
+      'pkg.p3.f7': 'Landelijk Reizen',
+      'pkg.p3.f8': 'Toegewijd Evenement Coördinator',
+      'pkg.p3.f9': 'Extra Rekwisieten & Accessoires',
+
+      // Gallery Section
+      'gal.badge': 'Portfolio',
+      'gal.title': 'Recente Evenementen',
+      'gal.desc': 'Een glimp van de buitengewone momenten die we voor onze klanten hebben vastgelegd',
+
+      // Testimonials Section
+      'test.badge': 'Reviews',
+      'test.title': 'Wat Klanten Zeggen',
+      'test.desc': 'Geloof ons niet alleen op ons woord - hoor van onze tevreden klanten',
+      'test.t1.text': '"Absoluut geweldig! De LUXE 360° booth was het hoogtepunt van onze bruiloft. Onze gasten konden er niet over ophouden en de video\'s werden ongelofelijk. Professioneel, leuk en het zeker waard!"',
+      'test.t1.name': 'Sarah & Mark',
+      'test.t1.event': 'Bruiloft, Amsterdam',
+
+      // FAQ Section
+      'faq.badge': 'FAQ',
+      'faq.title': 'Veelgestelde Vragen',
+      'faq.desc': 'Alles wat u moet weten over onze 360° photo booth service',
+      'faq.q1': 'Hoeveel ruimte heeft u nodig voor de booth?',
+      'faq.a1': 'We raden een minimale ruimte aan van 3m x 3m voor optimale opzet. Dit omvat het platform, verlichtingsapparatuur en voldoende ruimte voor gasten om comfortabel te bewegen.',
+      'faq.q2': 'Hoe lang duurt de opbouw?',
+      'faq.a2': 'Opbouw duurt meestal 60-90 minuten. We komen vroeg aan om ervoor te zorgen dat alles klaar is voordat uw evenement begint. Afbraak duurt ongeveer 30-45 minuten na afloop van uw evenement.',
+      'faq.q3': 'Kunnen we de video\'s aanpassen met onze branding?',
+      'faq.a3': 'Absoluut! We bieden aangepaste overlays, logo\'s, kleuren en zelfs muziek om te passen bij uw evenementthema of merk. Ons team zal met u samenwerken om het perfecte ontwerp te creëren voor uw evenement.',
+      'faq.q4': 'Hoe ontvangen gasten hun video\'s?',
+      'faq.a4': 'Video\'s worden direct gedeeld via QR-code of e-mail binnen enkele seconden na opname. Gasten kunnen downloaden, direct delen op sociale media of onmiddellijk opslaan op hun telefoons.',
+      'faq.q5': 'Wat is inbegrepen in de prijs?',
+
+      // Contact Section
+      'contact.badge': 'Begin',
+      'contact.title': 'Reserveer Uw Datum',
+      'contact.desc': 'Laten we samen iets buitengewoons creëren - vul het formulier in en we nemen binnen 24 uur contact met u op',
+      'contact.success.title': 'Boeking Aanvraag Ontvangen!',
+      'contact.success.message': 'Dank u! We nemen binnen 24 uur contact met u op om uw evenementgegevens en beschikbaarheid te bevestigen.',
+      'contact.success.reference': 'Referentie: #',
+      'contact.error': 'Corrigeer de onderstaande fouten en probeer het opnieuw.',
+      'contact.quick.call': 'Bel Ons',
+      'contact.quick.whatsapp': 'WhatsApp',
+      'contact.quick.email': 'E-mail',
+      'contact.divider': 'Of vul het boekingsformulier in',
+      'contact.form.name': 'Volledige Naam *',
+      'contact.form.name.placeholder': 'Jan Jansen',
+      'contact.form.email': 'E-mailadres *',
+      'contact.form.email.placeholder': 'jan@voorbeeld.nl',
+      'contact.form.phone': 'Telefoonnummer *',
+      'contact.form.phone.hint': 'Formaat: +31 6 12345678',
+      'contact.form.eventtype': 'Evenement Type *',
+      'contact.form.eventtype.placeholder': 'Selecteer evenement type',
+      'contact.form.eventtype.wedding': 'Bruiloft',
+      'contact.form.eventtype.corporate': 'Bedrijfsevenement',
+      'contact.form.eventtype.birthday': 'Verjaardagsfeest',
+      'contact.form.eventtype.anniversary': 'Jubileum',
+      'contact.form.eventtype.product': 'Productlancering',
+      'contact.form.eventtype.other': 'Anders',
+      'contact.form.date': 'Evenement Datum *',
+      'contact.form.date.hint': 'Gewenste datum voor uw evenement',
+      'contact.form.guests': 'Verwacht Aantal Gasten *',
+      'contact.form.guests.hint': 'Ongeveer aantal bezoekers',
+      'contact.form.package': 'Pakket Interesse *',
+      'contact.form.package.placeholder': 'Selecteer pakket',
+      'contact.form.package.essence': 'Essentie - €495 (3 Uur)',
+      'contact.form.package.prestige': 'Prestige - €795 (5 Uur) ⭐ Meest Populair',
+      'contact.form.package.opulence': 'Weelde - €1,295 (8 Uur)',
+      'contact.form.package.custom': 'Aangepast Pakket',
+      'contact.form.venue': 'Locatie/Plaats',
+      'contact.form.venue.placeholder': 'Amsterdam, Nederland',
+      'contact.form.venue.hint': 'Stad of locatie naam',
+      'contact.form.message': 'Vertel Ons Over Uw Evenement',
+      'contact.form.message.placeholder': 'Deel uw visie, thema, speciale verzoeken, opzet vereisten, of eventuele vragen...',
+      'contact.form.message.hint': 'Vermeld eventuele speciale vereisten of vragen',
+      'contact.form.privacy': 'Ik ga akkoord met het',
+      'contact.form.privacy.link': 'Privacybeleid',
+      'contact.form.submit': 'Boekingsverzoek Versturen',
+      'contact.form.note': '💡 Boekingstip: We raden aan om minimaal 4-6 weken van tevoren te boeken voor bruiloften en grote evenementen om beschikbaarheid te garanderen.'
+    },
+    en: {
+      // Navigation
+      'nav.experience': 'Experience',
+      'nav.packages': 'Packages',
+      'nav.gallery': 'Gallery',
+      'nav.testimonials': 'Reviews',
+      'nav.faq': 'FAQ',
+      'nav.cta': 'Book Now',
+
+      // Hero Section
+      'hero.badge': '✨ Premium 360° Photo Booth Experience',
+      'hero.elevate': 'ELEVATE',
+      'hero.event': 'YOUR EVENT',
+      'hero.tagline': 'Where Luxury Meets Innovation - Create Unforgettable Cinematic Moments',
+      'hero.cta1': 'Book Your Event',
+      'hero.cta2': 'View Packages',
+      'hero.stat1': 'Events Hosted',
+      'hero.stat2': 'Videos Created',
+      'hero.stat3': 'Satisfaction',
+
+      // Experience Section
+      'exp.badge': 'Why Choose Us',
+      'exp.title': 'The LUXE Difference',
+      'exp.desc': 'Transform your event into a cinematic masterpiece with our state-of-the-art 360° photo booth technology',
+      'exp.f1.title': 'Cinematic Quality',
+      'exp.f1.desc': 'Professional 4K cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet',
+      'exp.f2.title': 'Instant Sharing',
+      'exp.f2.desc': 'Guests receive their videos instantly via QR code or email, ready to share on Instagram, TikTok, and all social platforms',
+      'exp.f3.title': 'Custom Branding',
+      'exp.f3.desc': 'Personalized overlays, logos, music, and effects perfectly tailored to match your event\'s aesthetic and brand identity',
+      'exp.f4.title': 'Luxury Setup',
+      'exp.f4.desc': 'Elegant LED platform with professional studio lighting that enhances every moment and complements your venue',
+      'exp.f5.title': 'Premium Props',
+      'exp.f5.desc': 'Curated collection of sophisticated props and accessories designed to elevate your guests\' experience',
+      'exp.f6.title': 'Professional Host',
+      'exp.f6.desc': 'Dedicated booth attendant ensures seamless operation, guides guests, and creates the perfect experience',
+
+      // Packages Section
+      'pkg.badge': 'Pricing',
+      'pkg.title': 'Tailored Packages',
+      'pkg.desc': 'Select the perfect package for your celebration - flexible options to suit any event',
+      'pkg.cta': 'Select Package',
+      'pkg.p1.name': 'Essence',
+      'pkg.p1.duration': '3 Hours Service',
+      'pkg.p1.f1': '360° Video Recording',
+      'pkg.p1.f2': 'Professional LED Lighting',
+      'pkg.p1.f3': 'Instant Digital Sharing',
+      'pkg.p1.f4': 'Basic Overlay Design',
+      'pkg.p1.f5': 'Full Setup & Breakdown',
+      'pkg.p1.f6': '50km Travel Included',
+      'pkg.p1.f7': 'Unlimited Sessions',
+      'pkg.p2.badge': 'Most Popular',
+      'pkg.p2.name': 'Prestige',
+      'pkg.p2.duration': '5 Hours Service',
+      'pkg.p2.f1': 'Everything in Essence',
+      'pkg.p2.f2': 'Professional Host Attendant',
+      'pkg.p2.f3': 'Custom Branding & Logo',
+      'pkg.p2.f4': 'Premium Props Collection',
+      'pkg.p2.f5': 'Music Integration',
+      'pkg.p2.f6': 'Unlimited Recordings',
+      'pkg.p2.f7': 'Red Carpet Setup Option',
+      'pkg.p2.f8': '100km Travel Included',
+      'pkg.p2.f9': 'Priority Booking',
+      'pkg.p3.name': 'Opulence',
+      'pkg.p3.duration': 'Full Day (8 Hours)',
+      'pkg.p3.f1': 'Everything in Prestige',
+      'pkg.p3.f2': 'Extended 8-Hour Service',
+      'pkg.p3.f3': 'Multiple Overlay Designs',
+      'pkg.p3.f4': 'Luxury Backdrop Options',
+      'pkg.p3.f5': 'Same-Day Highlight Reel',
+      'pkg.p3.f6': '24/7 Priority Support',
+      'pkg.p3.f7': 'Nationwide Travel',
+      'pkg.p3.f8': 'Dedicated Event Coordinator',
+      'pkg.p3.f9': 'Extra Props & Accessories',
+
+      // Gallery Section
+      'gal.badge': 'Portfolio',
+      'gal.title': 'Recent Events',
+      'gal.desc': 'A glimpse of the extraordinary moments we\'ve captured for our clients',
+
+      // Testimonials Section
+      'test.badge': 'Reviews',
+      'test.title': 'What Clients Say',
+      'test.desc': 'Don\'t just take our word for it - hear from our satisfied clients',
+      'test.t1.text': '"Absolutely amazing! The LUXE 360° booth was the highlight of our wedding. Our guests couldn\'t stop talking about it and the videos turned out incredible. Professional, fun, and so worth it!"',
+      'test.t1.name': 'Sarah & Mark',
+      'test.t1.event': 'Wedding, Amsterdam',
+
+      // FAQ Section
+      'faq.badge': 'FAQ',
+      'faq.title': 'Frequently Asked Questions',
+      'faq.desc': 'Everything you need to know about our 360° photo booth service',
+      'faq.q1': 'How much space do you need for the booth?',
+      'faq.a1': 'We recommend a minimum space of 3m x 3m (10ft x 10ft) for optimal setup. This includes the platform, lighting equipment, and enough room for guests to move around comfortably.',
+      'faq.q2': 'How long does setup take?',
+      'faq.a2': 'Setup typically takes 60-90 minutes. We arrive early to ensure everything is ready before your event starts. Breakdown takes approximately 30-45 minutes after your event ends.',
+      'faq.q3': 'Can we customize the videos with our branding?',
+      'faq.a3': 'Absolutely! We offer custom overlays, logos, colors, and even music to match your event theme or brand. Our team will work with you to create the perfect design before your event.',
+      'faq.q4': 'How do guests receive their videos?',
+      'faq.a4': 'Videos are shared instantly via QR code or email within seconds of recording. Guests can download, share directly to social media, or save to their phones immediately.',
+      'faq.q5': 'What\'s included in the price?',
+
+      // Contact Section
+      'contact.badge': 'Get Started',
+      'contact.title': 'Reserve Your Date',
+      'contact.desc': 'Let\'s create something extraordinary together - fill out the form and we\'ll get back to you within 24 hours',
+      'contact.success.title': 'Booking Request Received!',
+      'contact.success.message': 'Thank you! We\'ll contact you within 24 hours to confirm your event details and availability.',
+      'contact.success.reference': 'Reference: #',
+      'contact.error': 'Please correct the errors below and try again.',
+      'contact.quick.call': 'Call Us',
+      'contact.quick.whatsapp': 'WhatsApp',
+      'contact.quick.email': 'Email',
+      'contact.divider': 'Or fill out the booking form',
+      'contact.form.name': 'Full Name *',
+      'contact.form.name.placeholder': 'John Doe',
+      'contact.form.email': 'Email Address *',
+      'contact.form.email.placeholder': 'john@example.com',
+      'contact.form.phone': 'Phone Number *',
+      'contact.form.phone.hint': 'Format: +31 6 12345678',
+      'contact.form.eventtype': 'Event Type *',
+      'contact.form.eventtype.placeholder': 'Select event type',
+      'contact.form.eventtype.wedding': 'Wedding',
+      'contact.form.eventtype.corporate': 'Corporate Event',
+      'contact.form.eventtype.birthday': 'Birthday Party',
+      'contact.form.eventtype.anniversary': 'Anniversary',
+      'contact.form.eventtype.product': 'Product Launch',
+      'contact.form.eventtype.other': 'Other',
+      'contact.form.date': 'Event Date *',
+      'contact.form.date.hint': 'Preferred date for your event',
+      'contact.form.guests': 'Expected Guests *',
+      'contact.form.guests.hint': 'Approximate number of attendees',
+      'contact.form.package': 'Package Interest *',
+      'contact.form.package.placeholder': 'Select package',
+      'contact.form.package.essence': 'Essence - €495 (3 Hours)',
+      'contact.form.package.prestige': 'Prestige - €795 (5 Hours) ⭐ Most Popular',
+      'contact.form.package.opulence': 'Opulence - €1,295 (8 Hours)',
+      'contact.form.package.custom': 'Custom Package',
+      'contact.form.venue': 'Venue/Location',
+      'contact.form.venue.placeholder': 'Amsterdam, Netherlands',
+      'contact.form.venue.hint': 'City or venue name',
+      'contact.form.message': 'Tell Us About Your Event',
+      'contact.form.message.placeholder': 'Share your vision, theme, special requests, setup requirements, or any questions...',
+      'contact.form.message.hint': 'Include any special requirements or questions',
+      'contact.form.privacy': 'I agree to the',
+      'contact.form.privacy.link': 'Privacy Policy',
+      'contact.form.submit': 'Send Booking Request',
+      'contact.form.note': '💡 Booking tip: We recommend booking at least 4-6 weeks in advance for weddings and large events to ensure availability.'
+    }
+  };
+
+  // Get saved language or default to Dutch
+  let currentLang = localStorage.getItem('luxe360-lang') || 'nl';
+
+  // Function to translate page
+  function translatePage(lang) {
+    currentLang = lang;
+    localStorage.setItem('luxe360-lang', lang);
+
+    // Update all translatable elements
+    document.querySelectorAll('[data-translate]').forEach(element => {
+      const key = element.getAttribute('data-translate');
+      if (translations[lang] && translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+    });
+
+    // Update active button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  // Initialize language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      translatePage(lang);
+    });
+  });
+
+  // Set initial language
+  translatePage(currentLang);
 
   // ========== CONSOLE GREETING ==========
   console.log('%c🎬 LUXE 360° ', 'font-size: 20px; font-weight: bold; color: #D4AF37;');
