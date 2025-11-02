@@ -134,18 +134,17 @@
     .announcement-bar {
       background: linear-gradient(135deg, var(--gold), var(--dark-gold));
       color: var(--black);
-      padding: 12px 20px;
+      padding: 12px 0;
       position: fixed;
       top: 0;
       width: 100%;
       z-index: 1001;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       animation: slideDown 0.5s ease-out;
       transition: transform 0.3s, opacity 0.3s;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
     }
 
     .announcement-bar.hidden {
@@ -165,17 +164,45 @@
       }
     }
 
+    .announcement-scroll-wrapper {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .announcement-scroll {
+      display: flex;
+      animation: scroll 25s linear infinite;
+      will-change: transform;
+    }
+
+    .announcement-scroll:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-33.333%);
+      }
+    }
+
     .announcement-content {
       display: flex;
       align-items: center;
       gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
+      white-space: nowrap;
+      padding: 0 50px;
+      min-width: fit-content;
     }
 
     .announcement-icon {
       font-size: 1.3rem;
       animation: bounce 2s ease-in-out infinite;
+      user-select: none;
+      cursor: default;
     }
 
     @keyframes bounce {
@@ -201,6 +228,7 @@
       letter-spacing: 1px;
       transition: all 0.3s;
       border: 2px solid var(--black);
+      cursor: pointer;
     }
 
     .announcement-cta:hover {
@@ -215,10 +243,11 @@
       color: var(--black);
       font-size: 1.5rem;
       cursor: pointer;
-      padding: 0 10px;
+      padding: 0 20px;
       opacity: 0.7;
       transition: opacity 0.3s, transform 0.3s;
       line-height: 1;
+      flex-shrink: 0;
     }
 
     .announcement-close:hover {
@@ -484,6 +513,8 @@
       color: var(--gold);
       margin-bottom: 30px;
       animation: fadeInUp 1s 0.2s backwards;
+      user-select: none;
+      cursor: default;
     }
 
     .hero h1 {
@@ -634,6 +665,8 @@
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 20px;
+      user-select: none;
+      cursor: default;
     }
 
     .section-title {
@@ -705,6 +738,8 @@
       display: inline-block;
       filter: grayscale(1) brightness(0.7);
       transition: all 0.3s;
+      user-select: none;
+      cursor: default;
     }
 
     .feature-card:hover .feature-icon {
@@ -776,6 +811,8 @@
       font-weight: 700;
       border-radius: 50px;
       box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+      user-select: none;
+      cursor: default;
     }
 
     .pricing-card.selected::after {
@@ -1120,6 +1157,8 @@
       font-size: 3rem;
       margin-bottom: 15px;
       animation: successBounce 0.6s ease-out;
+      user-select: none;
+      cursor: default;
     }
 
     @keyframes successBounce {
@@ -1142,6 +1181,8 @@
     .error-icon {
       font-size: 1.5rem;
       margin-right: 10px;
+      user-select: none;
+      cursor: default;
     }
 
     /* Quick Contact Buttons */
@@ -1218,6 +1259,54 @@
       color: var(--charcoal);
       font-size: 0.9rem;
       font-weight: 500;
+    }
+
+    /* Booking Disclaimer */
+    .booking-disclaimer {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 25px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      margin-bottom: 30px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+      }
+    }
+
+    .disclaimer-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      user-select: none;
+      cursor: default;
+    }
+
+    .disclaimer-content {
+      flex: 1;
+      color: var(--charcoal);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .disclaimer-content strong {
+      color: var(--dark-gold);
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1rem;
+    }
+
+    #earliest-available-date {
+      font-weight: 700;
+      color: var(--gold);
     }
 
     /* Field Hints */
@@ -1587,18 +1676,53 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ========== GENERAL CURSOR FIXES ========== */
+    /* Prevent text cursor on decorative elements */
+    span[class*="-icon"],
+    span[class*="icon-"],
+    .quick-contact-btn .icon,
+    .whatsapp-float,
+    .scroll-top {
+      user-select: none;
+      cursor: default;
+    }
+
+    /* Links and buttons should have pointer cursor */
+    a, button, .announcement-cta, .quick-contact-btn, .whatsapp-float, .scroll-top {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
 <!-- Announcement Bar -->
 <div class="announcement-bar">
-  <div class="announcement-content">
-    <span class="announcement-icon">🎉</span>
-    <span class="announcement-text" data-translate="announcement.text">
-      Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available
-    </span>
-    <a href="#contact" class="announcement-cta" data-translate="announcement.cta">Book Now</a>
+  <div class="announcement-scroll-wrapper">
+    <div class="announcement-scroll">
+      <div class="announcement-content">
+        <span class="announcement-icon">🎉</span>
+        <span class="announcement-text" data-translate="announcement.text">
+          Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available
+        </span>
+        <a href="#contact" class="announcement-cta" data-translate="announcement.cta">Book Now</a>
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="announcement-content">
+        <span class="announcement-icon">🎉</span>
+        <span class="announcement-text" data-translate="announcement.text">
+          Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available
+        </span>
+        <a href="#contact" class="announcement-cta" data-translate="announcement.cta">Book Now</a>
+      </div>
+      <div class="announcement-content">
+        <span class="announcement-icon">🎉</span>
+        <span class="announcement-text" data-translate="announcement.text">
+          Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available
+        </span>
+        <a href="#contact" class="announcement-cta" data-translate="announcement.cta">Book Now</a>
+      </div>
+    </div>
   </div>
   <button class="announcement-close" aria-label="Close announcement">✕</button>
 </div>
@@ -1948,6 +2072,15 @@
         <span data-translate="contact.divider">Or fill out the booking form</span>
       </div>
 
+      <!-- Booking Availability Disclaimer -->
+      <div class="booking-disclaimer">
+        <div class="disclaimer-icon">📅</div>
+        <div class="disclaimer-content">
+          <strong data-translate="contact.disclaimer.title">Important Notice:</strong>
+          <span data-translate="contact.disclaimer.message">We are currently fully booked for the next 2 weeks. Please select dates from <span id="earliest-available-date"></span> onwards.</span>
+        </div>
+      </div>
+
       <div class="form-grid">
         <div class="form-group">
           <label for="name" data-translate="contact.form.name">Full Name *</label>
@@ -2293,16 +2426,43 @@
   // ========== AVAILABILITY MANAGEMENT SYSTEM ==========
   // Configure blocked/unavailable dates here
   // Add dates in YYYY-MM-DD format to block them from booking
-  const blockedDates = [
-    // Example blocked dates - Edit this array to manage availability
+
+  // Automatically block the next 2 weeks (14 days)
+  const today = new Date();
+  const twoWeeksFromNow = new Date(today);
+  twoWeeksFromNow.setDate(today.getDate() + 14);
+
+  const blockedDates = [];
+
+  // Generate dates for the next 2 weeks
+  for (let i = 0; i < 14; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    const dateString = date.toISOString().split('T')[0];
+    blockedDates.push(dateString);
+  }
+
+  // Add additional blocked dates (holidays, already booked dates, etc.)
+  blockedDates.push(
     '2025-12-25', // Christmas
     '2025-12-26', // Boxing Day
-    '2025-12-31', // New Year's Eve (if already booked)
-    '2025-01-01', // New Year's Day
+    '2025-12-31', // New Year's Eve
+    '2025-01-01'  // New Year's Day
     // Add more dates as they get booked or are unavailable
     // '2025-06-15',
     // '2025-07-20',
-  ];
+  );
+
+  // Display earliest available date in the disclaimer
+  const earliestAvailableDateElement = document.getElementById('earliest-available-date');
+  if (earliestAvailableDateElement) {
+    earliestAvailableDateElement.textContent = twoWeeksFromNow.toLocaleDateString('en-GB', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
 
   // Function to check if a date is blocked
   function isDateBlocked(dateString) {
@@ -2320,10 +2480,10 @@
     });
   }
 
-  // Set minimum date to today and handle blocked dates
+  // Set minimum date to 2 weeks from now and handle blocked dates
   if (eventDateInput) {
-    const today = new Date().toISOString().split('T')[0];
-    eventDateInput.setAttribute('min', today);
+    const minDate = twoWeeksFromNow.toISOString().split('T')[0];
+    eventDateInput.setAttribute('min', minDate);
 
     // Show blocked dates info
     const blockedDatesInfo = document.createElement('div');
@@ -2331,13 +2491,13 @@
     blockedDatesInfo.style.cssText = 'margin-top: 8px; padding: 10px; background: rgba(220, 38, 38, 0.1); border-left: 3px solid var(--error); border-radius: 4px; font-size: 0.85rem; display: none;';
 
     if (blockedDates.length > 0) {
-      const futureBlockedDates = blockedDates.filter(date => date >= today).slice(0, 5);
+      const futureBlockedDates = blockedDates.filter(date => date >= minDate).slice(0, 5);
       if (futureBlockedDates.length > 0) {
         blockedDatesInfo.innerHTML = `
           <strong style="color: var(--error);">⚠️ Unavailable Dates:</strong><br>
           <span style="font-size: 0.8rem; color: #666;">
             ${futureBlockedDates.map(date => formatBlockedDate(date)).join(', ')}
-            ${blockedDates.filter(date => date >= today).length > 5 ? ' and more...' : ''}
+            ${blockedDates.filter(date => date >= minDate).length > 5 ? ' and more...' : ''}
           </span>
         `;
         blockedDatesInfo.style.display = 'block';
@@ -2593,7 +2753,9 @@
       'contact.form.privacy': 'Ik ga akkoord met het',
       'contact.form.privacy.link': 'Privacybeleid',
       'contact.form.submit': 'Boekingsverzoek Versturen',
-      'contact.form.note': '💡 Boekingstip: We raden aan om minimaal 4-6 weken van tevoren te boeken voor bruiloften en grote evenementen om beschikbaarheid te garanderen.'
+      'contact.form.note': '💡 Boekingstip: We raden aan om minimaal 4-6 weken van tevoren te boeken voor bruiloften en grote evenementen om beschikbaarheid te garanderen.',
+      'contact.disclaimer.title': 'Belangrijke Mededeling:',
+      'contact.disclaimer.message': 'We zijn momenteel volgeboekt voor de komende 2 weken. Selecteer alstublieft datums vanaf '
     },
     en: {
       // Announcement Bar
@@ -2746,7 +2908,9 @@
       'contact.form.privacy': 'I agree to the',
       'contact.form.privacy.link': 'Privacy Policy',
       'contact.form.submit': 'Send Booking Request',
-      'contact.form.note': '💡 Booking tip: We recommend booking at least 4-6 weeks in advance for weddings and large events to ensure availability.'
+      'contact.form.note': '💡 Booking tip: We recommend booking at least 4-6 weeks in advance for weddings and large events to ensure availability.',
+      'contact.disclaimer.title': 'Important Notice:',
+      'contact.disclaimer.message': 'We are currently fully booked for the next 2 weeks. Please select dates from '
     }
   };
 
