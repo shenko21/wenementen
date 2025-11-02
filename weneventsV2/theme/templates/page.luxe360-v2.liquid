@@ -130,10 +130,106 @@
       50% { background-position: 100% 50%; }
     }
 
+    /* ========== ANNOUNCEMENT BAR ========== */
+    .announcement-bar {
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      color: var(--black);
+      padding: 12px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1001;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      animation: slideDown 0.5s ease-out;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .announcement-bar.hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .announcement-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .announcement-icon {
+      font-size: 1.3rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .announcement-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .announcement-cta {
+      background: var(--black);
+      color: var(--gold);
+      padding: 6px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      border: 2px solid var(--black);
+    }
+
+    .announcement-cta:hover {
+      background: var(--white);
+      color: var(--black);
+      transform: scale(1.05);
+    }
+
+    .announcement-close {
+      background: none;
+      border: none;
+      color: var(--black);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0 10px;
+      opacity: 0.7;
+      transition: opacity 0.3s, transform 0.3s;
+      line-height: 1;
+    }
+
+    .announcement-close:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
     /* ========== NAVIGATION ========== */
     .luxe-nav {
       position: fixed;
-      top: 0;
+      top: 44px; /* Offset for announcement bar */
       width: 100%;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
@@ -143,7 +239,11 @@
       align-items: center;
       z-index: 1000;
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-      transition: transform 0.3s var(--transition-smooth), background 0.3s;
+      transition: transform 0.3s var(--transition-smooth), background 0.3s, top 0.3s;
+    }
+
+    .luxe-nav.announcement-hidden {
+      top: 0;
     }
 
     .luxe-nav.scrolled {
@@ -1491,6 +1591,18 @@
 </head>
 <body>
 
+<!-- Announcement Bar -->
+<div class="announcement-bar">
+  <div class="announcement-content">
+    <span class="announcement-icon">🎉</span>
+    <span class="announcement-text" data-translate="announcement.text">
+      Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available
+    </span>
+    <a href="#contact" class="announcement-cta" data-translate="announcement.cta">Book Now</a>
+  </div>
+  <button class="announcement-close" aria-label="Close announcement">✕</button>
+</div>
+
 <!-- Page Loader -->
 <div class="page-loader">
   <!-- Replace src with your logo URL. For animated logos (GIF/SVG), just change the src -->
@@ -2007,6 +2119,24 @@
     }, 500);
   });
 
+  // ========== ANNOUNCEMENT BAR ==========
+  const announcementBar = document.querySelector('.announcement-bar');
+  const announcementClose = document.querySelector('.announcement-close');
+  const navElement = document.querySelector('.luxe-nav');
+
+  // Check if user previously closed the announcement
+  if (localStorage.getItem('announcementClosed') === 'true') {
+    announcementBar.classList.add('hidden');
+    navElement.classList.add('announcement-hidden');
+  }
+
+  // Close button functionality
+  announcementClose?.addEventListener('click', () => {
+    announcementBar.classList.add('hidden');
+    navElement.classList.add('announcement-hidden');
+    localStorage.setItem('announcementClosed', 'true');
+  });
+
   // ========== MOBILE MENU ==========
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navMenu = document.querySelector('.nav-menu');
@@ -2160,10 +2290,91 @@
   const eventDateInput = document.getElementById('event-date');
   const phoneInput = document.getElementById('phone');
 
-  // Set minimum date to today
+  // ========== AVAILABILITY MANAGEMENT SYSTEM ==========
+  // Configure blocked/unavailable dates here
+  // Add dates in YYYY-MM-DD format to block them from booking
+  const blockedDates = [
+    // Example blocked dates - Edit this array to manage availability
+    '2025-12-25', // Christmas
+    '2025-12-26', // Boxing Day
+    '2025-12-31', // New Year's Eve (if already booked)
+    '2025-01-01', // New Year's Day
+    // Add more dates as they get booked or are unavailable
+    // '2025-06-15',
+    // '2025-07-20',
+  ];
+
+  // Function to check if a date is blocked
+  function isDateBlocked(dateString) {
+    return blockedDates.includes(dateString);
+  }
+
+  // Function to format date for display
+  function formatBlockedDate(dateString) {
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleDateString('nl-NL', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  // Set minimum date to today and handle blocked dates
   if (eventDateInput) {
     const today = new Date().toISOString().split('T')[0];
     eventDateInput.setAttribute('min', today);
+
+    // Show blocked dates info
+    const blockedDatesInfo = document.createElement('div');
+    blockedDatesInfo.className = 'blocked-dates-info';
+    blockedDatesInfo.style.cssText = 'margin-top: 8px; padding: 10px; background: rgba(220, 38, 38, 0.1); border-left: 3px solid var(--error); border-radius: 4px; font-size: 0.85rem; display: none;';
+
+    if (blockedDates.length > 0) {
+      const futureBlockedDates = blockedDates.filter(date => date >= today).slice(0, 5);
+      if (futureBlockedDates.length > 0) {
+        blockedDatesInfo.innerHTML = `
+          <strong style="color: var(--error);">⚠️ Unavailable Dates:</strong><br>
+          <span style="font-size: 0.8rem; color: #666;">
+            ${futureBlockedDates.map(date => formatBlockedDate(date)).join(', ')}
+            ${blockedDates.filter(date => date >= today).length > 5 ? ' and more...' : ''}
+          </span>
+        `;
+        blockedDatesInfo.style.display = 'block';
+      }
+    }
+
+    eventDateInput.parentElement.appendChild(blockedDatesInfo);
+
+    // Validate on date selection
+    eventDateInput.addEventListener('change', function() {
+      const selectedDate = this.value;
+
+      if (isDateBlocked(selectedDate)) {
+        this.style.borderColor = 'var(--error)';
+        this.setCustomValidity('This date is not available. Please select another date.');
+
+        // Show error message
+        let errorMsg = this.parentElement.querySelector('.date-error-msg');
+        if (!errorMsg) {
+          errorMsg = document.createElement('small');
+          errorMsg.className = 'date-error-msg';
+          errorMsg.style.cssText = 'display: block; color: var(--error); margin-top: 5px; font-size: 0.85rem;';
+          this.parentElement.appendChild(errorMsg);
+        }
+        errorMsg.textContent = `❌ ${formatBlockedDate(selectedDate)} is not available. Please choose another date.`;
+      } else {
+        this.style.borderColor = 'var(--gold)';
+        this.setCustomValidity('');
+
+        // Remove error message
+        const errorMsg = this.parentElement.querySelector('.date-error-msg');
+        if (errorMsg) {
+          errorMsg.remove();
+        }
+      }
+    });
+
   }
 
   // Phone number formatting (Dutch)
@@ -2188,6 +2399,15 @@
   // Form submission
   if (form) {
     form.addEventListener('submit', function(e) {
+      // Check if date is blocked
+      const selectedDate = eventDateInput?.value;
+      if (selectedDate && isDateBlocked(selectedDate)) {
+        e.preventDefault();
+        alert(`The selected date (${formatBlockedDate(selectedDate)}) is not available. Please choose another date.`);
+        eventDateInput.focus();
+        return false;
+      }
+
       const submitBtn = this.querySelector('.form-submit');
       const originalText = submitBtn.innerHTML;
 
@@ -2223,6 +2443,10 @@
   // ========== LANGUAGE TRANSLATION SYSTEM ==========
   const translations = {
     nl: {
+      // Announcement Bar
+      'announcement.text': 'Beperkte Beschikbaarheid! Boek uw 360° photo booth voor 2025 - Premium pakketten nog beschikbaar',
+      'announcement.cta': 'Boek Nu',
+
       // Navigation
       'nav.experience': 'Ervaring',
       'nav.packages': 'Pakketten',
@@ -2372,6 +2596,10 @@
       'contact.form.note': '💡 Boekingstip: We raden aan om minimaal 4-6 weken van tevoren te boeken voor bruiloften en grote evenementen om beschikbaarheid te garanderen.'
     },
     en: {
+      // Announcement Bar
+      'announcement.text': 'Limited Availability! Book your 360° photo booth for 2025 - Premium packages still available',
+      'announcement.cta': 'Book Now',
+
       // Navigation
       'nav.experience': 'Experience',
       'nav.packages': 'Packages',
