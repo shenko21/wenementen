@@ -538,19 +538,207 @@
     .experience-card {
       transform-style: preserve-3d;
       perspective: 1000px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .experience-card.animate-in {
+      animation: cardReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes cardReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .experience-card:hover {
-      transform: translateY(-10px) rotateX(5deg);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
     }
 
     .experience-icon {
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .experience-card:hover .experience-icon {
-      transform: rotateY(180deg) scale(1.2);
-      filter: grayscale(0) brightness(1.2);
+      transform: scale(1.15);
+      filter: grayscale(0) brightness(1.1);
+    }
+
+    /* Availability System Styles */
+    .availability-section {
+      background: linear-gradient(135deg, var(--cream), #f0ede8);
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .availability-title {
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .availability-calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .calendar-header {
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--charcoal);
+      padding: 8px 4px;
+      letter-spacing: 1px;
+    }
+
+    .calendar-day {
+      text-align: center;
+      padding: 10px 4px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      background: var(--white);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .calendar-day:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+
+    .calendar-day.available {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    .calendar-day.limited {
+      background: #fff3e0;
+      border-color: #ff9800;
+    }
+
+    .calendar-day.busy {
+      background: #ffebee;
+      border-color: #f44336;
+    }
+
+    .calendar-day.selected {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 700;
+      border-color: var(--dark-gold);
+    }
+
+    .calendar-day.past {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .availability-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .calendar-day.available .availability-indicator {
+      background: #4caf50;
+    }
+
+    .calendar-day.limited .availability-indicator {
+      background: #ff9800;
+    }
+
+    .calendar-day.busy .availability-indicator {
+      background: #f44336;
+    }
+
+    .availability-legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--charcoal);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.available { background: #4caf50; }
+    .legend-dot.limited { background: #ff9800; }
+    .legend-dot.busy { background: #f44336; }
+
+    .month-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .month-nav-btn {
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .month-nav-btn:hover {
+      background: var(--dark-gold);
+      transform: scale(1.05);
+    }
+
+    .current-month {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: 1px;
+    }
+
+    .booking-stats {
+      background: var(--charcoal);
+      color: var(--champagne);
+      padding: 15px 20px;
+      border-radius: 6px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .stats-number {
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 700;
     }
 
     .gallery-item:hover .gallery-placeholder {
@@ -1068,6 +1256,43 @@
     {% endif %}
 
     <div class="contact-container">
+      <!-- Availability Calendar -->
+      <div class="availability-section">
+        <div class="availability-title">Check Availability</div>
+        <div class="month-navigation">
+          <button type="button" class="month-nav-btn" id="prev-month">&larr; Prev</button>
+          <span class="current-month" id="current-month"></span>
+          <button type="button" class="month-nav-btn" id="next-month">Next &rarr;</button>
+        </div>
+        <div class="availability-calendar" id="availability-calendar">
+          <div class="calendar-header">Sun</div>
+          <div class="calendar-header">Mon</div>
+          <div class="calendar-header">Tue</div>
+          <div class="calendar-header">Wed</div>
+          <div class="calendar-header">Thu</div>
+          <div class="calendar-header">Fri</div>
+          <div class="calendar-header">Sat</div>
+        </div>
+        <div class="availability-legend">
+          <div class="legend-item">
+            <div class="legend-dot available"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot limited"></div>
+            <span>Limited Slots</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot busy"></div>
+            <span>Fully Booked</span>
+          </div>
+        </div>
+        <div class="booking-stats">
+          <span class="stats-number" id="total-bookings">0</span> bookings this month |
+          <span class="stats-number" id="available-slots">0</span> slots remaining
+        </div>
+      </div>
+
       <div class="form-group">
         <label for="contact-name">Full Name *</label>
         <input type="text" id="contact-name" name="contact[name]" required placeholder="Your name">
@@ -1096,7 +1321,7 @@
       </div>
 
       <div class="form-group">
-        <label for="contact-date">Event Date</label>
+        <label for="contact-date">Event Date (Click calendar above or select below)</label>
         <input type="date" id="contact-date" name="contact[date]">
       </div>
 
@@ -1257,7 +1482,24 @@
     requestAnimationFrame(animate);
   }
 
-  // Scroll animations with stagger
+  // Experience Cards Animation - Fixed
+  const experienceCards = document.querySelectorAll('.experience-card');
+  const experienceObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('animate-in');
+        }, index * 150);
+        experienceObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  experienceCards.forEach(card => {
+    experienceObserver.observe(card);
+  });
+
+  // Scroll animations with stagger for other elements
   const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -1273,7 +1515,7 @@
     });
   }, observerOptions);
 
-  document.querySelectorAll('.experience-card, .gallery-item, .package-card').forEach((el, index) => {
+  document.querySelectorAll('.gallery-item, .package-card').forEach((el, index) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s`;
@@ -1351,6 +1593,292 @@
       });
     }, 300);
   }
+
+  // ===================================
+  // AVAILABILITY BOOKING SYSTEM
+  // ===================================
+
+  const AvailabilitySystem = {
+    currentDate: new Date(),
+    currentMonth: new Date().getMonth(),
+    currentYear: new Date().getFullYear(),
+    selectedDate: null,
+    maxBookingsPerDay: 2,
+
+    init: function() {
+      this.loadBookings();
+      this.renderCalendar();
+      this.setupEventListeners();
+      this.updateStats();
+    },
+
+    loadBookings: function() {
+      const stored = localStorage.getItem('luxe360_bookings');
+      this.bookings = stored ? JSON.parse(stored) : {};
+
+      // Add some sample bookings for demonstration
+      if (Object.keys(this.bookings).length === 0) {
+        this.addSampleBookings();
+      }
+    },
+
+    addSampleBookings: function() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth();
+
+      // Add sample bookings for current month
+      const sampleDates = [
+        new Date(year, month, 15),
+        new Date(year, month, 15), // Same day - makes it busy
+        new Date(year, month, 20),
+        new Date(year, month, 22),
+        new Date(year, month, 25),
+        new Date(year, month, 25), // Same day - makes it busy
+        new Date(year, month + 1, 5),
+        new Date(year, month + 1, 10),
+      ];
+
+      sampleDates.forEach(date => {
+        const key = this.formatDateKey(date);
+        if (!this.bookings[key]) {
+          this.bookings[key] = [];
+        }
+        this.bookings[key].push({
+          name: 'Sample Event',
+          package: 'prestige',
+          timestamp: Date.now()
+        });
+      });
+
+      this.saveBookings();
+    },
+
+    saveBookings: function() {
+      localStorage.setItem('luxe360_bookings', JSON.stringify(this.bookings));
+    },
+
+    formatDateKey: function(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    },
+
+    getAvailabilityStatus: function(date) {
+      const key = this.formatDateKey(date);
+      const bookingCount = this.bookings[key] ? this.bookings[key].length : 0;
+
+      if (bookingCount >= this.maxBookingsPerDay) {
+        return 'busy';
+      } else if (bookingCount > 0) {
+        return 'limited';
+      }
+      return 'available';
+    },
+
+    renderCalendar: function() {
+      const calendar = document.getElementById('availability-calendar');
+      const monthDisplay = document.getElementById('current-month');
+
+      if (!calendar || !monthDisplay) return;
+
+      // Clear existing days (keep headers)
+      const headers = calendar.querySelectorAll('.calendar-header');
+      calendar.innerHTML = '';
+      headers.forEach(h => calendar.appendChild(h));
+
+      // Update month display
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+      monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+
+      // Get first day of month and total days
+      const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
+      const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Add empty cells for days before first of month
+      for (let i = 0; i < firstDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day';
+        emptyDay.style.visibility = 'hidden';
+        calendar.appendChild(emptyDay);
+      }
+
+      // Add days
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(this.currentYear, this.currentMonth, day);
+        const dayEl = document.createElement('div');
+        dayEl.className = 'calendar-day';
+        dayEl.textContent = day;
+        dayEl.dataset.date = this.formatDateKey(date);
+
+        // Check if past date
+        if (date < today) {
+          dayEl.classList.add('past');
+        } else {
+          const status = this.getAvailabilityStatus(date);
+          dayEl.classList.add(status);
+
+          // Add indicator dot
+          const indicator = document.createElement('div');
+          indicator.className = 'availability-indicator';
+          dayEl.appendChild(indicator);
+
+          // Click handler
+          dayEl.addEventListener('click', () => this.selectDate(date, dayEl));
+        }
+
+        // Check if selected
+        if (this.selectedDate && this.formatDateKey(date) === this.formatDateKey(this.selectedDate)) {
+          dayEl.classList.add('selected');
+        }
+
+        calendar.appendChild(dayEl);
+      }
+
+      this.updateStats();
+    },
+
+    selectDate: function(date, element) {
+      if (element.classList.contains('past')) return;
+
+      // Remove previous selection
+      document.querySelectorAll('.calendar-day.selected').forEach(el => {
+        el.classList.remove('selected');
+      });
+
+      // Add selection
+      element.classList.add('selected');
+      this.selectedDate = date;
+
+      // Update date input
+      const dateInput = document.getElementById('contact-date');
+      if (dateInput) {
+        const formattedDate = this.formatDateKey(date);
+        dateInput.value = formattedDate;
+      }
+
+      // Show availability message
+      const status = this.getAvailabilityStatus(date);
+      let message = '';
+      if (status === 'busy') {
+        message = 'This date is fully booked. Please select another date.';
+      } else if (status === 'limited') {
+        message = 'Limited slots available on this date. Book now!';
+      } else {
+        message = 'This date is available!';
+      }
+
+      // Create or update message
+      let msgEl = document.querySelector('.date-status-message');
+      if (!msgEl) {
+        msgEl = document.createElement('div');
+        msgEl.className = 'date-status-message';
+        msgEl.style.cssText = 'text-align: center; padding: 10px; margin-top: 10px; border-radius: 6px; font-weight: 600;';
+        document.querySelector('.availability-section').appendChild(msgEl);
+      }
+
+      msgEl.textContent = message;
+      msgEl.style.background = status === 'busy' ? '#ffebee' : status === 'limited' ? '#fff3e0' : '#e8f5e9';
+      msgEl.style.color = status === 'busy' ? '#c62828' : status === 'limited' ? '#ef6c00' : '#2e7d32';
+    },
+
+    setupEventListeners: function() {
+      const prevBtn = document.getElementById('prev-month');
+      const nextBtn = document.getElementById('next-month');
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          this.currentMonth--;
+          if (this.currentMonth < 0) {
+            this.currentMonth = 11;
+            this.currentYear--;
+          }
+          this.renderCalendar();
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          this.currentMonth++;
+          if (this.currentMonth > 11) {
+            this.currentMonth = 0;
+            this.currentYear++;
+          }
+          this.renderCalendar();
+        });
+      }
+
+      // Listen for form submission to add booking
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          const dateInput = document.getElementById('contact-date');
+          const nameInput = document.getElementById('contact-name');
+          const packageInput = document.getElementById('contact-package');
+
+          if (dateInput && dateInput.value && nameInput && packageInput) {
+            this.addBooking(dateInput.value, nameInput.value, packageInput.value);
+          }
+        });
+      }
+    },
+
+    addBooking: function(dateKey, name, packageType) {
+      if (!this.bookings[dateKey]) {
+        this.bookings[dateKey] = [];
+      }
+
+      this.bookings[dateKey].push({
+        name: name,
+        package: packageType,
+        timestamp: Date.now()
+      });
+
+      this.saveBookings();
+      this.renderCalendar();
+    },
+
+    updateStats: function() {
+      const totalBookingsEl = document.getElementById('total-bookings');
+      const availableSlotsEl = document.getElementById('available-slots');
+
+      if (!totalBookingsEl || !availableSlotsEl) return;
+
+      // Count bookings for current month
+      let monthBookings = 0;
+      const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(this.currentYear, this.currentMonth, day);
+        const key = this.formatDateKey(date);
+        if (this.bookings[key]) {
+          monthBookings += this.bookings[key].length;
+        }
+      }
+
+      // Calculate available slots (days * max bookings - current bookings)
+      const today = new Date();
+      let remainingDays = 0;
+      let availableSlots = 0;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(this.currentYear, this.currentMonth, day);
+        if (date >= today) {
+          remainingDays++;
+          const key = this.formatDateKey(date);
+          const booked = this.bookings[key] ? this.bookings[key].length : 0;
+          availableSlots += (this.maxBookingsPerDay - booked);
+        }
+      }
+
+      totalBookingsEl.textContent = monthBookings;
+      availableSlotsEl.textContent = Math.max(0, availableSlots);
+    }
+  };
+
+  // Initialize availability system
+  AvailabilitySystem.init();
 </script>
 
 </body>
