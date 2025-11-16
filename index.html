@@ -91,8 +91,8 @@
     <!-- Announcement Bar -->
     <div class="announcement-bar" role="banner" aria-label="Special offer announcement">
         <div class="announcement-content" aria-live="polite">
-            <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
-            <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
+            <span class="announcement-text">🖤 BLACK FRIDAY SALE: Essence Package NOW €200 (Was €495) - Save €295! 🔥 Limited Time Only! ✨ Free Props Package Worth €150 Included ✨ Book Now Before It's Gone! 💎</span>
+            <span class="announcement-text">🖤 BLACK FRIDAY SALE: Essence Package NOW €200 (Was €495) - Save €295! 🔥 Limited Time Only! ✨ Free Props Package Worth €150 Included ✨ Book Now Before It's Gone! 💎</span>
         </div>
     </div>
 
@@ -163,9 +163,13 @@
             </header>
 
             <div class="packages-grid">
-                <article class="package-card">
+                <article class="package-card black-friday-sale">
+                    <span class="sale-badge">BLACK FRIDAY</span>
                     <h3 class="package-name">Essence</h3>
-                    <p class="package-price">€495</p>
+                    <div class="package-price-wrapper">
+                        <p class="package-price-old">€495</p>
+                        <p class="package-price package-price-sale">€200</p>
+                    </div>
                     <p class="package-duration">3 Hours</p>
                     <ul class="package-features">
                         <li>360° Video Recording</li>
@@ -296,7 +300,7 @@
                     <label for="package-select">Package Interest *</label>
                     <select id="package-select" name="package" required aria-required="true">
                         <option value="">Select package</option>
-                        <option value="essence">Essence - €495</option>
+                        <option value="essence">Essence - €200 (Black Friday Sale!)</option>
                         <option value="prestige">Prestige - €795</option>
                         <option value="opulence">Opulence - €1,295</option>
                         <option value="custom">Custom Package</option>
