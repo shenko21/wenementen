@@ -424,6 +424,9 @@
     const ScrollAnimations = {
         init: function() {
             this.setupIntersectionObserver();
+            this.setupParallaxEffect();
+            this.setupCounterAnimation();
+            this.setupTextReveal();
         },
 
         /**
@@ -456,10 +459,148 @@
                 // Set initial state
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
-                el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s`;
 
                 observer.observe(el);
             });
+
+            // Section headers with reveal animation
+            const sectionHeaders = document.querySelectorAll('.section-header');
+            sectionHeaders.forEach(header => {
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(40px)';
+                header.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+
+                const headerObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                            headerObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+
+                headerObserver.observe(header);
+            });
+        },
+
+        /**
+         * Subtle parallax effect on scroll
+         */
+        setupParallaxEffect: function() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+
+            window.addEventListener('scroll', Utils.debounce(() => {
+                const scrolled = window.pageYOffset;
+                const heroContent = hero.querySelector('.hero-content');
+
+                if (heroContent && scrolled < window.innerHeight) {
+                    const rate = scrolled * 0.3;
+                    heroContent.style.transform = `translateY(${rate}px)`;
+                    heroContent.style.opacity = 1 - (scrolled / (window.innerHeight * 0.8));
+                }
+            }, 10));
+        },
+
+        /**
+         * Animate counters when visible
+         */
+        setupCounterAnimation: function() {
+            const prices = document.querySelectorAll('.package-price-sale, .package-price');
+
+            prices.forEach(price => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                            entry.target.classList.add('animated');
+                            this.animatePrice(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                observer.observe(price);
+            });
+        },
+
+        /**
+         * Animate price number
+         */
+        animatePrice: function(element) {
+            const text = element.textContent;
+            const match = text.match(/€([\d,]+)/);
+            if (!match) return;
+
+            const targetNumber = parseInt(match[1].replace(',', ''));
+            const duration = 1500;
+            const start = performance.now();
+
+            const animate = (currentTime) => {
+                const elapsed = currentTime - start;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Easing function for smooth deceleration
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const currentNumber = Math.floor(targetNumber * easeOutQuart);
+
+                element.textContent = `€${currentNumber.toLocaleString()}`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    element.textContent = text;
+                }
+            };
+
+            requestAnimationFrame(animate);
+        },
+
+        /**
+         * Text reveal animation for headings
+         */
+        setupTextReveal: function() {
+            const heroTitle = document.querySelector('.hero h1');
+            if (!heroTitle) return;
+
+            const text = heroTitle.innerHTML;
+            heroTitle.innerHTML = '';
+
+            // Split by <br> to preserve line breaks
+            const lines = text.split('<br>');
+
+            lines.forEach((line, lineIndex) => {
+                const lineSpan = document.createElement('span');
+                lineSpan.style.display = 'block';
+                lineSpan.style.overflow = 'hidden';
+
+                const chars = line.trim().split('');
+                chars.forEach((char, charIndex) => {
+                    const span = document.createElement('span');
+                    span.textContent = char === ' ' ? '\u00A0' : char;
+                    span.style.display = 'inline-block';
+                    span.style.opacity = '0';
+                    span.style.transform = 'translateY(100%)';
+                    span.style.transition = `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${(lineIndex * 0.3) + (charIndex * 0.03)}s`;
+                    lineSpan.appendChild(span);
+                });
+
+                heroTitle.appendChild(lineSpan);
+
+                if (lineIndex < lines.length - 1) {
+                    heroTitle.appendChild(document.createElement('br'));
+                }
+            });
+
+            // Trigger animation
+            setTimeout(() => {
+                const spans = heroTitle.querySelectorAll('span span');
+                spans.forEach(span => {
+                    span.style.opacity = '1';
+                    span.style.transform = 'translateY(0)';
+                });
+            }, 300);
         }
     };
 
