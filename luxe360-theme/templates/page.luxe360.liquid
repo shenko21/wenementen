@@ -1154,9 +1154,21 @@
 <!-- Navigation -->
 <nav class="luxe360-nav">
   <div class="logo-container">
-    <!-- ADD YOUR LOGO HERE: Replace the src with your logo image path -->
-    <img src="{{ 'logo.png' | asset_url }}" alt="LUXE 360° Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <div class="logo logo-text">LUXE 360°</div>
+    <!--
+      TO ADD YOUR LOGO:
+      Option 1: Upload logo.png to Shopify Assets folder (Online Store > Themes > Edit Code > Assets > Add new asset)
+      Option 2: Replace the URL below with your logo's direct URL
+      Option 3: Use a CDN link to your logo image
+    -->
+    <img
+      src="{{ 'logo.png' | asset_url }}"
+      alt="LUXE 360° Logo"
+      class="logo-image"
+      id="site-logo"
+      onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+    >
+    <!-- Fallback text logo if image fails to load -->
+    <div class="logo logo-text" id="logo-fallback">LUXE 360°</div>
   </div>
   <ul class="nav-links">
     <li><a href="#experience" data-en="Experience" data-nl="Ervaring">Ervaring</a></li>
