@@ -98,6 +98,27 @@
       background-clip: text;
     }
 
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-image {
+      height: 50px;
+      width: auto;
+      max-width: 200px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-image:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-text {
+      display: none;
+    }
+
     .nav-links {
       display: flex;
       gap: 40px;
@@ -761,6 +782,64 @@
       transform: scale(1.15) rotate(10deg);
     }
 
+    /* Language Toggle */
+    .language-toggle {
+      display: flex;
+      gap: 5px;
+      margin-left: 20px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--charcoal);
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .lang-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .lang-btn.active {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    /* Fix cursor for interactive elements */
+    .experience-card,
+    .gallery-item,
+    .package-card,
+    .calendar-day {
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .experience-card *,
+    .gallery-item *,
+    .package-card h3,
+    .package-card .package-price,
+    .package-card .package-duration {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hero-content,
+    .section-header,
+    .section-title,
+    .section-subtitle,
+    .section-description {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
     /* Gallery */
     .gallery {
       padding: 120px 5%;
@@ -1074,13 +1153,21 @@
 
 <!-- Navigation -->
 <nav class="luxe360-nav">
-  <div class="logo">LUXE 360°</div>
+  <div class="logo-container">
+    <!-- ADD YOUR LOGO HERE: Replace the src with your logo image path -->
+    <img src="{{ 'logo.png' | asset_url }}" alt="LUXE 360° Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <div class="logo logo-text">LUXE 360°</div>
+  </div>
   <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#packages">Packages</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#experience" data-en="Experience" data-nl="Ervaring">Ervaring</a></li>
+    <li><a href="#packages" data-en="Packages" data-nl="Pakketten">Pakketten</a></li>
+    <li><a href="#gallery" data-en="Gallery" data-nl="Galerij">Galerij</a></li>
+    <li><a href="#contact" data-en="Contact" data-nl="Contact">Contact</a></li>
   </ul>
+  <div class="language-toggle">
+    <button class="lang-btn active" data-lang="nl">NL</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
 </nav>
 
 <!-- Announcement Bar -->
@@ -1094,56 +1181,56 @@
 <!-- Hero Section -->
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-subtitle">Premium 360° Photo Booth</div>
-    <h1>ELEVATE<br>YOUR EVENT</h1>
-    <p class="hero-tagline">Where Elegance Meets Innovation</p>
-    <a href="#contact" class="hero-cta">Book Your Experience</a>
+    <div class="hero-subtitle" data-en="Premium 360° Photo Booth" data-nl="Premium 360° Fotobooth">Premium 360° Fotobooth</div>
+    <h1 data-en="ELEVATE<br>YOUR EVENT" data-nl="VERHEF<br>JE EVENEMENT">VERHEF<br>JE EVENEMENT</h1>
+    <p class="hero-tagline" data-en="Where Elegance Meets Innovation" data-nl="Waar Elegantie Innovatie Ontmoet">Waar Elegantie Innovatie Ontmoet</p>
+    <a href="#contact" class="hero-cta" data-en="Book Your Experience" data-nl="Boek Je Ervaring">Boek Je Ervaring</a>
   </div>
 </section>
 
 <!-- Experience Section -->
 <section class="experience" id="experience">
   <div class="section-header">
-    <div class="section-subtitle">The Luxe Difference</div>
-    <h2 class="section-title">Unforgettable Moments</h2>
-    <p class="section-description">Transform your event into a cinematic experience with our state-of-the-art 360° photo booth technology</p>
+    <div class="section-subtitle" data-en="The Luxe Difference" data-nl="Het Luxe Verschil">Het Luxe Verschil</div>
+    <h2 class="section-title" data-en="Unforgettable Moments" data-nl="Onvergetelijke Momenten">Onvergetelijke Momenten</h2>
+    <p class="section-description" data-en="Transform your event into a cinematic experience with our state-of-the-art 360° photo booth technology" data-nl="Transformeer je evenement in een filmische ervaring met onze geavanceerde 360° fotobooth technologie">Transformeer je evenement in een filmische ervaring met onze geavanceerde 360° fotobooth technologie</p>
   </div>
 
   <div class="experience-grid">
     <div class="experience-card">
       <div class="experience-icon">🎬</div>
-      <h3>Cinematic Quality</h3>
-      <p>Professional-grade cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet</p>
+      <h3 data-en="Cinematic Quality" data-nl="Cinematische Kwaliteit">Cinematische Kwaliteit</h3>
+      <p data-en="Professional-grade cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet" data-nl="Professionele camera's maken verbluffende slow-motion video's vanuit elke hoek, content die de rode loper waardig is">Professionele camera's maken verbluffende slow-motion video's vanuit elke hoek, content die de rode loper waardig is</p>
     </div>
 
     <div class="experience-card">
       <div class="experience-icon">✨</div>
-      <h3>Instant Sharing</h3>
-      <p>Guests receive their videos instantly via QR code, ready to share on Instagram, TikTok, and all social platforms</p>
+      <h3 data-en="Instant Sharing" data-nl="Direct Delen">Direct Delen</h3>
+      <p data-en="Guests receive their videos instantly via QR code, ready to share on Instagram, TikTok, and all social platforms" data-nl="Gasten ontvangen hun video's direct via QR-code, klaar om te delen op Instagram, TikTok en alle sociale platforms">Gasten ontvangen hun video's direct via QR-code, klaar om te delen op Instagram, TikTok en alle sociale platforms</p>
     </div>
 
     <div class="experience-card">
       <div class="experience-icon">🎨</div>
-      <h3>Custom Branding</h3>
-      <p>Personalized overlays, logos, and music perfectly tailored to match your event's aesthetic and brand identity</p>
+      <h3 data-en="Custom Branding" data-nl="Eigen Huisstijl">Eigen Huisstijl</h3>
+      <p data-en="Personalized overlays, logos, and music perfectly tailored to match your event's aesthetic and brand identity" data-nl="Gepersonaliseerde overlays, logo's en muziek perfect afgestemd op de esthetiek en merkidentiteit van je evenement">Gepersonaliseerde overlays, logo's en muziek perfect afgestemd op de esthetiek en merkidentiteit van je evenement</p>
     </div>
 
     <div class="experience-card">
       <div class="experience-icon">💎</div>
-      <h3>Luxury Setup</h3>
-      <p>Elegant platform design with professional lighting that enhances every moment and complements your venue</p>
+      <h3 data-en="Luxury Setup" data-nl="Luxe Opstelling">Luxe Opstelling</h3>
+      <p data-en="Elegant platform design with professional lighting that enhances every moment and complements your venue" data-nl="Elegant platform ontwerp met professionele verlichting die elk moment verbetert en je locatie complementeert">Elegant platform ontwerp met professionele verlichting die elk moment verbetert en je locatie complementeert</p>
     </div>
 
     <div class="experience-card">
       <div class="experience-icon">🎭</div>
-      <h3>Premium Props</h3>
-      <p>Curated selection of sophisticated props and accessories to elevate your guests' experience</p>
+      <h3 data-en="Premium Props" data-nl="Premium Rekwisieten">Premium Rekwisieten</h3>
+      <p data-en="Curated selection of sophisticated props and accessories to elevate your guests' experience" data-nl="Zorgvuldig samengestelde selectie van verfijnde rekwisieten en accessoires om de ervaring van je gasten te verheffen">Zorgvuldig samengestelde selectie van verfijnde rekwisieten en accessoires om de ervaring van je gasten te verheffen</p>
     </div>
 
     <div class="experience-card">
       <div class="experience-icon">👔</div>
-      <h3>Professional Host</h3>
-      <p>Dedicated booth attendant ensures seamless operation and guides guests to create their perfect moment</p>
+      <h3 data-en="Professional Host" data-nl="Professionele Host">Professionele Host</h3>
+      <p data-en="Dedicated booth attendant ensures seamless operation and guides guests to create their perfect moment" data-nl="Toegewijde booth begeleider zorgt voor naadloze werking en begeleidt gasten bij het creëren van hun perfecte moment">Toegewijde booth begeleider zorgt voor naadloze werking en begeleidt gasten bij het creëren van hun perfecte moment</p>
     </div>
   </div>
 </section>
@@ -1151,9 +1238,9 @@
 <!-- Packages Section -->
 <section class="packages" id="packages">
   <div class="section-header">
-    <div class="section-subtitle" style="color: var(--gold)">Investment Options</div>
-    <h2 class="section-title" style="color: var(--white)">Tailored Packages</h2>
-    <p class="section-description" style="color: var(--champagne)">Select the perfect package for your celebration</p>
+    <div class="section-subtitle" style="color: var(--gold)" data-en="Investment Options" data-nl="Investering Opties">Investering Opties</div>
+    <h2 class="section-title" style="color: var(--white)" data-en="Tailored Packages" data-nl="Op Maat Gemaakte Pakketten">Op Maat Gemaakte Pakketten</h2>
+    <p class="section-description" style="color: var(--champagne)" data-en="Select the perfect package for your celebration" data-nl="Selecteer het perfecte pakket voor je viering">Selecteer het perfecte pakket voor je viering</p>
   </div>
 
   <div class="packages-grid">
@@ -1173,42 +1260,42 @@
         <li>Setup & Breakdown</li>
         <li>50km Travel Included</li>
       </ul>
-      <a href="#contact" class="package-btn">Select Package</a>
+      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
     </div>
 
     <div class="package-card featured" data-package="prestige">
-      <div class="package-badge">Most Popular</div>
+      <div class="package-badge" data-en="Most Popular" data-nl="Meest Populair">Meest Populair</div>
       <h3 class="package-name">Prestige</h3>
       <div class="package-price">€795</div>
-      <div class="package-duration">5 Hours</div>
+      <div class="package-duration" data-en="5 Hours" data-nl="5 Uur">5 Uur</div>
       <ul class="package-features">
-        <li>Everything in Essence</li>
-        <li>Professional Host</li>
-        <li>Custom Branding & Logo</li>
-        <li>Premium Props Collection</li>
-        <li>Music Integration</li>
-        <li>Unlimited Recordings</li>
-        <li>Red Carpet Setup</li>
-        <li>100km Travel Included</li>
+        <li data-en="Everything in Essence" data-nl="Alles in Essence">Alles in Essence</li>
+        <li data-en="Professional Host" data-nl="Professionele Host">Professionele Host</li>
+        <li data-en="Custom Branding & Logo" data-nl="Eigen Huisstijl & Logo">Eigen Huisstijl & Logo</li>
+        <li data-en="Premium Props Collection" data-nl="Premium Rekwisieten Collectie">Premium Rekwisieten Collectie</li>
+        <li data-en="Music Integration" data-nl="Muziek Integratie">Muziek Integratie</li>
+        <li data-en="Unlimited Recordings" data-nl="Onbeperkte Opnames">Onbeperkte Opnames</li>
+        <li data-en="Red Carpet Setup" data-nl="Rode Loper Opstelling">Rode Loper Opstelling</li>
+        <li data-en="100km Travel Included" data-nl="100km Reiskosten Inbegrepen">100km Reiskosten Inbegrepen</li>
       </ul>
-      <a href="#contact" class="package-btn">Select Package</a>
+      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
     </div>
 
     <div class="package-card" data-package="opulence">
       <h3 class="package-name">Opulence</h3>
       <div class="package-price">€1,295</div>
-      <div class="package-duration">Full Day</div>
+      <div class="package-duration" data-en="Full Day" data-nl="Volledige Dag">Volledige Dag</div>
       <ul class="package-features">
-        <li>Everything in Prestige</li>
-        <li>Extended 8-Hour Service</li>
-        <li>Multiple Overlay Designs</li>
-        <li>Luxury Backdrop Options</li>
-        <li>Same-Day Highlight Reel</li>
-        <li>Priority Support</li>
-        <li>Nationwide Travel</li>
-        <li>Dedicated Event Coordinator</li>
+        <li data-en="Everything in Prestige" data-nl="Alles in Prestige">Alles in Prestige</li>
+        <li data-en="Extended 8-Hour Service" data-nl="Uitgebreide 8-Uurs Service">Uitgebreide 8-Uurs Service</li>
+        <li data-en="Multiple Overlay Designs" data-nl="Meerdere Overlay Ontwerpen">Meerdere Overlay Ontwerpen</li>
+        <li data-en="Luxury Backdrop Options" data-nl="Luxe Achtergrond Opties">Luxe Achtergrond Opties</li>
+        <li data-en="Same-Day Highlight Reel" data-nl="Zelfde Dag Hoogtepunten Video">Zelfde Dag Hoogtepunten Video</li>
+        <li data-en="Priority Support" data-nl="Prioriteit Ondersteuning">Prioriteit Ondersteuning</li>
+        <li data-en="Nationwide Travel" data-nl="Landelijke Dekking">Landelijke Dekking</li>
+        <li data-en="Dedicated Event Coordinator" data-nl="Toegewijde Event Coördinator">Toegewijde Event Coördinator</li>
       </ul>
-      <a href="#contact" class="package-btn">Select Package</a>
+      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
     </div>
   </div>
 </section>
@@ -1216,9 +1303,9 @@
 <!-- Gallery Section -->
 <section class="gallery" id="gallery">
   <div class="section-header">
-    <div class="section-subtitle">Our Portfolio</div>
-    <h2 class="section-title">Recent Events</h2>
-    <p class="section-description">A glimpse of the extraordinary moments we've captured</p>
+    <div class="section-subtitle" data-en="Our Portfolio" data-nl="Ons Portfolio">Ons Portfolio</div>
+    <h2 class="section-title" data-en="Recent Events" data-nl="Recente Evenementen">Recente Evenementen</h2>
+    <p class="section-description" data-en="A glimpse of the extraordinary moments we've captured" data-nl="Een glimp van de buitengewone momenten die we hebben vastgelegd">Een glimp van de buitengewone momenten die we hebben vastgelegd</p>
   </div>
 
   <div class="gallery-grid">
@@ -1236,9 +1323,9 @@
 <!-- Contact Section -->
 <section class="contact" id="contact">
   <div class="section-header">
-    <div class="section-subtitle">Get In Touch</div>
-    <h2 class="section-title">Reserve Your Date</h2>
-    <p class="section-description">Let's create something extraordinary together</p>
+    <div class="section-subtitle" data-en="Get In Touch" data-nl="Neem Contact Op">Neem Contact Op</div>
+    <h2 class="section-title" data-en="Reserve Your Date" data-nl="Reserveer Je Datum">Reserveer Je Datum</h2>
+    <p class="section-description" data-en="Let's create something extraordinary together" data-nl="Laten we samen iets buitengewoons creëren">Laten we samen iets buitengewoons creëren</p>
   </div>
 
   {% form 'contact' %}
@@ -1341,7 +1428,7 @@
         <textarea id="contact-message" name="contact[body]" placeholder="Tell us about your event vision..."></textarea>
       </div>
 
-      <button type="submit" class="submit-btn">Submit Inquiry</button>
+      <button type="submit" class="submit-btn" data-en="Submit Inquiry" data-nl="Verstuur Aanvraag">Verstuur Aanvraag</button>
     </div>
   {% endform %}
 </section>
@@ -1454,33 +1541,63 @@
     });
   }
 
-  // Price counter animation
-  function animatePrice(element) {
-    const text = element.textContent;
-    const match = text.match(/€([\d,]+)/);
-    if (!match) return;
+  // Language Switching System
+  const LanguageSystem = {
+    currentLang: 'nl',
 
-    const targetNumber = parseInt(match[1].replace(',', ''));
-    const duration = 1500;
-    const start = performance.now();
+    init: function() {
+      this.loadLanguage();
+      this.setupEventListeners();
+      this.applyLanguage();
+    },
 
-    const animate = (currentTime) => {
-      const elapsed = currentTime - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      const currentNumber = Math.floor(targetNumber * easeOutQuart);
-
-      element.textContent = `€${currentNumber.toLocaleString()}`;
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        element.textContent = text;
+    loadLanguage: function() {
+      const saved = localStorage.getItem('luxe360_language');
+      if (saved) {
+        this.currentLang = saved;
       }
-    };
+    },
 
-    requestAnimationFrame(animate);
-  }
+    saveLanguage: function() {
+      localStorage.setItem('luxe360_language', this.currentLang);
+    },
+
+    setupEventListeners: function() {
+      const langBtns = document.querySelectorAll('.lang-btn');
+      langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.currentLang = btn.dataset.lang;
+          this.saveLanguage();
+          this.applyLanguage();
+          this.updateButtons();
+        });
+      });
+    },
+
+    updateButtons: function() {
+      const langBtns = document.querySelectorAll('.lang-btn');
+      langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.lang === this.currentLang) {
+          btn.classList.add('active');
+        }
+      });
+    },
+
+    applyLanguage: function() {
+      const elements = document.querySelectorAll('[data-en][data-nl]');
+      elements.forEach(el => {
+        const text = el.dataset[this.currentLang];
+        if (text) {
+          el.innerHTML = text;
+        }
+      });
+      this.updateButtons();
+    }
+  };
+
+  // Initialize language system
+  LanguageSystem.init();
 
   // Experience Cards Animation - Fixed
   const experienceCards = document.querySelectorAll('.experience-card');
@@ -1539,21 +1656,6 @@
     }, { threshold: 0.3 });
 
     headerObserver.observe(header);
-  });
-
-  // Animate prices when visible
-  document.querySelectorAll('.package-price-sale, .package-price').forEach(price => {
-    const priceObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-          entry.target.classList.add('animated');
-          animatePrice(entry.target);
-          priceObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    priceObserver.observe(price);
   });
 
   // Text reveal animation for hero title
