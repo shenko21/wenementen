@@ -448,6 +448,131 @@
       color: var(--black);
     }
 
+    /* Black Friday Sale Styles */
+    .black-friday-sale {
+      position: relative;
+      border: 3px solid #ff0000 !important;
+      background: linear-gradient(135deg, var(--charcoal), #1a0000) !important;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      animation: saleGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes saleGlow {
+      0%, 100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.3); }
+      50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.5); }
+    }
+
+    .sale-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff0000;
+      color: var(--white);
+      padding: 8px 25px;
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+    }
+
+    .package-price-wrapper {
+      margin-bottom: 10px;
+    }
+
+    .package-price-old {
+      font-size: 1.8rem;
+      color: #888;
+      text-decoration: line-through;
+      margin-bottom: 5px;
+      font-weight: 300;
+      opacity: 0.7;
+    }
+
+    .package-price-sale {
+      font-size: 4.5rem !important;
+      color: #ff0000 !important;
+      font-weight: 700 !important;
+      text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      animation: priceFlash 3s ease-in-out infinite;
+    }
+
+    @keyframes priceFlash {
+      0%, 100% { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+      50% { text-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
+    }
+
+    /* Elegant Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-content {
+      animation: heroEntrance 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes heroEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .experience-card {
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .experience-card:hover {
+      transform: translateY(-10px) rotateX(5deg);
+    }
+
+    .experience-icon {
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .experience-card:hover .experience-icon {
+      transform: rotateY(180deg) scale(1.2);
+      filter: grayscale(0) brightness(1.2);
+    }
+
+    .gallery-item:hover .gallery-placeholder {
+      transform: translate(-50%, -50%) scale(1.2) rotate(10deg);
+      filter: grayscale(0) brightness(1);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .whatsapp-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .whatsapp-float:hover {
+      animation: none;
+      transform: scale(1.15) rotate(10deg);
+    }
+
     /* Gallery */
     .gallery {
       padding: 120px 5%;
@@ -773,8 +898,8 @@
 <!-- Announcement Bar -->
 <div class="announcement-bar">
   <div class="announcement-content">
-    <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
-    <span class="announcement-text">🎉 Limited Time Offer: Book Now & Get 20% Off Your First Event! ✨ Free Props Package Worth €150 Included ✨ Available Dates Filling Fast - Reserve Your Spot Today! 💎</span>
+    <span class="announcement-text">🖤 BLACK FRIDAY SALE: Essence Package NOW €200 (Was €495) - Save €295! 🔥 Limited Time Only! ✨ Free Props Package Worth €150 Included ✨ Book Now Before It's Gone! 💎</span>
+    <span class="announcement-text">🖤 BLACK FRIDAY SALE: Essence Package NOW €200 (Was €495) - Save €295! 🔥 Limited Time Only! ✨ Free Props Package Worth €150 Included ✨ Book Now Before It's Gone! 💎</span>
   </div>
 </div>
 
@@ -844,9 +969,13 @@
   </div>
 
   <div class="packages-grid">
-    <div class="package-card" data-package="essence">
+    <div class="package-card black-friday-sale" data-package="essence">
+      <span class="sale-badge">BLACK FRIDAY</span>
       <h3 class="package-name">Essence</h3>
-      <div class="package-price">€495</div>
+      <div class="package-price-wrapper">
+        <div class="package-price-old">€495</div>
+        <div class="package-price package-price-sale">€200</div>
+      </div>
       <div class="package-duration">3 Hours</div>
       <ul class="package-features">
         <li>360° Video Recording</li>
@@ -975,7 +1104,7 @@
         <label for="contact-package">Package Interest *</label>
         <select id="contact-package" name="contact[package]" required>
           <option value="">Select package</option>
-          <option value="essence">Essence - €495</option>
+          <option value="essence">Essence - €200 (Black Friday Sale!)</option>
           <option value="prestige">Prestige - €795</option>
           <option value="opulence">Opulence - €1,295</option>
           <option value="custom">Custom Package</option>
@@ -1085,7 +1214,50 @@
     });
   });
 
-  // Scroll animations
+  // Parallax effect for hero
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    window.addEventListener('scroll', function() {
+      const scrolled = window.pageYOffset;
+      const heroContent = hero.querySelector('.hero-content');
+
+      if (heroContent && scrolled < window.innerHeight) {
+        const rate = scrolled * 0.3;
+        heroContent.style.transform = `translateY(${rate}px)`;
+        heroContent.style.opacity = 1 - (scrolled / (window.innerHeight * 0.8));
+      }
+    });
+  }
+
+  // Price counter animation
+  function animatePrice(element) {
+    const text = element.textContent;
+    const match = text.match(/€([\d,]+)/);
+    if (!match) return;
+
+    const targetNumber = parseInt(match[1].replace(',', ''));
+    const duration = 1500;
+    const start = performance.now();
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentNumber = Math.floor(targetNumber * easeOutQuart);
+
+      element.textContent = `€${currentNumber.toLocaleString()}`;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        element.textContent = text;
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }
+
+  // Scroll animations with stagger
   const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -1096,16 +1268,89 @@
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
 
-  document.querySelectorAll('.experience-card, .gallery-item, .package-card').forEach(el => {
+  document.querySelectorAll('.experience-card, .gallery-item, .package-card').forEach((el, index) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease';
+    el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s`;
     observer.observe(el);
   });
+
+  // Section headers reveal
+  document.querySelectorAll('.section-header').forEach(header => {
+    header.style.opacity = '0';
+    header.style.transform = 'translateY(40px)';
+    header.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+
+    const headerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          headerObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    headerObserver.observe(header);
+  });
+
+  // Animate prices when visible
+  document.querySelectorAll('.package-price-sale, .package-price').forEach(price => {
+    const priceObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+          entry.target.classList.add('animated');
+          animatePrice(entry.target);
+          priceObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    priceObserver.observe(price);
+  });
+
+  // Text reveal animation for hero title
+  const heroTitle = document.querySelector('.hero h1');
+  if (heroTitle) {
+    const text = heroTitle.innerHTML;
+    heroTitle.innerHTML = '';
+    const lines = text.split('<br>');
+
+    lines.forEach((line, lineIndex) => {
+      const lineSpan = document.createElement('span');
+      lineSpan.style.display = 'block';
+      lineSpan.style.overflow = 'hidden';
+
+      const chars = line.trim().split('');
+      chars.forEach((char, charIndex) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.style.display = 'inline-block';
+        span.style.opacity = '0';
+        span.style.transform = 'translateY(100%)';
+        span.style.transition = `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${(lineIndex * 0.3) + (charIndex * 0.03)}s`;
+        lineSpan.appendChild(span);
+      });
+
+      heroTitle.appendChild(lineSpan);
+      if (lineIndex < lines.length - 1) {
+        heroTitle.appendChild(document.createElement('br'));
+      }
+    });
+
+    setTimeout(() => {
+      const spans = heroTitle.querySelectorAll('span span');
+      spans.forEach(span => {
+        span.style.opacity = '1';
+        span.style.transform = 'translateY(0)';
+      });
+    }, 300);
+  }
 </script>
 
 </body>
