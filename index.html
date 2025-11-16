@@ -56,7 +56,7 @@
             "addressLocality": "Almere",
             "addressCountry": "NL"
         },
-        "priceRange": "€495-€1295",
+        "priceRange": "€200-€1295",
         "openingHours": "Mo-Su 09:00-22:00",
         "sameAs": [
             "https://instagram.com/luxe360",
@@ -71,7 +71,11 @@
 
     <!-- Navigation -->
     <nav role="navigation" aria-label="Main navigation">
-        <div class="logo" aria-label="LUXE 360 logo">LUXE 360°</div>
+        <div class="logo-container">
+            <!-- ADD YOUR LOGO HERE: Replace the src with your logo image path -->
+            <img src="logo.png" alt="LUXE 360° Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="logo-text" aria-label="LUXE 360 logo" style="display:none;">LUXE 360°</div>
+        </div>
 
         <!-- Mobile menu toggle -->
         <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -321,7 +325,10 @@
     <footer role="contentinfo">
         <div class="footer-content">
             <div>
-                <div class="footer-brand">LUXE 360°</div>
+                <div class="footer-logo">
+                    <img src="logo.png" alt="LUXE 360°" class="footer-logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="footer-brand" style="display:none;">LUXE 360°</div>
+                </div>
                 <p class="footer-tagline">Creating unforgettable moments through innovative 360° photo booth experiences. Where luxury meets technology.</p>
                 <div class="social-icons">
                     <a href="https://instagram.com/luxe360" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram" title="Instagram">📷</a>
