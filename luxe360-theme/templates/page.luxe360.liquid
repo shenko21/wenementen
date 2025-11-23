@@ -2033,8 +2033,15 @@
     }
   };
 
-  // Initialize availability system
-  AvailabilitySystem.init();
+  // Initialize availability system when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      AvailabilitySystem.init();
+    });
+  } else {
+    // DOM already loaded
+    AvailabilitySystem.init();
+  }
 </script>
 
 </body>
