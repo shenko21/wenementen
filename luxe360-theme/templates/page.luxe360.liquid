@@ -1388,51 +1388,51 @@
       </div>
 
       <div class="form-group">
-        <label for="contact-name">Full Name *</label>
-        <input type="text" id="contact-name" name="contact[name]" required placeholder="Your name">
+        <label for="contact-name" data-en="Full Name *" data-nl="Volledige Naam *">Volledige Naam *</label>
+        <input type="text" id="contact-name" name="contact[name]" required data-placeholder-en="Your name" data-placeholder-nl="Uw naam" placeholder="Uw naam">
       </div>
 
       <div class="form-group">
-        <label for="contact-email">Email Address *</label>
-        <input type="email" id="contact-email" name="contact[email]" required placeholder="your@email.com">
+        <label for="contact-email" data-en="Email Address *" data-nl="E-mailadres *">E-mailadres *</label>
+        <input type="email" id="contact-email" name="contact[email]" required data-placeholder-en="your@email.com" data-placeholder-nl="uw@email.nl" placeholder="uw@email.nl">
       </div>
 
       <div class="form-group">
-        <label for="contact-phone">Phone Number</label>
+        <label for="contact-phone" data-en="Phone Number" data-nl="Telefoonnummer">Telefoonnummer</label>
         <input type="tel" id="contact-phone" name="contact[phone]" placeholder="+31 6 12345678">
       </div>
 
       <div class="form-group">
-        <label for="contact-event-type">Event Type *</label>
+        <label for="contact-event-type" data-en="Event Type *" data-nl="Evenementtype *">Evenementtype *</label>
         <select id="contact-event-type" name="contact[event-type]" required>
-          <option value="">Select event type</option>
-          <option value="wedding">Wedding</option>
-          <option value="corporate">Corporate Event</option>
-          <option value="birthday">Birthday Celebration</option>
-          <option value="anniversary">Anniversary</option>
-          <option value="other">Other</option>
+          <option value="" data-en="Select event type" data-nl="Selecteer evenementtype">Selecteer evenementtype</option>
+          <option value="wedding" data-en="Wedding" data-nl="Bruiloft">Bruiloft</option>
+          <option value="corporate" data-en="Corporate Event" data-nl="Bedrijfsevenement">Bedrijfsevenement</option>
+          <option value="birthday" data-en="Birthday Celebration" data-nl="Verjaardagsfeest">Verjaardagsfeest</option>
+          <option value="anniversary" data-en="Anniversary" data-nl="Jubileum">Jubileum</option>
+          <option value="other" data-en="Other" data-nl="Anders">Anders</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="contact-date">Event Date (Click calendar above or select below)</label>
+        <label for="contact-date" data-en="Event Date (Click calendar above or select below)" data-nl="Evenementdatum (Klik kalender hierboven of selecteer hieronder)">Evenementdatum (Klik kalender hierboven of selecteer hieronder)</label>
         <input type="date" id="contact-date" name="contact[date]">
       </div>
 
       <div class="form-group">
-        <label for="contact-package">Package Interest *</label>
+        <label for="contact-package" data-en="Package Interest *" data-nl="Pakket Interesse *">Pakket Interesse *</label>
         <select id="contact-package" name="contact[package]" required>
-          <option value="">Select package</option>
+          <option value="" data-en="Select package" data-nl="Selecteer pakket">Selecteer pakket</option>
           <option value="essence" data-en="Essence - €200 (Limited Time Offer!)" data-nl="Essence - €200 (Tijdelijke Aanbieding!)">Essence - €200 (Tijdelijke Aanbieding!)</option>
-          <option value="prestige">Prestige - €795</option>
-          <option value="opulence">Opulence - €1,295</option>
+          <option value="prestige" data-en="Prestige - €795" data-nl="Prestige - €795">Prestige - €795</option>
+          <option value="opulence" data-en="Opulence - €1,295" data-nl="Opulence - €1,295">Opulence - €1,295</option>
           <option value="custom" data-en="Custom Package" data-nl="Op Maat Gemaakt Pakket">Op Maat Gemaakt Pakket</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="contact-message">Additional Details</label>
-        <textarea id="contact-message" name="contact[body]" placeholder="Tell us about your event vision..."></textarea>
+        <label for="contact-message" data-en="Additional Details" data-nl="Aanvullende Details">Aanvullende Details</label>
+        <textarea id="contact-message" name="contact[body]" data-placeholder-en="Tell us about your event vision..." data-placeholder-nl="Vertel ons over uw evenement..." placeholder="Vertel ons over uw evenement..."></textarea>
       </div>
 
       <button type="submit" class="submit-btn" data-en="Submit Inquiry" data-nl="Verstuur Aanvraag">Verstuur Aanvraag</button>
@@ -1599,7 +1599,22 @@
           el.innerHTML = text;
         }
       });
+
+      // Update placeholders
+      const inputsWithPlaceholder = document.querySelectorAll('[data-placeholder-en][data-placeholder-nl]');
+      inputsWithPlaceholder.forEach(el => {
+        const placeholder = el.dataset[`placeholder${this.currentLang === 'en' ? 'En' : 'Nl'}`];
+        if (placeholder) {
+          el.placeholder = placeholder;
+        }
+      });
+
       this.updateButtons();
+
+      // Re-render calendar with new language
+      if (typeof AvailabilitySystem !== 'undefined') {
+        AvailabilitySystem.renderCalendar();
+      }
     }
   };
 
