@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Test</title>
+    <style>
+        .availability-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin: 20px;
+        }
+        .calendar-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px;
+            background: #D4AF37;
+            color: #0A0A0A;
+        }
+        .calendar-day {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .calendar-day.available {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+        .calendar-day.busy {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+        .month-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #D4AF37;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Calendar Test</h1>
+
+    <div class="month-navigation">
+        <button id="prev-month">← Vorige</button>
+        <span id="current-month" style="font-size: 1.2rem; font-weight: bold;"></span>
+        <button id="next-month">Volgende →</button>
+    </div>
+
+    <div class="availability-calendar" id="availability-calendar"></div>
+
+    <script>
+        const AvailabilitySystem = {
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear(),
+
+            renderCalendar: function() {
+                const calendar = document.getElementById('availability-calendar');
+                const monthDisplay = document.getElementById('current-month');
+
+                if (!calendar || !monthDisplay) {
+                    console.error('Calendar elements not found!');
+                    return;
+                }
+
+                // Clear calendar
+                calendar.innerHTML = '';
+                console.log('Rendering calendar for', this.currentMonth, this.currentYear);
+
+                // Month names
+                const monthNames = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
+                                    'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+                monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+
+                // Day headers
+                const dayHeaders = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
+                dayHeaders.forEach(day => {
+                    const header = document.createElement('div');
+                    header.className = 'calendar-header';
+                    header.textContent = day;
+                    calendar.appendChild(header);
+                });
+
+                // Get first day and total days
+                const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+
+                console.log('First day:', firstDay, 'Days in month:', daysInMonth);
+
+                // Empty cells before first day
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day';
+                    emptyDay.style.visibility = 'hidden';
+                    calendar.appendChild(emptyDay);
+                }
+
+                // Add days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(this.currentYear, this.currentMonth, day);
+                    const dayEl = document.createElement('div');
+                    dayEl.className = 'calendar-day';
+                    dayEl.textContent = day;
+
+                    // Check if Wed, Thu, or Sun
+                    const dayOfWeek = date.getDay();
+                    if ([0, 3, 4].includes(dayOfWeek)) {
+                        dayEl.classList.add('available');
+                    } else {
+                        dayEl.classList.add('busy');
+                    }
+
+                    calendar.appendChild(dayEl);
+                }
+
+                console.log('Calendar rendered! Total children:', calendar.children.length);
+            },
+
+            init: function() {
+                console.log('Initializing calendar...');
+                this.renderCalendar();
+
+                const prevBtn = document.getElementById('prev-month');
+                const nextBtn = document.getElementById('next-month');
+
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        this.currentMonth--;
+                        if (this.currentMonth < 0) {
+                            this.currentMonth = 11;
+                            this.currentYear--;
+                        }
+                        this.renderCalendar();
+                    });
+                }
+
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        this.currentMonth++;
+                        if (this.currentMonth > 11) {
+                            this.currentMonth = 0;
+                            this.currentYear++;
+                        }
+                        this.renderCalendar();
+                    });
+                }
+            }
+        };
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            AvailabilitySystem.init();
+        });
+    </script>
+</body>
+</html>
