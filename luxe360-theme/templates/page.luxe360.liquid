@@ -1724,10 +1724,15 @@
     maxBookingsPerDay: 2,
 
     init: function() {
+      console.log('📅 AvailabilitySystem: Starting init...');
       this.loadBookings();
+      console.log('📅 AvailabilitySystem: Bookings loaded');
       this.renderCalendar();
+      console.log('📅 AvailabilitySystem: Calendar rendered');
       this.setupEventListeners();
+      console.log('📅 AvailabilitySystem: Event listeners setup');
       this.updateStats();
+      console.log('📅 AvailabilitySystem: Stats updated - Init complete!');
     },
 
     loadBookings: function() {
@@ -1801,13 +1806,21 @@
     },
 
     renderCalendar: function() {
+      console.log('📅 renderCalendar: Starting...');
       const calendar = document.getElementById('availability-calendar');
       const monthDisplay = document.getElementById('current-month');
 
-      if (!calendar || !monthDisplay) return;
+      console.log('📅 Calendar element:', calendar);
+      console.log('📅 Month display element:', monthDisplay);
+
+      if (!calendar || !monthDisplay) {
+        console.error('❌ Calendar elements not found!');
+        return;
+      }
 
       // Clear calendar completely
       calendar.innerHTML = '';
+      console.log('📅 Calendar cleared');
 
       // Update month display
       const monthNamesNL = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
@@ -1817,6 +1830,7 @@
       const currentLang = LanguageSystem.currentLang;
       const monthNames = currentLang === 'nl' ? monthNamesNL : monthNamesEN;
       monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+      console.log('📅 Month display set to:', monthDisplay.textContent);
 
       // Create day headers
       const dayHeadersNL = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
@@ -1829,12 +1843,15 @@
         header.textContent = day;
         calendar.appendChild(header);
       });
+      console.log('📅 Day headers added:', dayHeaders.length);
 
       // Get first day of month and total days
       const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
       const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+
+      console.log('📅 First day:', firstDay, '| Days in month:', daysInMonth);
 
       // Add empty cells for days before first of month
       for (let i = 0; i < firstDay; i++) {
@@ -1876,6 +1893,8 @@
         calendar.appendChild(dayEl);
       }
 
+      console.log('📅 Total calendar children:', calendar.children.length);
+      console.log('📅 Calendar rendering complete!');
       this.updateStats();
     },
 
@@ -2034,12 +2053,15 @@
   };
 
   // Initialize availability system when DOM is ready
+  console.log('📅 Document ready state:', document.readyState);
   if (document.readyState === 'loading') {
+    console.log('📅 Waiting for DOMContentLoaded...');
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('📅 DOMContentLoaded fired!');
       AvailabilitySystem.init();
     });
   } else {
-    // DOM already loaded
+    console.log('📅 DOM already loaded, initializing now...');
     AvailabilitySystem.init();
   }
 </script>
