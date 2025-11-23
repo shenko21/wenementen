@@ -1359,13 +1359,7 @@
           <button type="button" class="month-nav-btn" id="next-month" data-en="Next &rarr;" data-nl="Volgende &rarr;">Volgende &rarr;</button>
         </div>
         <div class="availability-calendar" id="availability-calendar">
-          <div class="calendar-header" data-en="Sun" data-nl="Zo">Zo</div>
-          <div class="calendar-header" data-en="Mon" data-nl="Ma">Ma</div>
-          <div class="calendar-header" data-en="Tue" data-nl="Di">Di</div>
-          <div class="calendar-header" data-en="Wed" data-nl="Wo">Wo</div>
-          <div class="calendar-header" data-en="Thu" data-nl="Do">Do</div>
-          <div class="calendar-header" data-en="Fri" data-nl="Vr">Vr</div>
-          <div class="calendar-header" data-en="Sat" data-nl="Za">Za</div>
+          <!-- Calendar will be rendered by JavaScript -->
         </div>
         <div class="availability-legend">
           <div class="legend-item">
@@ -1812,10 +1806,8 @@
 
       if (!calendar || !monthDisplay) return;
 
-      // Clear existing days (keep headers)
-      const headers = calendar.querySelectorAll('.calendar-header');
+      // Clear calendar completely
       calendar.innerHTML = '';
-      headers.forEach(h => calendar.appendChild(h));
 
       // Update month display
       const monthNamesNL = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
@@ -1825,6 +1817,18 @@
       const currentLang = LanguageSystem.currentLang;
       const monthNames = currentLang === 'nl' ? monthNamesNL : monthNamesEN;
       monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+
+      // Create day headers
+      const dayHeadersNL = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
+      const dayHeadersEN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dayHeaders = currentLang === 'nl' ? dayHeadersNL : dayHeadersEN;
+
+      dayHeaders.forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'calendar-header';
+        header.textContent = day;
+        calendar.appendChild(header);
+      });
 
       // Get first day of month and total days
       const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
