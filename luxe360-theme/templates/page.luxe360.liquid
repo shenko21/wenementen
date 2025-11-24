@@ -559,8 +559,7 @@
     .experience-card {
       transform-style: preserve-3d;
       perspective: 1000px;
-      opacity: 0;
-      transform: translateY(30px);
+      /* REMOVED: opacity: 0 and transform - cards now visible by default */
     }
 
     .experience-card.animate-in {
@@ -1618,10 +1617,10 @@
   // Experience Cards Animation - Fixed with fallback
   const experienceCards = document.querySelectorAll('.experience-card');
 
-  // IMMEDIATE FIX: Make cards visible immediately, then animate
+  // IMMEDIATE FIX: Make cards visible immediately with !important
   experienceCards.forEach((card, index) => {
-    card.style.opacity = '1';
-    card.style.transform = 'translateY(0)';
+    card.style.setProperty('opacity', '1', 'important');
+    card.style.setProperty('transform', 'translateY(0)', 'important');
   });
 
   const experienceObserver = new IntersectionObserver((entries) => {
