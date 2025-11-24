@@ -1727,10 +1727,27 @@
     currentMonth: new Date().getMonth(),
     currentYear: new Date().getFullYear(),
     selectedDate: null,
+    bookings: {},
     maxBookingsPerDay: 2,
 
     init: function() {
       console.log('📅 AvailabilitySystem: Starting init...');
+
+      // CRITICAL: Check if elements exist FIRST
+      const calendar = document.getElementById('availability-calendar');
+      const monthDisplay = document.getElementById('current-month');
+
+      if (!calendar) {
+        console.error('❌ FATAL: Calendar element #availability-calendar not found!');
+        return false;
+      }
+      if (!monthDisplay) {
+        console.error('❌ FATAL: Month display element #current-month not found!');
+        return false;
+      }
+
+      console.log('✅ Calendar elements verified present');
+
       this.loadBookings();
       console.log('📅 AvailabilitySystem: Bookings loaded');
       this.renderCalendar();
@@ -1739,6 +1756,7 @@
       console.log('📅 AvailabilitySystem: Event listeners setup');
       this.updateStats();
       console.log('📅 AvailabilitySystem: Stats updated - Init complete!');
+      return true;
     },
 
     loadBookings: function() {
@@ -1821,19 +1839,19 @@
 
       if (!calendar || !monthDisplay) {
         console.error('❌ Calendar elements not found!');
-        return;
+        return false;
       }
 
       // Clear calendar completely
       calendar.innerHTML = '';
-      console.log('📅 Calendar cleared');
+      console.log('📅 Calendar cleared, innerHTML length:', calendar.innerHTML.length);
 
       // Update month display
       const monthNamesNL = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
                             'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
       const monthNamesEN = ['January', 'February', 'March', 'April', 'May', 'June',
                             'July', 'August', 'September', 'October', 'November', 'December'];
-      const currentLang = LanguageSystem.currentLang;
+      const currentLang = LanguageSystem && LanguageSystem.currentLang ? LanguageSystem.currentLang : 'nl';
       const monthNames = currentLang === 'nl' ? monthNamesNL : monthNamesEN;
       monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
       console.log('📅 Month display set to:', monthDisplay.textContent);
@@ -1843,13 +1861,17 @@
       const dayHeadersEN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       const dayHeaders = currentLang === 'nl' ? dayHeadersNL : dayHeadersEN;
 
-      dayHeaders.forEach(day => {
+      console.log('📅 Creating day headers...');
+      dayHeaders.forEach((day, index) => {
         const header = document.createElement('div');
         header.className = 'calendar-header';
         header.textContent = day;
+        header.style.cssText = 'text-align: center; font-weight: 600; padding: 8px; background: #D4AF37; color: #0A0A0A;';
         calendar.appendChild(header);
+        console.log(`📅 Added header ${index + 1}: "${day}"`);
       });
       console.log('📅 Day headers added:', dayHeaders.length);
+      console.log('📅 Calendar children after headers:', calendar.children.length);
 
       // Get first day of month and total days
       const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
@@ -1868,6 +1890,7 @@
       }
 
       // Add days
+      console.log('📅 Adding day cells...');
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(this.currentYear, this.currentMonth, day);
         const dayEl = document.createElement('div');
@@ -1875,16 +1898,39 @@
         dayEl.textContent = day;
         dayEl.dataset.date = this.formatDateKey(date);
 
+        // CRITICAL: Add inline styles to ensure visibility
+        dayEl.style.cssText = 'text-align: center; padding: 10px; border: 1px solid #ccc; cursor: pointer; min-height: 40px; display: block; opacity: 1 !important; visibility: visible !important;';
+
         // Check if past date
         if (date < today) {
           dayEl.classList.add('past');
+          dayEl.style.opacity = '0.3';
         } else {
           const status = this.getAvailabilityStatus(date);
           dayEl.classList.add(status);
 
+          // Set background color based on status
+          if (status === 'available') {
+            dayEl.style.background = '#e8f5e9';
+            dayEl.style.borderColor = '#4caf50';
+          } else if (status === 'limited') {
+            dayEl.style.background = '#fff3e0';
+            dayEl.style.borderColor = '#ff9800';
+          } else if (status === 'busy') {
+            dayEl.style.background = '#ffebee';
+            dayEl.style.borderColor = '#f44336';
+          }
+
           // Add indicator dot
           const indicator = document.createElement('div');
           indicator.className = 'availability-indicator';
+          indicator.style.cssText = 'width: 8px; height: 8px; border-radius: 50%; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);';
+
+          if (status === 'available') indicator.style.background = '#4caf50';
+          else if (status === 'limited') indicator.style.background = '#ff9800';
+          else if (status === 'busy') indicator.style.background = '#f44336';
+
+          dayEl.style.position = 'relative';
           dayEl.appendChild(indicator);
 
           // Click handler
@@ -1894,14 +1940,29 @@
         // Check if selected
         if (this.selectedDate && this.formatDateKey(date) === this.formatDateKey(this.selectedDate)) {
           dayEl.classList.add('selected');
+          dayEl.style.background = '#D4AF37';
+          dayEl.style.color = '#0A0A0A';
+          dayEl.style.fontWeight = '700';
         }
 
         calendar.appendChild(dayEl);
+
+        if (day % 7 === 0) {
+          console.log(`📅 Added days 1-${day}...`);
+        }
       }
 
       console.log('📅 Total calendar children:', calendar.children.length);
-      console.log('📅 Calendar rendering complete!');
+      console.log('📅 Expected children:', 7 + firstDay + daysInMonth); // 7 headers + empty days + actual days
+
+      // CRITICAL: Force calendar visibility with inline styles
+      calendar.style.cssText = 'display: grid !important; grid-template-columns: repeat(7, 1fr) !important; gap: 8px !important; margin-bottom: 20px !important; visibility: visible !important; opacity: 1 !important;';
+
+      console.log('📅 Calendar rendering complete! Calendar now has', calendar.children.length, 'children');
+      console.log('📅 Calendar display:', window.getComputedStyle(calendar).display);
+      console.log('📅 Calendar visibility:', window.getComputedStyle(calendar).visibility);
       this.updateStats();
+      return true;
     },
 
     selectDate: function(date, element) {
@@ -2060,16 +2121,62 @@
 
   // Initialize availability system when DOM is ready
   console.log('📅 Document ready state:', document.readyState);
+
+  function initializeCalendar() {
+    console.log('📅 initializeCalendar() called');
+
+    // Check if elements exist
+    const calendar = document.getElementById('availability-calendar');
+    const monthDisplay = document.getElementById('current-month');
+
+    if (!calendar) {
+      console.error('❌ Calendar element not found, retrying in 500ms...');
+      setTimeout(initializeCalendar, 500);
+      return;
+    }
+
+    if (!monthDisplay) {
+      console.error('❌ Month display element not found, retrying in 500ms...');
+      setTimeout(initializeCalendar, 500);
+      return;
+    }
+
+    console.log('✅ All calendar elements found, initializing AvailabilitySystem...');
+    const success = AvailabilitySystem.init();
+
+    if (success) {
+      console.log('✅ AvailabilitySystem initialized successfully!');
+
+      // Visual verification
+      setTimeout(() => {
+        const cal = document.getElementById('availability-calendar');
+        if (cal && cal.children.length > 0) {
+          console.log('✅✅✅ CALENDAR IS VISIBLE WITH', cal.children.length, 'ELEMENTS ✅✅✅');
+        } else {
+          console.error('❌ Calendar rendered but has no children!');
+        }
+      }, 100);
+    } else {
+      console.error('❌ AvailabilitySystem initialization failed!');
+    }
+  }
+
   if (document.readyState === 'loading') {
     console.log('📅 Waiting for DOMContentLoaded...');
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('📅 DOMContentLoaded fired!');
-      AvailabilitySystem.init();
-    });
+    document.addEventListener('DOMContentLoaded', initializeCalendar);
   } else {
     console.log('📅 DOM already loaded, initializing now...');
-    AvailabilitySystem.init();
+    initializeCalendar();
   }
+
+  // FAILSAFE: Try again after 1 second if calendar is still empty
+  setTimeout(() => {
+    const cal = document.getElementById('availability-calendar');
+    if (cal && cal.children.length === 0) {
+      console.warn('⚠️ FAILSAFE: Calendar is empty after 1 second, attempting re-initialization...');
+      initializeCalendar();
+    }
+  }, 1000);
 </script>
 
 </body>
