@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>LUXE 360° - WERKENDE VERSIE</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #FAF8F5;
+            color: #2C2C2C;
+        }
+
+        .section {
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #D4AF37;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #D4AF37;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* Experience Cards */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .experience-card {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+        }
+
+        .experience-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .experience-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #0A0A0A;
+        }
+
+        .experience-card p {
+            line-height: 1.6;
+        }
+
+        /* Calendar */
+        .calendar-container {
+            background: white;
+            padding: 30px;
+            border: 2px solid #D4AF37;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .month-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .month-nav button {
+            background: #D4AF37;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #D4AF37;
+            color: white;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .calendar-day.available {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .calendar-day.busy {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        @media (max-width: 768px) {
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <h1>LUXE 360° - TEST VERSIE</h1>
+        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 60px;">Als je dit ziet, werkt de website!</p>
+
+        <h2>✅ Onvergetelijke Momenten</h2>
+
+        <div class="experience-grid">
+            <div class="experience-card">
+                <div class="experience-icon">🎬</div>
+                <h3>Hoogwaardige Kwaliteit</h3>
+                <p>Professionele camera's maken verbluffende slow-motion video's vanuit elke hoek</p>
+            </div>
+
+            <div class="experience-card">
+                <div class="experience-icon">✨</div>
+                <h3>Direct Delen</h3>
+                <p>Gasten ontvangen hun video's direct via QR-code</p>
+            </div>
+
+            <div class="experience-card">
+                <div class="experience-icon">🎨</div>
+                <h3>Eigen Huisstijl</h3>
+                <p>Gepersonaliseerde overlays en logo's</p>
+            </div>
+
+            <div class="experience-card">
+                <div class="experience-icon">💎</div>
+                <h3>Luxe Opstelling</h3>
+                <p>Elegant platform met professionele verlichting</p>
+            </div>
+
+            <div class="experience-card">
+                <div class="experience-icon">🎭</div>
+                <h3>Premium Rekwisieten</h3>
+                <p>Verfijnde rekwisieten en accessoires</p>
+            </div>
+
+            <div class="experience-card">
+                <div class="experience-icon">👔</div>
+                <h3>Professionele Host</h3>
+                <p>Toegewijde booth begeleider</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📅 Beschikbaarheid Controleren</h2>
+
+        <div class="calendar-container">
+            <div class="month-nav">
+                <button onclick="prevMonth()">← Vorige</button>
+                <h3 id="month-display" style="margin: 0;"></h3>
+                <button onclick="nextMonth()">Volgende →</button>
+            </div>
+
+            <div class="calendar" id="calendar"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function renderCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthDisplay = document.getElementById('month-display');
+
+            const monthNames = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
+                              'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+
+            monthDisplay.textContent = monthNames[currentMonth] + ' ' + currentYear;
+
+            calendar.innerHTML = '';
+
+            // Headers
+            const days = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                calendar.appendChild(empty);
+            }
+
+            // Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const dayOfWeek = date.getDay();
+
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = day;
+
+                // Wed(3), Thu(4), Sun(0) = available
+                if ([0, 3, 4].includes(dayOfWeek)) {
+                    dayEl.classList.add('available');
+                } else {
+                    dayEl.classList.add('busy');
+                }
+
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        function prevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
+
+        // Initialize
+        renderCalendar();
+    </script>
+</body>
+</html>
