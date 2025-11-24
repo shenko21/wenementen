@@ -1604,15 +1604,19 @@
 
       this.updateButtons();
 
-      // Re-render calendar with new language
-      if (typeof AvailabilitySystem !== 'undefined') {
-        AvailabilitySystem.renderCalendar();
+      // Re-render calendar with new language (with try-catch for safety)
+      try {
+        if (typeof AvailabilitySystem !== 'undefined' && AvailabilitySystem.renderCalendar) {
+          AvailabilitySystem.renderCalendar();
+        }
+      } catch (e) {
+        console.log('Calendar not yet initialized, skipping re-render');
       }
     }
   };
 
-  // Initialize language system
-  LanguageSystem.init();
+  // DON'T initialize language system here - wait until after AvailabilitySystem is defined
+  // LanguageSystem.init(); // MOVED TO AFTER AvailabilitySystem
 
   // Experience Cards Animation - Fixed with fallback
   const experienceCards = document.querySelectorAll('.experience-card');
@@ -2118,6 +2122,11 @@
       availableSlotsEl.textContent = Math.max(0, availableSlots);
     }
   };
+
+  // NOW initialize language system (after AvailabilitySystem is defined)
+  console.log('🌐 Initializing LanguageSystem...');
+  LanguageSystem.init();
+  console.log('🌐 LanguageSystem initialized');
 
   // Initialize availability system when DOM is ready
   console.log('📅 Document ready state:', document.readyState);
