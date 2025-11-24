@@ -1615,8 +1615,15 @@
   // Initialize language system
   LanguageSystem.init();
 
-  // Experience Cards Animation - Fixed
+  // Experience Cards Animation - Fixed with fallback
   const experienceCards = document.querySelectorAll('.experience-card');
+
+  // IMMEDIATE FIX: Make cards visible immediately, then animate
+  experienceCards.forEach((card, index) => {
+    card.style.opacity = '1';
+    card.style.transform = 'translateY(0)';
+  });
+
   const experienceObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
