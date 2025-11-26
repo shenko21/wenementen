@@ -611,85 +611,96 @@
 
     .availability-calendar {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
       margin-bottom: 20px;
     }
 
-    .calendar-header {
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.75rem;
-      color: var(--charcoal);
-      padding: 8px 4px;
-      letter-spacing: 1px;
-    }
-
-    .calendar-day {
-      text-align: center;
-      padding: 10px 4px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+    .availability-slot {
+      background: var(--white);
+      padding: 16px;
+      border-radius: 8px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
-      background: var(--white);
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      text-align: center;
     }
 
-    .calendar-day:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    .availability-slot:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+      border-color: var(--gold);
     }
 
-    .calendar-day.available {
-      background: #e8f5e9;
-      border-color: #4caf50;
-    }
-
-    .calendar-day.limited {
-      background: #fff3e0;
-      border-color: #ff9800;
-    }
-
-    .calendar-day.busy {
-      background: #ffebee;
-      border-color: #f44336;
-    }
-
-    .calendar-day.selected {
-      background: var(--gold);
-      color: var(--black);
+    .slot-date {
+      font-size: 1.1rem;
       font-weight: 700;
-      border-color: var(--dark-gold);
+      color: var(--charcoal);
+      margin-bottom: 6px;
+      display: block;
     }
 
-    .calendar-day.past {
-      opacity: 0.3;
+    .slot-day {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .slot-status {
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 12px;
+      display: inline-block;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .availability-slot.available {
+      border-color: #4caf50;
+      background: linear-gradient(135deg, #e8f5e9, #ffffff);
+    }
+
+    .availability-slot.available .slot-status {
+      background: #4caf50;
+      color: white;
+    }
+
+    .availability-slot.limited {
+      border-color: #ff9800;
+      background: linear-gradient(135deg, #fff3e0, #ffffff);
+    }
+
+    .availability-slot.limited .slot-status {
+      background: #ff9800;
+      color: white;
+    }
+
+    .availability-slot.busy {
+      border-color: #f44336;
+      background: linear-gradient(135deg, #ffebee, #ffffff);
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
-    .availability-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      position: absolute;
-      bottom: 3px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .calendar-day.available .availability-indicator {
-      background: #4caf50;
-    }
-
-    .calendar-day.limited .availability-indicator {
-      background: #ff9800;
-    }
-
-    .calendar-day.busy .availability-indicator {
+    .availability-slot.busy .slot-status {
       background: #f44336;
+      color: white;
     }
+
+    .availability-slot.selected {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, var(--champagne), var(--white));
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+      transform: translateY(-3px);
+    }
+
+    .availability-slot.selected .slot-date {
+      color: var(--gold);
+    }
+
 
     .availability-legend {
       display: flex;
@@ -813,7 +824,7 @@
     .experience-card,
     .gallery-item,
     .package-card,
-    .calendar-day {
+    .availability-slot {
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
@@ -1144,6 +1155,22 @@
 
       .package-price {
         font-size: 2.5rem;
+      }
+
+      .availability-calendar {
+        grid-template-columns: 1fr;
+      }
+
+      .availability-slot {
+        padding: 14px;
+      }
+
+      .slot-date {
+        font-size: 1rem;
+      }
+
+      .slot-day {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -1811,15 +1838,33 @@
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     },
 
-    getAvailabilityStatus: function(date) {
-      // Only Wednesday (3), Thursday (4), and Sunday (0) are available
-      const dayOfWeek = date.getDay();
+    // Generate available slots for the current month (approximately 15 slots)
+    generateAvailableSlots: function() {
+      const slots = [];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Get all dates in current month
+      const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+
+      // Collect potential available dates (Wednesday, Thursday, Sunday)
       const availableDays = [0, 3, 4]; // Sunday, Wednesday, Thursday
 
-      if (!availableDays.includes(dayOfWeek)) {
-        return 'busy'; // Not available on this day of week
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(this.currentYear, this.currentMonth, day);
+        const dayOfWeek = date.getDay();
+
+        // Only include future dates and available days of the week
+        if (date >= today && availableDays.includes(dayOfWeek)) {
+          slots.push(date);
+        }
       }
 
+      // Limit to approximately 15 slots (take first 15 available dates)
+      return slots.slice(0, 15);
+    },
+
+    getAvailabilityStatus: function(date) {
       const key = this.formatDateKey(date);
       const bookingCount = this.bookings[key] ? this.bookings[key].length : 0;
 
@@ -1832,146 +1877,104 @@
     },
 
     renderCalendar: function() {
-      console.log('📅 renderCalendar: Starting...');
+      console.log('📅 renderCalendar: Starting (Slots Mode)...');
       const calendar = document.getElementById('availability-calendar');
       const monthDisplay = document.getElementById('current-month');
-
-      console.log('📅 Calendar element:', calendar);
-      console.log('📅 Month display element:', monthDisplay);
 
       if (!calendar || !monthDisplay) {
         console.error('❌ Calendar elements not found!');
         return false;
       }
 
-      // Clear calendar completely
+      // Clear calendar
       calendar.innerHTML = '';
-      console.log('📅 Calendar cleared, innerHTML length:', calendar.innerHTML.length);
+
+      // Get current language
+      const currentLang = LanguageSystem && LanguageSystem.currentLang ? LanguageSystem.currentLang : 'nl';
 
       // Update month display
       const monthNamesNL = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
                             'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
       const monthNamesEN = ['January', 'February', 'March', 'April', 'May', 'June',
                             'July', 'August', 'September', 'October', 'November', 'December'];
-      const currentLang = LanguageSystem && LanguageSystem.currentLang ? LanguageSystem.currentLang : 'nl';
       const monthNames = currentLang === 'nl' ? monthNamesNL : monthNamesEN;
       monthDisplay.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
-      console.log('📅 Month display set to:', monthDisplay.textContent);
 
-      // Create day headers
-      const dayHeadersNL = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
-      const dayHeadersEN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const dayHeaders = currentLang === 'nl' ? dayHeadersNL : dayHeadersEN;
+      // Day names for display
+      const dayNamesNL = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+      const dayNamesEN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayNames = currentLang === 'nl' ? dayNamesNL : dayNamesEN;
 
-      console.log('📅 Creating day headers...');
-      dayHeaders.forEach((day, index) => {
-        const header = document.createElement('div');
-        header.className = 'calendar-header';
-        header.textContent = day;
-        header.style.cssText = 'text-align: center; font-weight: 600; padding: 8px; background: #D4AF37; color: #0A0A0A;';
-        calendar.appendChild(header);
-        console.log(`📅 Added header ${index + 1}: "${day}"`);
-      });
-      console.log('📅 Day headers added:', dayHeaders.length);
-      console.log('📅 Calendar children after headers:', calendar.children.length);
+      // Status labels
+      const statusLabels = {
+        available: currentLang === 'nl' ? 'Beschikbaar' : 'Available',
+        limited: currentLang === 'nl' ? 'Beperkt' : 'Limited',
+        busy: currentLang === 'nl' ? 'Volgeboekt' : 'Fully Booked'
+      };
 
-      // Get first day of month and total days
-      const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
-      const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      // Generate available slots
+      const slots = this.generateAvailableSlots();
 
-      console.log('📅 First day:', firstDay, '| Days in month:', daysInMonth);
+      console.log(`📅 Generated ${slots.length} slots for ${monthNames[this.currentMonth]} ${this.currentYear}`);
 
-      // Add empty cells for days before first of month
-      for (let i = 0; i < firstDay; i++) {
-        const emptyDay = document.createElement('div');
-        emptyDay.className = 'calendar-day';
-        emptyDay.style.visibility = 'hidden';
-        calendar.appendChild(emptyDay);
+      // If no slots available, show message
+      if (slots.length === 0) {
+        const noSlotsMsg = document.createElement('div');
+        noSlotsMsg.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 40px; color: #666; font-size: 1.1rem;';
+        noSlotsMsg.textContent = currentLang === 'nl'
+          ? 'Geen beschikbare slots in deze maand. Probeer een andere maand.'
+          : 'No available slots in this month. Try another month.';
+        calendar.appendChild(noSlotsMsg);
+        this.updateStats();
+        return true;
       }
 
-      // Add days
-      console.log('📅 Adding day cells...');
-      for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(this.currentYear, this.currentMonth, day);
-        const dayEl = document.createElement('div');
-        dayEl.className = 'calendar-day';
-        dayEl.textContent = day;
-        dayEl.dataset.date = this.formatDateKey(date);
+      // Create slot elements
+      slots.forEach((date, index) => {
+        const slotEl = document.createElement('div');
+        slotEl.className = 'availability-slot';
+        slotEl.dataset.date = this.formatDateKey(date);
 
-        // CRITICAL: Add inline styles to ensure visibility
-        dayEl.style.cssText = 'text-align: center; padding: 10px; border: 1px solid #ccc; cursor: pointer; min-height: 40px; display: block; opacity: 1 !important; visibility: visible !important;';
+        // Get status
+        const status = this.getAvailabilityStatus(date);
+        slotEl.classList.add(status);
 
-        // Check if past date
-        if (date < today) {
-          dayEl.classList.add('past');
-          dayEl.style.opacity = '0.3';
-        } else {
-          const status = this.getAvailabilityStatus(date);
-          dayEl.classList.add(status);
+        // Format date display
+        const day = date.getDate();
+        const month = monthNames[date.getMonth()];
+        const dayName = dayNames[date.getDay()];
 
-          // Set background color based on status
-          if (status === 'available') {
-            dayEl.style.background = '#e8f5e9';
-            dayEl.style.borderColor = '#4caf50';
-          } else if (status === 'limited') {
-            dayEl.style.background = '#fff3e0';
-            dayEl.style.borderColor = '#ff9800';
-          } else if (status === 'busy') {
-            dayEl.style.background = '#ffebee';
-            dayEl.style.borderColor = '#f44336';
-          }
-
-          // Add indicator dot
-          const indicator = document.createElement('div');
-          indicator.className = 'availability-indicator';
-          indicator.style.cssText = 'width: 8px; height: 8px; border-radius: 50%; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);';
-
-          if (status === 'available') indicator.style.background = '#4caf50';
-          else if (status === 'limited') indicator.style.background = '#ff9800';
-          else if (status === 'busy') indicator.style.background = '#f44336';
-
-          dayEl.style.position = 'relative';
-          dayEl.appendChild(indicator);
-
-          // Click handler
-          dayEl.addEventListener('click', () => this.selectDate(date, dayEl));
-        }
+        // Build slot content
+        slotEl.innerHTML = `
+          <span class="slot-date">${day} ${month}</span>
+          <span class="slot-day">${dayName}</span>
+          <span class="slot-status">${statusLabels[status]}</span>
+        `;
 
         // Check if selected
         if (this.selectedDate && this.formatDateKey(date) === this.formatDateKey(this.selectedDate)) {
-          dayEl.classList.add('selected');
-          dayEl.style.background = '#D4AF37';
-          dayEl.style.color = '#0A0A0A';
-          dayEl.style.fontWeight = '700';
+          slotEl.classList.add('selected');
         }
 
-        calendar.appendChild(dayEl);
-
-        if (day % 7 === 0) {
-          console.log(`📅 Added days 1-${day}...`);
+        // Click handler (only if not busy)
+        if (status !== 'busy') {
+          slotEl.addEventListener('click', () => this.selectDate(date, slotEl));
         }
-      }
 
-      console.log('📅 Total calendar children:', calendar.children.length);
-      console.log('📅 Expected children:', 7 + firstDay + daysInMonth); // 7 headers + empty days + actual days
+        calendar.appendChild(slotEl);
+        console.log(`📅 Added slot ${index + 1}: ${day} ${month} (${dayName}) - ${status}`);
+      });
 
-      // CRITICAL: Force calendar visibility with inline styles
-      calendar.style.cssText = 'display: grid !important; grid-template-columns: repeat(7, 1fr) !important; gap: 8px !important; margin-bottom: 20px !important; visibility: visible !important; opacity: 1 !important;';
-
-      console.log('📅 Calendar rendering complete! Calendar now has', calendar.children.length, 'children');
-      console.log('📅 Calendar display:', window.getComputedStyle(calendar).display);
-      console.log('📅 Calendar visibility:', window.getComputedStyle(calendar).visibility);
+      console.log('📅 Calendar rendering complete! Total slots:', slots.length);
       this.updateStats();
       return true;
     },
 
     selectDate: function(date, element) {
-      if (element.classList.contains('past')) return;
+      if (element.classList.contains('busy')) return;
 
       // Remove previous selection
-      document.querySelectorAll('.calendar-day.selected').forEach(el => {
+      document.querySelectorAll('.availability-slot.selected').forEach(el => {
         el.classList.remove('selected');
       });
 
@@ -1988,18 +1991,10 @@
 
       // Show availability message
       const status = this.getAvailabilityStatus(date);
-      const currentLang = LanguageSystem.currentLang;
+      const currentLang = LanguageSystem && LanguageSystem.currentLang ? LanguageSystem.currentLang : 'nl';
       let message = '';
 
-      // Check if it's a non-available day of week
-      const dayOfWeek = date.getDay();
-      const availableDays = [0, 3, 4];
-
-      if (!availableDays.includes(dayOfWeek)) {
-        message = currentLang === 'nl'
-          ? 'Deze dag is niet beschikbaar. Wij zijn alleen beschikbaar op woensdag, donderdag en zondag.'
-          : 'This day is not available. We are only available on Wednesday, Thursday, and Sunday.';
-      } else if (status === 'busy') {
+      if (status === 'busy') {
         message = currentLang === 'nl'
           ? 'Deze datum is volgeboekt. Selecteer een andere datum.'
           : 'This date is fully booked. Please select another date.';
@@ -2009,8 +2004,8 @@
           : 'Limited slots available on this date. Book now!';
       } else {
         message = currentLang === 'nl'
-          ? 'Deze datum is beschikbaar!'
-          : 'This date is available!';
+          ? '✓ Deze datum is geselecteerd en beschikbaar!'
+          : '✓ This date is selected and available!';
       }
 
       // Create or update message
@@ -2018,13 +2013,14 @@
       if (!msgEl) {
         msgEl = document.createElement('div');
         msgEl.className = 'date-status-message';
-        msgEl.style.cssText = 'text-align: center; padding: 10px; margin-top: 10px; border-radius: 6px; font-weight: 600;';
+        msgEl.style.cssText = 'text-align: center; padding: 12px; margin-top: 15px; border-radius: 8px; font-weight: 600; font-size: 0.95rem;';
         document.querySelector('.availability-section').appendChild(msgEl);
       }
 
       msgEl.textContent = message;
       msgEl.style.background = status === 'busy' ? '#ffebee' : status === 'limited' ? '#fff3e0' : '#e8f5e9';
       msgEl.style.color = status === 'busy' ? '#c62828' : status === 'limited' ? '#ef6c00' : '#2e7d32';
+      msgEl.style.border = status === 'busy' ? '2px solid #f44336' : status === 'limited' ? '2px solid #ff9800' : '2px solid #4caf50';
     },
 
     setupEventListeners: function() {
@@ -2089,35 +2085,26 @@
 
       if (!totalBookingsEl || !availableSlotsEl) return;
 
-      // Count bookings for current month
-      let monthBookings = 0;
-      const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+      // Get available slots for current month
+      const slots = this.generateAvailableSlots();
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(this.currentYear, this.currentMonth, day);
+      // Count bookings for these slots
+      let totalBooked = 0;
+      let availableCount = 0;
+
+      slots.forEach(date => {
         const key = this.formatDateKey(date);
-        if (this.bookings[key]) {
-          monthBookings += this.bookings[key].length;
+        const booked = this.bookings[key] ? this.bookings[key].length : 0;
+        totalBooked += booked;
+
+        // Count available capacity remaining
+        if (booked < this.maxBookingsPerDay) {
+          availableCount++;
         }
-      }
+      });
 
-      // Calculate available slots (days * max bookings - current bookings)
-      const today = new Date();
-      let remainingDays = 0;
-      let availableSlots = 0;
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(this.currentYear, this.currentMonth, day);
-        if (date >= today) {
-          remainingDays++;
-          const key = this.formatDateKey(date);
-          const booked = this.bookings[key] ? this.bookings[key].length : 0;
-          availableSlots += (this.maxBookingsPerDay - booked);
-        }
-      }
-
-      totalBookingsEl.textContent = monthBookings;
-      availableSlotsEl.textContent = Math.max(0, availableSlots);
+      totalBookingsEl.textContent = totalBooked;
+      availableSlotsEl.textContent = availableCount;
     }
   };
 
