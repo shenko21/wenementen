@@ -35,6 +35,193 @@
       color: var(--charcoal);
       background: var(--cream);
       overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* ========== ANIMATION UTILITIES ========== */
+
+    /* Fade In Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideInBottom {
+      from {
+        opacity: 0;
+        transform: translateY(100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rotateIn {
+      from {
+        opacity: 0;
+        transform: rotate(-10deg) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Scroll Reveal Classes */
+    .scroll-reveal {
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .scroll-reveal.revealed {
+      opacity: 1;
+    }
+
+    .scroll-reveal.fade-in {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.fade-in-left {
+      animation: fadeInLeft 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.fade-in-right {
+      animation: fadeInRight 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.scale-in {
+      animation: scaleIn 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.slide-in-bottom {
+      animation: slideInBottom 0.8s ease-out forwards;
+    }
+
+    .scroll-reveal.rotate-in {
+      animation: rotateIn 0.8s ease-out forwards;
+    }
+
+    /* Stagger animation delays */
+    .scroll-reveal:nth-child(1) { animation-delay: 0s; }
+    .scroll-reveal:nth-child(2) { animation-delay: 0.1s; }
+    .scroll-reveal:nth-child(3) { animation-delay: 0.2s; }
+    .scroll-reveal:nth-child(4) { animation-delay: 0.3s; }
+    .scroll-reveal:nth-child(5) { animation-delay: 0.4s; }
+    .scroll-reveal:nth-child(6) { animation-delay: 0.5s; }
+    .scroll-reveal:nth-child(7) { animation-delay: 0.6s; }
+    .scroll-reveal:nth-child(8) { animation-delay: 0.7s; }
+
+    /* Letter by letter animation for hero title */
+    .hero h1 {
+      overflow: visible;
+    }
+
+    .hero h1 .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(50px) rotateX(-90deg);
+      animation: letterAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes letterAppear {
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
     }
 
     /* Navigation */
@@ -294,8 +481,10 @@
       padding: 50px 30px;
       background: var(--white);
       border: 1px solid rgba(212, 175, 55, 0.2);
-      transition: all 0.4s ease;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      overflow: hidden;
+      border-radius: 4px;
     }
 
     .experience-card::before {
@@ -310,19 +499,45 @@
       transition: transform 0.4s ease;
     }
 
+    .experience-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
     .experience-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.15);
+      transform: translateY(-15px) scale(1.02);
+      box-shadow: 0 25px 70px rgba(212, 175, 55, 0.2);
+      border-color: var(--gold);
     }
 
     .experience-card:hover::before {
       transform: scaleX(1);
     }
 
+    .experience-card:hover::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .experience-card:hover .experience-icon {
+      transform: scale(1.2) rotateY(360deg);
+      filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.5));
+    }
+
     .experience-icon {
       font-size: 3rem;
       margin-bottom: 30px;
       filter: grayscale(1) brightness(0.8);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
     }
 
     .experience-card h3 {
@@ -364,11 +579,42 @@
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       cursor: pointer;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .package-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--gold), var(--dark-gold), var(--gold));
+      background-size: 400% 400%;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.5s ease;
+      animation: gradientShift 3s ease infinite;
     }
 
     .package-card:hover {
+      transform: translateY(-10px) scale(1.03);
       border: 2px solid var(--gold);
-      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+    }
+
+    .package-card:hover::before {
+      opacity: 0.2;
+    }
+
+    .package-card:hover .package-name {
+      transform: scale(1.1);
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    }
+
+    .package-card:hover .package-price {
+      transform: scale(1.05);
     }
 
     .package-card.selected {
@@ -417,12 +663,16 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 400;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
     }
 
     .package-price {
       font-size: 3.5rem;
       margin-bottom: 10px;
       font-weight: 300;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
     }
 
     .package-duration {
@@ -1140,21 +1390,76 @@
         display: none;
       }
 
+      .hero {
+        padding-top: 100px;
+        min-height: 80vh;
+      }
+
       .hero h1 {
         font-size: 3rem;
         letter-spacing: 4px;
+      }
+
+      .hero-subtitle {
+        font-size: 0.85rem;
+        letter-spacing: 3px;
+      }
+
+      .hero-cta {
+        padding: 15px 40px;
+        font-size: 0.85rem;
       }
 
       .section-title {
         font-size: 2.5rem;
       }
 
+      .section-subtitle {
+        font-size: 0.8rem;
+      }
+
+      .section-description {
+        font-size: 1rem;
+        padding: 0 15px;
+      }
+
       .announcement-text {
         font-size: 0.85rem;
       }
 
+      .experience,
+      .packages,
+      .gallery,
+      .contact {
+        padding: 80px 5%;
+      }
+
+      .section-header {
+        margin-bottom: 50px;
+      }
+
+      .experience-card {
+        padding: 40px 25px;
+      }
+
+      .experience-icon {
+        font-size: 2.5rem;
+      }
+
+      .experience-card h3 {
+        font-size: 1.3rem;
+      }
+
+      .package-card {
+        padding: 50px 30px;
+      }
+
       .package-price {
         font-size: 2.5rem;
+      }
+
+      .package-name {
+        font-size: 1.5rem;
       }
 
       .availability-calendar {
@@ -1171,6 +1476,24 @@
 
       .slot-day {
         font-size: 0.8rem;
+      }
+
+      .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        bottom: 25px;
+        right: 25px;
+        font-size: 1.6rem;
+      }
+
+      /* Disable complex animations on mobile for performance */
+      .experience-card:hover,
+      .package-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .experience-card:hover .experience-icon {
+        transform: scale(1.1);
       }
     }
   </style>
@@ -1221,44 +1544,44 @@
 
 <!-- Experience Section -->
 <section class="experience" id="experience">
-  <div class="section-header">
+  <div class="section-header scroll-reveal fade-in">
     <div class="section-subtitle" data-en="The Luxe Difference" data-nl="Het Luxe Verschil">Het Luxe Verschil</div>
     <h2 class="section-title" data-en="Unforgettable Moments" data-nl="Onvergetelijke Momenten">Onvergetelijke Momenten</h2>
     <p class="section-description" data-en="Transform your event into a high-quality experience with our state-of-the-art 360° photo booth technology" data-nl="Transformeer je evenement in een hoogwaardige ervaring met onze geavanceerde 360° fotobooth technologie">Transformeer je evenement in een hoogwaardige ervaring met onze geavanceerde 360° fotobooth technologie</p>
   </div>
 
   <div class="experience-grid">
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">🎬</div>
       <h3 data-en="High-Quality" data-nl="Hoogwaardige Kwaliteit">Hoogwaardige Kwaliteit</h3>
       <p data-en="Professional-grade cameras capture stunning slow-motion videos from every angle, creating content worthy of the red carpet" data-nl="Professionele camera's maken verbluffende slow-motion video's vanuit elke hoek, content die de rode loper waardig is">Professionele camera's maken verbluffende slow-motion video's vanuit elke hoek, content die de rode loper waardig is</p>
     </div>
 
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">✨</div>
       <h3 data-en="Instant Sharing" data-nl="Direct Delen">Direct Delen</h3>
       <p data-en="Guests receive their videos instantly via QR code, ready to share on Instagram, TikTok, and all social platforms" data-nl="Gasten ontvangen hun video's direct via QR-code, klaar om te delen op Instagram, TikTok en alle sociale platforms">Gasten ontvangen hun video's direct via QR-code, klaar om te delen op Instagram, TikTok en alle sociale platforms</p>
     </div>
 
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">🎨</div>
       <h3 data-en="Custom Branding" data-nl="Eigen Huisstijl">Eigen Huisstijl</h3>
       <p data-en="Personalized overlays, logos, and music perfectly tailored to match your event's aesthetic and brand identity" data-nl="Gepersonaliseerde overlays, logo's en muziek perfect afgestemd op de esthetiek en merkidentiteit van je evenement">Gepersonaliseerde overlays, logo's en muziek perfect afgestemd op de esthetiek en merkidentiteit van je evenement</p>
     </div>
 
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">💎</div>
       <h3 data-en="Luxury Setup" data-nl="Luxe Opstelling">Luxe Opstelling</h3>
       <p data-en="Elegant platform design with professional lighting that enhances every moment and complements your venue" data-nl="Elegant platform ontwerp met professionele verlichting die elk moment verbetert en je locatie complementeert">Elegant platform ontwerp met professionele verlichting die elk moment verbetert en je locatie complementeert</p>
     </div>
 
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">🎭</div>
       <h3 data-en="Premium Props" data-nl="Premium Rekwisieten">Premium Rekwisieten</h3>
       <p data-en="Curated selection of sophisticated props and accessories to elevate your guests' experience" data-nl="Zorgvuldig samengestelde selectie van verfijnde rekwisieten en accessoires om de ervaring van je gasten te verheffen">Zorgvuldig samengestelde selectie van verfijnde rekwisieten en accessoires om de ervaring van je gasten te verheffen</p>
     </div>
 
-    <div class="experience-card">
+    <div class="experience-card scroll-reveal fade-in-up">
       <div class="experience-icon">👔</div>
       <h3 data-en="Professional Host" data-nl="Professionele Host">Professionele Host</h3>
       <p data-en="Dedicated booth attendant ensures seamless operation and guides guests to create their perfect moment" data-nl="Toegewijde booth begeleider zorgt voor naadloze werking en begeleidt gasten bij het creëren van hun perfecte moment">Toegewijde booth begeleider zorgt voor naadloze werking en begeleidt gasten bij het creëren van hun perfecte moment</p>
@@ -1268,14 +1591,14 @@
 
 <!-- Packages Section -->
 <section class="packages" id="packages">
-  <div class="section-header">
+  <div class="section-header scroll-reveal fade-in">
     <div class="section-subtitle" style="color: var(--gold)" data-en="Investment Options" data-nl="Investering Opties">Investering Opties</div>
     <h2 class="section-title" style="color: var(--white)" data-en="Tailored Packages" data-nl="Op Maat Gemaakte Pakketten">Op Maat Gemaakte Pakketten</h2>
     <p class="section-description" style="color: var(--champagne)" data-en="Select the perfect package for your celebration" data-nl="Selecteer het perfecte pakket voor je viering">Selecteer het perfecte pakket voor je viering</p>
   </div>
 
   <div class="packages-grid">
-    <div class="package-card black-friday-sale" data-package="essence">
+    <div class="package-card black-friday-sale scroll-reveal scale-in" data-package="essence">
       <span class="sale-badge" data-en="LIMITED OFFER" data-nl="TIJDELIJKE AANBIEDING">TIJDELIJKE AANBIEDING</span>
       <h3 class="package-name">Essence</h3>
       <div class="package-price-wrapper">
@@ -1294,7 +1617,7 @@
       <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
     </div>
 
-    <div class="package-card featured" data-package="prestige">
+    <div class="package-card featured scroll-reveal scale-in" data-package="prestige">
       <div class="package-badge" data-en="Most Popular" data-nl="Meest Populair">Meest Populair</div>
       <h3 class="package-name">Prestige</h3>
       <div class="package-price">€795</div>
@@ -1309,7 +1632,7 @@
       <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
     </div>
 
-    <div class="package-card" data-package="opulence">
+    <div class="package-card scroll-reveal scale-in" data-package="opulence">
       <h3 class="package-name">Opulence</h3>
       <div class="package-price">€1,295</div>
       <div class="package-duration" data-en="Full Day" data-nl="Volledige Dag">Volledige Dag</div>
@@ -1514,6 +1837,82 @@
 </a>
 
 <script>
+  // ========== ANIMATION SYSTEM ==========
+
+  // Letter-by-letter animation for hero title
+  function animateHeroTitle() {
+    const heroTitle = document.querySelector('.hero h1');
+    if (!heroTitle) return;
+
+    // Store original text and data attributes
+    const originalTextNL = heroTitle.getAttribute('data-nl') || heroTitle.textContent;
+    const originalTextEN = heroTitle.getAttribute('data-en') || '';
+
+    function splitTextIntoLetters(text) {
+      // Replace <br> with actual break in text
+      return text.split('').map((char, index) => {
+        if (text.substr(index, 4) === '<br>') return null; // Skip <br> tag chars
+        if (char === ' ') return `<span class="letter" style="animation-delay: ${index * 0.05}s;">&nbsp;</span>`;
+        if (char === '\n' || (text.substr(index-3, 4) === '<br>')) return '<br>';
+        return `<span class="letter" style="animation-delay: ${index * 0.05}s;">${char}</span>`;
+      }).filter(item => item !== null).join('');
+    }
+
+    function updateTitleAnimation() {
+      const currentLang = LanguageSystem && LanguageSystem.currentLang ? LanguageSystem.currentLang : 'nl';
+      const text = currentLang === 'nl' ? originalTextNL : originalTextEN;
+
+      // Clear and animate
+      heroTitle.style.opacity = '0';
+      setTimeout(() => {
+        heroTitle.innerHTML = splitTextIntoLetters(text);
+        heroTitle.style.opacity = '1';
+      }, 100);
+    }
+
+    // Initial animation
+    updateTitleAnimation();
+
+    // Re-animate on language change
+    if (window.LanguageSystem) {
+      const originalUpdateText = LanguageSystem.updateText;
+      LanguageSystem.updateText = function() {
+        originalUpdateText.call(this);
+        setTimeout(updateTitleAnimation, 100);
+      };
+    }
+  }
+
+  // Scroll Reveal Animation System
+  function initScrollReveal() {
+    const reveals = document.querySelectorAll('.scroll-reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          // Don't unobserve so animation can repeat if needed
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    reveals.forEach(reveal => {
+      revealObserver.observe(reveal);
+    });
+  }
+
+  // Initialize animations when DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for fonts and layout to be ready
+    setTimeout(() => {
+      animateHeroTitle();
+      initScrollReveal();
+    }, 300);
+  });
+
   // Package Selection
   const packageCards = document.querySelectorAll('.package-card');
   const packageSelect = document.getElementById('contact-package');
