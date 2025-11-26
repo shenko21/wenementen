@@ -1528,8 +1528,8 @@
 <!-- Announcement Bar -->
 <div class="announcement-bar">
   <div class="announcement-content">
-    <span class="announcement-text" data-en="✨ Limited Time Offer! Essence Package NOW €200 (Was €495) - Save €295! 🔥 Free Props Package Worth €150 Included 💎 Book Now!" data-nl="✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €150 Inbegrepen 💎 Boek Nu!">✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €150 Inbegrepen 💎 Boek Nu!</span>
-    <span class="announcement-text" data-en="✨ Limited Time Offer! Essence Package NOW €200 (Was €495) - Save €295! 🔥 Free Props Package Worth €150 Included 💎 Book Now!" data-nl="✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €150 Inbegrepen 💎 Boek Nu!">✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €150 Inbegrepen 💎 Boek Nu!</span>
+    <span class="announcement-text" data-en="✨ Limited Time Offer! Essence Package NOW €200 (Was €495) - Save €295! 🔥 Free Props Package Worth €50 Included 💎 Book Now!" data-nl="✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €50 Inbegrepen 💎 Boek Nu!">✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €50 Inbegrepen 💎 Boek Nu!</span>
+    <span class="announcement-text" data-en="✨ Limited Time Offer! Essence Package NOW €200 (Was €495) - Save €295! 🔥 Free Props Package Worth €50 Included 💎 Book Now!" data-nl="✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €50 Inbegrepen 💎 Boek Nu!">✨ Tijdelijke Aanbieding! Essence Pakket NU €200 (Was €495) - Bespaar €295! 🔥 Gratis Rekwisieten Pakket ter waarde van €50 Inbegrepen 💎 Boek Nu!</span>
   </div>
 </div>
 
@@ -1849,13 +1849,24 @@
     const originalTextEN = heroTitle.getAttribute('data-en') || '';
 
     function splitTextIntoLetters(text) {
-      // Replace <br> with actual break in text
-      return text.split('').map((char, index) => {
-        if (text.substr(index, 4) === '<br>') return null; // Skip <br> tag chars
-        if (char === ' ') return `<span class="letter" style="animation-delay: ${index * 0.05}s;">&nbsp;</span>`;
-        if (char === '\n' || (text.substr(index-3, 4) === '<br>')) return '<br>';
-        return `<span class="letter" style="animation-delay: ${index * 0.05}s;">${char}</span>`;
-      }).filter(item => item !== null).join('');
+      // Split by <br> tag first
+      const lines = text.split('<br>');
+      let charCounter = 0;
+
+      return lines.map((line, lineIndex) => {
+        const letters = line.split('').map((char) => {
+          const delay = charCounter * 0.05;
+          charCounter++;
+
+          if (char === ' ') {
+            return `<span class="letter" style="animation-delay: ${delay}s;">&nbsp;</span>`;
+          }
+          return `<span class="letter" style="animation-delay: ${delay}s;">${char}</span>`;
+        }).join('');
+
+        // Add <br> between lines except after the last line
+        return lineIndex < lines.length - 1 ? letters + '<br>' : letters;
+      }).join('');
     }
 
     function updateTitleAnimation() {
