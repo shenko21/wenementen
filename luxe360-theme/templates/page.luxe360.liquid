@@ -2013,7 +2013,15 @@
       elements.forEach(el => {
         const text = el.dataset[this.currentLang];
         if (text) {
-          el.innerHTML = text;
+          // Create a temporary div to properly parse HTML entities and tags
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = text;
+
+          // Clear the element and append the properly parsed content
+          el.innerHTML = '';
+          while (tempDiv.firstChild) {
+            el.appendChild(tempDiv.firstChild);
+          }
         }
       });
 
