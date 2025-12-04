@@ -426,7 +426,8 @@
             this.setupIntersectionObserver();
             this.setupParallaxEffect();
             this.setupCounterAnimation();
-            this.setupTextReveal();
+            // Disabled text reveal animation - was causing "br" to show as text
+            // this.setupTextReveal();
         },
 
         /**
