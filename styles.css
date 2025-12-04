@@ -437,17 +437,19 @@ nav.scrolled {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     max-width: 1400px;
-    margin: 60px auto 0;
+    margin: 40px auto 0;
 }
 
 .package-card {
     background: var(--charcoal);
-    padding: 70px 40px 60px;
+    padding: 50px 40px 60px;
     border: 1px solid rgba(212, 175, 55, 0.3);
     text-align: center;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     cursor: pointer;
+    overflow: visible;
+    margin-top: 20px;
 }
 
 .package-card:hover,
