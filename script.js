@@ -564,18 +564,40 @@
             const heroTitle = document.querySelector('.hero h1');
             if (!heroTitle) return;
 
-            const text = heroTitle.innerHTML;
+            // Get text content and split by line breaks
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = heroTitle.innerHTML;
+
+            // Extract text nodes properly, handling <br> tags
+            const lines = [];
+            let currentLine = '';
+
+            tempDiv.childNodes.forEach(node => {
+                if (node.nodeName === 'BR') {
+                    if (currentLine) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                } else {
+                    currentLine += node.textContent || '';
+                }
+            });
+
+            // Add the last line if it exists
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+
+            // Clear the hero title
             heroTitle.innerHTML = '';
 
-            // Split by <br> to preserve line breaks
-            const lines = text.split('<br>');
-
+            // Build animated text
             lines.forEach((line, lineIndex) => {
                 const lineSpan = document.createElement('span');
                 lineSpan.style.display = 'block';
                 lineSpan.style.overflow = 'hidden';
 
-                const chars = line.trim().split('');
+                const chars = line.split('');
                 chars.forEach((char, charIndex) => {
                     const span = document.createElement('span');
                     span.textContent = char === ' ' ? '\u00A0' : char;
@@ -587,10 +609,6 @@
                 });
 
                 heroTitle.appendChild(lineSpan);
-
-                if (lineIndex < lines.length - 1) {
-                    heroTitle.appendChild(document.createElement('br'));
-                }
             });
 
             // Trigger animation
