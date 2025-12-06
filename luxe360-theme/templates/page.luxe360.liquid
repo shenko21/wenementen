@@ -1849,13 +1849,18 @@
     const originalTextEN = heroTitle.getAttribute('data-en') || '';
 
     function splitTextIntoLetters(text) {
-      // Replace <br> with actual break in text
-      return text.split('').map((char, index) => {
-        if (text.substr(index, 4) === '<br>') return null; // Skip <br> tag chars
-        if (char === ' ') return `<span class="letter" style="animation-delay: ${index * 0.05}s;">&nbsp;</span>`;
-        if (char === '\n' || (text.substr(index-3, 4) === '<br>')) return '<br>';
-        return `<span class="letter" style="animation-delay: ${index * 0.05}s;">${char}</span>`;
-      }).filter(item => item !== null).join('');
+      // Split by <br> tags first, then animate each part separately
+      const parts = text.split(/<br\s*\/?>/i);
+      let charIndex = 0;
+
+      return parts.map(part => {
+        return part.split('').map(char => {
+          const delay = charIndex * 0.05;
+          charIndex++;
+          if (char === ' ') return `<span class="letter" style="animation-delay: ${delay}s;">&nbsp;</span>`;
+          return `<span class="letter" style="animation-delay: ${delay}s;">${char}</span>`;
+        }).join('');
+      }).join('<br>');
     }
 
     function updateTitleAnimation() {
