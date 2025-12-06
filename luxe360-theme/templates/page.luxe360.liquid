@@ -40,48 +40,64 @@
 
     /* ========== ANIMATION UTILITIES ========== */
 
-    /* Fade In Animations */
+    /* GPU Acceleration & Smooth Animations */
+    .gpu-accelerate {
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Fade In Animations - GPU accelerated */
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translate3d(0, 30px, 0);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
     @keyframes fadeInLeft {
       from {
         opacity: 0;
-        transform: translateX(-50px);
+        transform: translate3d(-50px, 0, 0);
       }
       to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
     @keyframes fadeInRight {
       from {
         opacity: 0;
-        transform: translateX(50px);
+        transform: translate3d(50px, 0, 0);
       }
       to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
     @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(50px);
+        transform: translate3d(0, 50px, 0);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
@@ -1258,6 +1274,46 @@
       color: var(--black);
     }
 
+    .form-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .submit-btn-primary {
+      background: var(--gold);
+      color: var(--black);
+      font-size: 1.1rem;
+      padding: 20px 40px;
+    }
+
+    .submit-btn-primary:hover {
+      background: var(--dark-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    }
+
+    .submit-btn-secondary {
+      background: transparent;
+      font-size: 0.9rem;
+      padding: 15px 30px;
+    }
+
+    .submit-btn.loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .form-hint {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--charcoal);
+      opacity: 0.7;
+      margin-top: 15px;
+      font-style: italic;
+    }
+
     .form-success {
       background: rgba(212, 175, 55, 0.1);
       border: 2px solid var(--gold);
@@ -1551,6 +1607,103 @@
       .experience-card:hover .experience-icon {
         transform: scale(1.1);
       }
+
+      /* Mobile form improvements */
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        font-size: 16px !important; /* Prevents iOS zoom on focus */
+        padding: 16px;
+      }
+
+      .submit-btn,
+      .package-btn {
+        padding: 18px 30px;
+        font-size: 0.9rem;
+        min-height: 50px;
+        touch-action: manipulation;
+      }
+
+      /* Mobile button group stacking */
+      .package-btn-group {
+        gap: 10px;
+      }
+
+      .package-btn-primary,
+      .package-btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Better touch targets */
+      .nav-links a,
+      .footer-links a {
+        padding: 12px 8px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      /* Mobile gallery */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .gallery-item {
+        aspect-ratio: 1;
+      }
+
+      /* Contact form mobile */
+      .contact-container {
+        padding: 30px 20px;
+      }
+
+      /* Announcement bar mobile */
+      .announcement-bar {
+        padding: 10px 15px;
+      }
+
+      /* Hero mobile optimization */
+      .hero-content {
+        padding: 0 20px;
+      }
+
+      .hero h1 .letter {
+        animation-duration: 0.3s !important;
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .package-price {
+        font-size: 2rem;
+      }
+
+      .package-name {
+        font-size: 1.3rem;
+      }
+
+      .experience-grid {
+        gap: 20px;
+      }
+
+      .experience-card {
+        padding: 30px 20px;
+      }
+
+      .footer-content {
+        padding: 40px 20px;
+      }
     }
   </style>
 </head>
@@ -1837,7 +1990,11 @@
         <textarea id="contact-message" name="contact[body]" data-placeholder-en="Tell us about your event vision..." data-placeholder-nl="Vertel ons over uw evenement..." placeholder="Vertel ons over uw evenement..."></textarea>
       </div>
 
-      <button type="submit" class="submit-btn" data-en="Submit Inquiry" data-nl="Verstuur Aanvraag">Verstuur Aanvraag</button>
+      <div class="form-btn-group">
+        <button type="button" id="book-pay-btn" class="submit-btn submit-btn-primary" data-en="Book Now & Pay" data-nl="Boek Nu & Betaal">Boek Nu & Betaal</button>
+        <button type="submit" class="submit-btn submit-btn-secondary" data-en="Send Inquiry Only" data-nl="Alleen Aanvraag Versturen">Alleen Aanvraag Versturen</button>
+      </div>
+      <p class="form-hint" data-en="Choose 'Book Now & Pay' to proceed to checkout, or 'Send Inquiry' to ask questions first." data-nl="Kies 'Boek Nu & Betaal' om naar de kassa te gaan, of 'Alleen Aanvraag' om eerst vragen te stellen.">Kies 'Boek Nu & Betaal' om naar de kassa te gaan, of 'Alleen Aanvraag' om eerst vragen te stellen.</p>
     </div>
   {% endform %}
 </section>
@@ -2671,11 +2828,143 @@
     },
 
     init: function() {
+      // Package card buttons
       const bookNowButtons = document.querySelectorAll('.book-now-btn');
       bookNowButtons.forEach(btn => {
         btn.addEventListener('click', this.handleBookNow.bind(this));
       });
+
+      // Contact form "Book & Pay" button
+      const formBookPayBtn = document.getElementById('book-pay-btn');
+      if (formBookPayBtn) {
+        formBookPayBtn.addEventListener('click', this.handleFormBookPay.bind(this));
+      }
+
       console.log('✅ Shopify Checkout integration initialized');
+    },
+
+    // Handle form "Book Now & Pay" button
+    handleFormBookPay: function(e) {
+      e.preventDefault();
+
+      const btn = e.target;
+      const packageSelect = document.getElementById('contact-package');
+      const nameInput = document.getElementById('contact-name');
+      const emailInput = document.getElementById('contact-email');
+      const phoneInput = document.getElementById('contact-phone');
+      const dateInput = document.getElementById('contact-date');
+      const eventTypeInput = document.getElementById('contact-event-type');
+      const messageInput = document.getElementById('contact-message');
+
+      // Validate required fields
+      if (!packageSelect || !packageSelect.value || packageSelect.value === '' || packageSelect.value === 'custom') {
+        alert(LanguageSystem && LanguageSystem.currentLang === 'en'
+          ? 'Please select a package (not Custom) to proceed to checkout.'
+          : 'Selecteer een pakket (niet Op Maat) om door te gaan naar de kassa.');
+        return;
+      }
+
+      if (!nameInput || !nameInput.value.trim()) {
+        alert(LanguageSystem && LanguageSystem.currentLang === 'en' ? 'Please enter your name.' : 'Vul uw naam in.');
+        nameInput && nameInput.focus();
+        return;
+      }
+
+      if (!emailInput || !emailInput.value.trim()) {
+        alert(LanguageSystem && LanguageSystem.currentLang === 'en' ? 'Please enter your email.' : 'Vul uw e-mailadres in.');
+        emailInput && emailInput.focus();
+        return;
+      }
+
+      const packageType = packageSelect.value;
+      const pkg = this.packages[packageType];
+
+      if (!pkg) {
+        alert(LanguageSystem && LanguageSystem.currentLang === 'en'
+          ? 'Please select a valid package.'
+          : 'Selecteer een geldig pakket.');
+        return;
+      }
+
+      // Collect event details for line item properties
+      const eventDetails = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput ? phoneInput.value.trim() : '',
+        date: dateInput ? dateInput.value : '',
+        eventType: eventTypeInput ? eventTypeInput.value : '',
+        message: messageInput ? messageInput.value.trim() : ''
+      };
+
+      // Add loading state
+      btn.classList.add('loading');
+      const originalText = btn.textContent;
+      btn.textContent = LanguageSystem && LanguageSystem.currentLang === 'en' ? 'Processing...' : 'Verwerken...';
+
+      // Try to add to cart with event details
+      this.addToCartWithDetails(packageType, eventDetails, btn, originalText);
+    },
+
+    addToCartWithDetails: function(packageType, eventDetails, btn, originalText) {
+      const pkg = this.packages[packageType];
+
+      // First try to find product by handle
+      fetch(`/products/${pkg.handle}.js`)
+        .then(response => {
+          if (!response.ok) throw new Error('Product not found');
+          return response.json();
+        })
+        .then(product => {
+          if (product.variants && product.variants.length > 0) {
+            const variantId = product.variants[0].id;
+
+            // Clear cart first
+            return fetch('/cart/clear.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            }).then(() => {
+              // Add to cart with properties
+              return fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  items: [{
+                    id: variantId,
+                    quantity: 1,
+                    properties: {
+                      'Naam': eventDetails.name,
+                      'E-mail': eventDetails.email,
+                      'Telefoon': eventDetails.phone || '-',
+                      'Evenement Datum': eventDetails.date || 'Nader te bepalen',
+                      'Type Evenement': eventDetails.eventType || '-',
+                      'Bericht': eventDetails.message || '-'
+                    }
+                  }]
+                })
+              });
+            });
+          } else {
+            throw new Error('No variants found');
+          }
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to add to cart');
+          return response.json();
+        })
+        .then(data => {
+          console.log('✅ Added to cart with details:', data);
+          window.location.href = '/checkout';
+        })
+        .catch(error => {
+          console.error('❌ Checkout error:', error);
+          btn.classList.remove('loading');
+          btn.textContent = originalText;
+
+          // Show friendly error message
+          alert(LanguageSystem && LanguageSystem.currentLang === 'en'
+            ? 'Unable to proceed to checkout. The product may not be set up yet. Please use "Send Inquiry" instead, and we will send you a payment link.'
+            : 'Kan niet doorgaan naar de kassa. Het product is mogelijk nog niet ingesteld. Gebruik "Alleen Aanvraag Versturen" en we sturen u een betaallink.');
+        });
     },
 
     handleBookNow: function(e) {
