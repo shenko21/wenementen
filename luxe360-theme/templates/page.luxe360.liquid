@@ -573,7 +573,7 @@
 
     /* Packages Section */
     .packages {
-      padding: 120px 60px;
+      padding: 120px 80px;
       background: var(--black);
       color: var(--white);
       overflow: visible;
@@ -582,10 +582,10 @@
     .packages-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-      max-width: 1400px;
+      gap: 50px;
+      max-width: 1300px;
       margin: 60px auto 0;
-      padding: 60px;
+      padding: 40px 60px;
       position: relative;
     }
 
@@ -785,13 +785,13 @@
       position: relative;
       border: 3px solid #ff0000 !important;
       background: linear-gradient(135deg, var(--charcoal), #1a0000) !important;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4), inset 0 0 30px rgba(255, 0, 0, 0.1);
       animation: saleGlow 2s ease-in-out infinite;
     }
 
     @keyframes saleGlow {
-      0%, 100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.3); }
-      50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.5); }
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4), inset 0 0 30px rgba(255, 0, 0, 0.1); }
+      50% { box-shadow: 0 0 35px rgba(255, 0, 0, 0.6), inset 0 0 40px rgba(255, 0, 0, 0.15); }
     }
 
     .sale-badge {
@@ -1470,10 +1470,16 @@
 
     /* Responsive */
     @media (max-width: 1200px) {
+      .packages {
+        padding: 100px 40px;
+      }
+
       .experience-grid,
       .packages-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+        padding: 30px 20px;
+        max-width: 500px;
       }
 
       .gallery-grid {
