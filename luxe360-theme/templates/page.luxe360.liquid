@@ -560,6 +560,7 @@
       padding: 120px 5%;
       background: var(--black);
       color: var(--white);
+      overflow: visible;
     }
 
     .packages-grid {
@@ -568,6 +569,7 @@
       gap: 40px;
       max-width: 1400px;
       margin: 60px auto 0;
+      padding: 20px;
       position: relative;
     }
 
@@ -717,6 +719,47 @@
     .package-btn:hover {
       background: var(--gold);
       color: var(--black);
+    }
+
+    .package-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .package-btn-primary {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .package-btn-primary:hover {
+      background: var(--dark-gold);
+      transform: scale(1.02);
+    }
+
+    .package-btn-secondary {
+      background: transparent;
+      font-size: 0.75rem;
+      padding: 10px 30px;
+    }
+
+    .package-btn-primary.loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .package-btn-primary.loading::after {
+      content: '...';
+      animation: loadingDots 1s infinite;
+    }
+
+    @keyframes loadingDots {
+      0%, 20% { content: '.'; }
+      40% { content: '..'; }
+      60%, 100% { content: '...'; }
     }
 
     /* Black Friday Sale Styles */
@@ -1598,7 +1641,7 @@
   </div>
 
   <div class="packages-grid">
-    <div class="package-card black-friday-sale scroll-reveal scale-in" data-package="essence">
+    <div class="package-card black-friday-sale scroll-reveal scale-in" data-package="essence" data-variant-id="{{ section.settings.essence_variant_id | default: '' }}" data-price="20000">
       <span class="sale-badge" data-en="LIMITED OFFER" data-nl="TIJDELIJKE AANBIEDING">TIJDELIJKE AANBIEDING</span>
       <h3 class="package-name">Essence</h3>
       <div class="package-price-wrapper">
@@ -1614,10 +1657,13 @@
         <li data-en="Setup & Breakdown" data-nl="Opbouw & Afbouw">Opbouw & Afbouw</li>
         <li data-en="50km Travel Included" data-nl="50km Reiskosten Inbegrepen">50km Reiskosten Inbegrepen</li>
       </ul>
-      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
+      <div class="package-btn-group">
+        <button type="button" class="package-btn package-btn-primary book-now-btn" data-en="Book Now & Pay" data-nl="Boek Nu & Betaal">Boek Nu & Betaal</button>
+        <a href="#contact" class="package-btn package-btn-secondary" data-en="Inquire First" data-nl="Eerst Informeren">Eerst Informeren</a>
+      </div>
     </div>
 
-    <div class="package-card featured scroll-reveal scale-in" data-package="prestige">
+    <div class="package-card featured scroll-reveal scale-in" data-package="prestige" data-variant-id="{{ section.settings.prestige_variant_id | default: '' }}" data-price="79500">
       <div class="package-badge" data-en="Most Popular" data-nl="Meest Populair">Meest Populair</div>
       <h3 class="package-name">Prestige</h3>
       <div class="package-price">€795</div>
@@ -1629,10 +1675,13 @@
         <li data-en="Red Carpet Setup" data-nl="Rode Loper Opstelling">Rode Loper Opstelling</li>
         <li data-en="100km Travel Included" data-nl="100km Reiskosten Inbegrepen">100km Reiskosten Inbegrepen</li>
       </ul>
-      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
+      <div class="package-btn-group">
+        <button type="button" class="package-btn package-btn-primary book-now-btn" data-en="Book Now & Pay" data-nl="Boek Nu & Betaal">Boek Nu & Betaal</button>
+        <a href="#contact" class="package-btn package-btn-secondary" data-en="Inquire First" data-nl="Eerst Informeren">Eerst Informeren</a>
+      </div>
     </div>
 
-    <div class="package-card scroll-reveal scale-in" data-package="opulence">
+    <div class="package-card scroll-reveal scale-in" data-package="opulence" data-variant-id="{{ section.settings.opulence_variant_id | default: '' }}" data-price="129500">
       <h3 class="package-name">Opulence</h3>
       <div class="package-price">€1,295</div>
       <div class="package-duration" data-en="Full Day" data-nl="Volledige Dag">Volledige Dag</div>
@@ -1645,7 +1694,10 @@
         <li data-en="Priority Support" data-nl="Prioriteit Ondersteuning">Prioriteit Ondersteuning</li>
         <li data-en="Nationwide Travel" data-nl="Landelijke Dekking">Landelijke Dekking</li>
       </ul>
-      <a href="#contact" class="package-btn" data-en="Select Package" data-nl="Selecteer Pakket">Selecteer Pakket</a>
+      <div class="package-btn-group">
+        <button type="button" class="package-btn package-btn-primary book-now-btn" data-en="Book Now & Pay" data-nl="Boek Nu & Betaal">Boek Nu & Betaal</button>
+        <a href="#contact" class="package-btn package-btn-secondary" data-en="Inquire First" data-nl="Eerst Informeren">Eerst Informeren</a>
+      </div>
     </div>
   </div>
 </section>
@@ -2583,6 +2635,179 @@
       initializeCalendar();
     }
   }, 1000);
+
+  // ========== SHOPIFY CHECKOUT INTEGRATION ==========
+  const ShopifyCheckout = {
+    // Package product handles/IDs - configure these in Shopify admin
+    packages: {
+      essence: {
+        name: 'Essence Package - 3 Hours',
+        price: 200,
+        handle: 'essence-package'
+      },
+      prestige: {
+        name: 'Prestige Package - 5 Hours',
+        price: 795,
+        handle: 'prestige-package'
+      },
+      opulence: {
+        name: 'Opulence Package - Full Day',
+        price: 1295,
+        handle: 'opulence-package'
+      }
+    },
+
+    init: function() {
+      const bookNowButtons = document.querySelectorAll('.book-now-btn');
+      bookNowButtons.forEach(btn => {
+        btn.addEventListener('click', this.handleBookNow.bind(this));
+      });
+      console.log('✅ Shopify Checkout integration initialized');
+    },
+
+    handleBookNow: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const btn = e.target;
+      const card = btn.closest('.package-card');
+      const packageType = card.dataset.package;
+      const variantId = card.dataset.variantId;
+
+      console.log('🛒 Book Now clicked:', packageType, 'Variant:', variantId);
+
+      // Add loading state
+      btn.classList.add('loading');
+      const originalText = btn.textContent;
+      btn.textContent = LanguageSystem && LanguageSystem.currentLang === 'en' ? 'Processing' : 'Verwerken';
+
+      // Check if we have a variant ID configured
+      if (variantId && variantId.trim() !== '') {
+        this.addToCartAndCheckout(variantId, btn, originalText);
+      } else {
+        // Fallback: Try to find product by handle
+        this.findProductAndCheckout(packageType, btn, originalText);
+      }
+    },
+
+    addToCartAndCheckout: function(variantId, btn, originalText) {
+      // Clear cart first, then add item
+      fetch('/cart/clear.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(() => {
+        return fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: [{
+              id: variantId,
+              quantity: 1
+            }]
+          })
+        });
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to add to cart');
+        return response.json();
+      })
+      .then(data => {
+        console.log('✅ Added to cart:', data);
+        window.location.href = '/checkout';
+      })
+      .catch(error => {
+        console.error('❌ Cart error:', error);
+        this.handleCheckoutError(btn, originalText);
+      });
+    },
+
+    findProductAndCheckout: function(packageType, btn, originalText) {
+      const pkg = this.packages[packageType];
+      if (!pkg) {
+        this.handleCheckoutError(btn, originalText);
+        return;
+      }
+
+      // Try to fetch product by handle
+      fetch(`/products/${pkg.handle}.js`)
+        .then(response => {
+          if (!response.ok) throw new Error('Product not found');
+          return response.json();
+        })
+        .then(product => {
+          if (product.variants && product.variants.length > 0) {
+            const variantId = product.variants[0].id;
+            this.addToCartAndCheckout(variantId, btn, originalText);
+          } else {
+            throw new Error('No variants found');
+          }
+        })
+        .catch(error => {
+          console.warn('⚠️ Product not found, falling back to contact form:', error);
+          this.fallbackToContactForm(packageType, btn, originalText);
+        });
+    },
+
+    fallbackToContactForm: function(packageType, btn, originalText) {
+      // Reset button
+      btn.classList.remove('loading');
+      btn.textContent = originalText;
+
+      // Pre-select package in contact form
+      const packageSelect = document.getElementById('contact-package');
+      if (packageSelect) {
+        packageSelect.value = packageType;
+      }
+
+      // Scroll to contact
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+
+        // Show message
+        const msg = document.createElement('div');
+        msg.className = 'checkout-notice';
+        msg.style.cssText = `
+          background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+          color: var(--black);
+          padding: 15px 25px;
+          margin-bottom: 20px;
+          text-align: center;
+          font-weight: 600;
+          border-radius: 4px;
+          animation: fadeIn 0.5s ease;
+        `;
+        msg.innerHTML = LanguageSystem && LanguageSystem.currentLang === 'en'
+          ? '📋 Please complete the form below to book your package. We will send you a payment link.'
+          : '📋 Vul het onderstaande formulier in om je pakket te boeken. We sturen je een betaallink.';
+
+        const existingNotice = document.querySelector('.checkout-notice');
+        if (existingNotice) existingNotice.remove();
+
+        const contactContainer = contactSection.querySelector('.contact-container, form');
+        if (contactContainer) {
+          contactContainer.insertBefore(msg, contactContainer.firstChild);
+        }
+      }
+    },
+
+    handleCheckoutError: function(btn, originalText) {
+      btn.classList.remove('loading');
+      btn.textContent = LanguageSystem && LanguageSystem.currentLang === 'en' ? 'Error - Try Again' : 'Fout - Probeer Opnieuw';
+
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 3000);
+    }
+  };
+
+  // Initialize checkout system
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => ShopifyCheckout.init());
+  } else {
+    ShopifyCheckout.init();
+  }
 </script>
 
 </body>
