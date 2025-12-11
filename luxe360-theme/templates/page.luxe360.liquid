@@ -1804,13 +1804,9 @@
   </div>
 
   <div class="packages-grid">
-    <div class="package-card black-friday-sale scroll-reveal scale-in" data-package="essence" data-variant-id="{{ section.settings.essence_variant_id | default: '' }}" data-price="20000">
-      <span class="sale-badge" data-en="LIMITED OFFER" data-nl="TIJDELIJKE AANBIEDING">TIJDELIJKE AANBIEDING</span>
+    <div class="package-card scroll-reveal scale-in" data-package="essence" data-variant-id="{{ section.settings.essence_variant_id | default: '' }}" data-price="49500">
       <h3 class="package-name">Essence</h3>
-      <div class="package-price-wrapper">
-        <div class="package-price package-price-sale">€200</div>
-        <div class="package-price-old">€495</div>
-      </div>
+      <div class="package-price">€495</div>
       <div class="package-duration" data-en="3 Hours" data-nl="3 Uur">3 Uur</div>
       <ul class="package-features">
         <li data-en="360° Video Recording" data-nl="360° Video Opname">360° Video Opname</li>
@@ -1975,7 +1971,7 @@
         <label for="contact-package" data-en="Package Interest *" data-nl="Pakket Interesse *">Pakket Interesse *</label>
         <select id="contact-package" name="contact[package]" required>
           <option value="" data-en="Select package" data-nl="Selecteer pakket">Selecteer pakket</option>
-          <option value="essence" data-en="Essence - €200 (Limited Time Offer!)" data-nl="Essence - €200 (Tijdelijke Aanbieding!)">Essence - €200 (Tijdelijke Aanbieding!)</option>
+          <option value="essence" data-en="Essence - €495" data-nl="Essence - €495">Essence - €495</option>
           <option value="prestige" data-en="Prestige - €795" data-nl="Prestige - €795">Prestige - €795</option>
           <option value="opulence" data-en="Opulence - €1,295" data-nl="Opulence - €1,295">Opulence - €1,295</option>
           <option value="custom" data-en="Custom Package" data-nl="Op Maat Gemaakt Pakket">Op Maat Gemaakt Pakket</option>
@@ -2809,7 +2805,7 @@
     packages: {
       essence: {
         name: 'Essence Package - 3 Hours',
-        price: 200,
+        price: 495,
         handle: 'essence-package'
       },
       prestige: {
