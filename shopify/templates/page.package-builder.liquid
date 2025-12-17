@@ -1,0 +1,47 @@
+{% comment %}
+  LUXE 360° Custom Package Builder Page Template
+  Creates a standalone page for building custom packages
+
+  Usage: Create a new page in Shopify admin and select "package-builder" as the template
+{% endcomment %}
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | {{ shop.name }}</title>
+  <meta name="description" content="Stel je eigen 360° photo booth pakket samen. Kies uit verschillende opties en vraag direct een offerte aan.">
+
+  {{ 'luxe360.css' | asset_url | stylesheet_tag }}
+
+  <style>
+    /* Page-specific overrides */
+    .luxe360-page {
+      min-height: 100vh;
+    }
+
+    /* Ensure package builder starts below nav */
+    .package-builder {
+      padding-top: 160px;
+    }
+
+    @media (max-width: 768px) {
+      .package-builder {
+        padding-top: 120px;
+      }
+    }
+  </style>
+</head>
+<body class="luxe360-page">
+
+  {% section 'luxe360-navigation' %}
+
+  {% section 'luxe360-package-builder' %}
+
+  {% section 'luxe360-footer' %}
+
+  {{ 'luxe360.js' | asset_url | script_tag }}
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "navigation": {
+      "type": "luxe360-navigation",
+      "settings": {
+        "logo_text": "WEN360",
+        "show_announcement": true,
+        "announcement_text": "✨ Nu beschikbaar: Custom Packages — Stel je eigen 360° ervaring samen ✨"
+      }
+    },
+    "package-builder": {
+      "type": "luxe360-package-builder",
+      "settings": {
+        "subtitle": "Custom Packages",
+        "title": "Stel Je Pakket Samen",
+        "description": "Creëer jouw perfecte 360° photo booth ervaring met onze modulaire opties",
+        "form_endpoint": "https://formspree.io/f/YOUR_FORM_ID"
+      }
+    },
+    "footer": {
+      "type": "luxe360-footer",
+      "settings": {
+        "brand_name": "WEN360",
+        "tagline": "Premium 360° Photo Booth Experiences"
+      }
+    }
+  },
+  "order": [
+    "navigation",
+    "package-builder",
+    "footer"
+  ]
+}
