@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | {{ shop.name }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #D4AF37;
+      --dark-gold: #B8941F;
+      --champagne: #F7E7CE;
+      --black: #0A0A0A;
+      --charcoal: #2C2C2C;
+      --white: #FFFFFF;
+      --cream: #FAF8F5;
+    }
+    body {
+      font-family: 'Playfair Display', Georgia, serif;
+      line-height: 1.6;
+      color: var(--charcoal);
+      background: var(--black);
+      min-height: 100vh;
+    }
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-link {
+      color: var(--champagne);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover { color: var(--gold); }
+    .package-builder {
+      padding: 140px 5% 80px;
+      background: linear-gradient(135deg, var(--black) 0%, var(--charcoal) 100%);
+      color: var(--white);
+      min-height: 100vh;
+    }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 15px;
+    }
+    .section-title {
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .section-description {
+      font-size: 1.1rem;
+      color: var(--champagne);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+    .builder-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 60px;
+      align-items: start;
+    }
+    .builder-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 40px;
+      margin-bottom: 30px;
+    }
+    .builder-section-title {
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+    .required-badge {
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.65rem;
+      padding: 4px 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .optional-badge {
+      background: transparent;
+      color: var(--champagne);
+      font-size: 0.65rem;
+      padding: 4px 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid var(--champagne);
+      opacity: 0.7;
+    }
+    .builder-section-desc {
+      color: var(--champagne);
+      font-size: 0.95rem;
+      font-weight: 300;
+      margin-bottom: 25px;
+      opacity: 0.8;
+    }
+    .base-options { display: flex; flex-direction: column; gap: 15px; }
+    .base-option {
+      display: flex;
+      align-items: center;
+      padding: 20px 25px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 2px solid rgba(212, 175, 55, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .base-option:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      background: rgba(212, 175, 55, 0.05);
+    }
+    .base-option input { display: none; }
+    .base-option input:checked + .option-content + .option-check {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    .base-option input:checked + .option-content + .option-check::after {
+      content: 'V';
+      color: var(--black);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .base-option:has(input:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+    }
+    .option-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .option-name { font-size: 1.1rem; color: var(--white); font-weight: 400; }
+    .option-price { font-size: 1.3rem; color: var(--gold); font-weight: 300; }
+    .option-check {
+      width: 26px;
+      height: 26px;
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin-left: 20px;
+    }
+    .base-option.recommended { border-color: var(--gold); }
+    .recommended-badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .addon-options { display: flex; flex-direction: column; gap: 12px; }
+    .addon-option {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 18px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .addon-option:hover {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.03);
+    }
+    .addon-option > input, .addon-quantity-label > input { display: none; }
+    .addon-option:has(input:checked), .addon-quantity-label:has(input:checked) {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+    .addon-option input:checked + .addon-content + .addon-check,
+    .addon-quantity-label input:checked + .addon-content + .addon-check {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    .addon-option input:checked + .addon-content + .addon-check::after,
+    .addon-quantity-label input:checked + .addon-content + .addon-check::after {
+      content: 'V';
+      color: var(--black);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .addon-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .addon-info { display: flex; flex-direction: column; gap: 3px; }
+    .addon-name { font-size: 1rem; color: var(--white); font-weight: 400; }
+    .addon-desc { font-size: 0.85rem; color: var(--champagne); opacity: 0.7; font-weight: 300; }
+    .addon-price { font-size: 1.1rem; color: var(--gold); font-weight: 300; }
+    .addon-check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin-left: 15px;
+    }
+    .addon-quantity { flex-direction: column; align-items: stretch; }
+    .addon-quantity-label { display: flex; align-items: center; width: 100%; cursor: pointer; }
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(212, 175, 55, 0.1);
+    }
+    .qty-btn {
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .qty-btn:hover { background: var(--gold); color: var(--black); }
+    .qty-input {
+      width: 50px;
+      text-align: center;
+      background: transparent;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--white);
+      font-size: 1rem;
+      padding: 8px;
+      font-family: inherit;
+    }
+    .qty-input::-webkit-inner-spin-button,
+    .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .builder-summary { position: sticky; top: 100px; }
+    .price-calculator {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid var(--gold);
+      padding: 35px;
+      margin-bottom: 30px;
+    }
+    .calculator-title {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    .price-breakdown { margin-bottom: 25px; }
+    .price-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      font-size: 1rem;
+    }
+    .price-label { color: var(--champagne); font-weight: 300; }
+    .price-value { color: var(--white); font-weight: 400; }
+    .price-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 10px 0;
+    }
+    .total-line { padding: 15px 0; }
+    .total-line .price-label { font-size: 1.1rem; color: var(--white); font-weight: 400; letter-spacing: 1px; }
+    .total-line .price-value { font-size: 2rem; color: var(--gold); font-weight: 300; }
+    .minimum-warning {
+      background: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      padding: 15px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .warning-icon { font-size: 1.2rem; color: #ff6b6b; }
+    .warning-text { font-size: 0.9rem; color: #ff6b6b; line-height: 1.5; font-weight: 300; }
+    .minimum-success {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .success-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .success-text { font-size: 0.9rem; color: var(--gold); font-weight: 400; }
+    .selected-summary { padding-top: 15px; border-top: 1px solid rgba(212, 175, 55, 0.1); }
+    .summary-empty { color: var(--champagne); opacity: 0.6; font-size: 0.9rem; font-style: italic; font-weight: 300; }
+    .summary-list { list-style: none; padding: 0; margin: 0; }
+    .summary-list li {
+      font-size: 0.85rem;
+      color: var(--champagne);
+      padding: 6px 0;
+      font-weight: 300;
+    }
+    .quote-form {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 35px;
+    }
+    .form-title {
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    .form-row { margin-bottom: 20px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .form-group { margin-bottom: 0; }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: var(--champagne);
+      font-weight: 400;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--white);
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      font-weight: 300;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(247, 231, 206, 0.4); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--charcoal); color: var(--white); }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .quote-btn {
+      width: 100%;
+      padding: 18px 30px;
+      background: var(--gold);
+      color: var(--black);
+      border: 2px solid var(--gold);
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 25px;
+      font-family: inherit;
+    }
+    .quote-btn:hover:not(:disabled) { background: transparent; color: var(--gold); }
+    .quote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .form-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--champagne);
+      opacity: 0.7;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .quote-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .modal-content {
+      position: relative;
+      background: var(--charcoal);
+      border: 2px solid var(--gold);
+      padding: 50px;
+      max-width: 500px;
+      text-align: center;
+      z-index: 1;
+    }
+    .modal-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 auto 25px;
+    }
+    .modal-title { font-size: 1.8rem; color: var(--gold); margin-bottom: 15px; font-weight: 400; letter-spacing: 1px; }
+    .modal-text { color: var(--champagne); font-size: 1rem; line-height: 1.7; margin-bottom: 30px; font-weight: 300; }
+    .modal-btn {
+      padding: 15px 40px;
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-family: inherit;
+    }
+    .modal-btn:hover { background: var(--gold); color: var(--black); }
+    .footer {
+      background: var(--black);
+      color: var(--champagne);
+      padding: 40px 5%;
+      text-align: center;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    .footer-brand { color: var(--gold); font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 10px; }
+    .footer-text { font-size: 0.9rem; font-weight: 300; opacity: 0.7; }
+    @media (max-width: 1200px) {
+      .builder-container { grid-template-columns: 1fr; gap: 40px; }
+      .builder-summary { position: static; }
+    }
+    @media (max-width: 768px) {
+      .package-builder { padding: 100px 5% 60px; }
+      .section-title { font-size: 2.2rem; }
+      .builder-section { padding: 25px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .base-option { padding: 15px 18px; }
+      .option-name { font-size: 1rem; }
+      .option-price { font-size: 1.1rem; }
+      .price-calculator, .quote-form { padding: 25px; }
+      .total-line .price-value { font-size: 1.6rem; }
+      .modal-content { margin: 20px; padding: 35px 25px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="logo">WEN360</div>
+    <a href="/" class="nav-link">Terug naar Home</a>
+  </nav>
+
+  <section class="package-builder" id="package-builder">
+    <div class="section-header">
+      <div class="section-subtitle">Custom Packages</div>
+      <h2 class="section-title">Stel Je Pakket Samen</h2>
+      <p class="section-description">Creeer jouw perfecte 360 photo booth ervaring met onze modulaire opties</p>
+    </div>
+
+    <div class="builder-container">
+      <div class="builder-selection">
+        <div class="builder-section">
+          <h3 class="builder-section-title">Basispakket <span class="required-badge">Verplicht</span></h3>
+          <p class="builder-section-desc">Kies de duur van je 360 photo booth ervaring</p>
+          <div class="base-options">
+            <label class="base-option">
+              <input type="radio" name="base_package" value="1" data-price="150" required>
+              <div class="option-content">
+                <span class="option-name">1 Uur</span>
+                <span class="option-price">EUR 150</span>
+              </div>
+              <div class="option-check"></div>
+            </label>
+            <label class="base-option">
+              <input type="radio" name="base_package" value="2" data-price="225">
+              <div class="option-content">
+                <span class="option-name">2 Uur</span>
+                <span class="option-price">EUR 225</span>
+              </div>
+              <div class="option-check"></div>
+            </label>
+            <label class="base-option recommended">
+              <span class="recommended-badge">Populair</span>
+              <input type="radio" name="base_package" value="3" data-price="300">
+              <div class="option-content">
+                <span class="option-name">3 Uur</span>
+                <span class="option-price">EUR 300</span>
+              </div>
+              <div class="option-check"></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="builder-section">
+          <h3 class="builder-section-title">Extra Opties <span class="optional-badge">Optioneel</span></h3>
+          <p class="builder-section-desc">Personaliseer je ervaring met deze premium upgrades</p>
+          <div class="addon-options">
+            <label class="addon-option">
+              <input type="checkbox" name="addon_props" data-price="35">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">Premium Props Box</span>
+                  <span class="addon-desc">Luxe feest accessoires en rekwisieten</span>
+                </div>
+                <span class="addon-price">+EUR 35</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <label class="addon-option">
+              <input type="checkbox" name="addon_overlay" data-price="45">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">Custom Overlay</span>
+                  <span class="addon-desc">Jouw logo of naam op elke video</span>
+                </div>
+                <span class="addon-price">+EUR 45</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <label class="addon-option">
+              <input type="checkbox" name="addon_social" data-price="40">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">Instant Social Sharing</span>
+                  <span class="addon-desc">Direct delen via QR code</span>
+                </div>
+                <span class="addon-price">+EUR 40</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <label class="addon-option">
+              <input type="checkbox" name="addon_usb" data-price="25">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">USB met Bestanden</span>
+                  <span class="addon-desc">Alle videos op luxe USB stick</span>
+                </div>
+                <span class="addon-price">+EUR 25</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <label class="addon-option">
+              <input type="checkbox" name="addon_carpet" data-price="50">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">Rode Loper Setup</span>
+                  <span class="addon-desc">VIP entree met rode loper</span>
+                </div>
+                <span class="addon-price">+EUR 50</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <label class="addon-option">
+              <input type="checkbox" name="addon_ringlight" data-price="30">
+              <div class="addon-content">
+                <div class="addon-info">
+                  <span class="addon-name">Ring Light Upgrade</span>
+                  <span class="addon-desc">Extra professionele belichting</span>
+                </div>
+                <span class="addon-price">+EUR 30</span>
+              </div>
+              <div class="addon-check"></div>
+            </label>
+            <div class="addon-option addon-quantity">
+              <label class="addon-quantity-label">
+                <input type="checkbox" name="addon_extra_hours" data-price="75" data-quantity="true">
+                <div class="addon-content">
+                  <div class="addon-info">
+                    <span class="addon-name">Extra Uren</span>
+                    <span class="addon-desc">Verleng je foto booth tijd</span>
+                  </div>
+                  <span class="addon-price">+EUR 75/uur</span>
+                </div>
+                <div class="addon-check"></div>
+              </label>
+              <div class="quantity-selector" style="display: none;">
+                <button type="button" class="qty-btn qty-minus">-</button>
+                <input type="number" name="extra_hours_qty" value="1" min="1" max="5" class="qty-input">
+                <button type="button" class="qty-btn qty-plus">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="builder-summary">
+        <div class="price-calculator">
+          <h3 class="calculator-title">Jouw Pakket</h3>
+          <div class="price-breakdown">
+            <div class="price-line base-price-line" style="display: none;">
+              <span class="price-label">Basispakket</span>
+              <span class="price-value" id="base-price-display">EUR 0</span>
+            </div>
+            <div class="price-line addons-price-line" style="display: none;">
+              <span class="price-label">Extra opties</span>
+              <span class="price-value" id="addons-price-display">EUR 0</span>
+            </div>
+            <div class="price-divider"></div>
+            <div class="price-line total-line">
+              <span class="price-label">Totaal</span>
+              <span class="price-value" id="total-price-display">EUR 0</span>
+            </div>
+          </div>
+          <div class="minimum-warning" id="minimum-warning">
+            <span class="warning-icon">!</span>
+            <span class="warning-text">Minimum bestelbedrag is EUR 250. Voeg nog <strong id="remaining-amount">EUR 250</strong> toe.</span>
+          </div>
+          <div class="minimum-success" id="minimum-success" style="display: none;">
+            <span class="success-icon">V</span>
+            <span class="success-text">Minimum bereikt! Je kunt een offerte aanvragen.</span>
+          </div>
+          <div class="selected-summary" id="selected-summary">
+            <p class="summary-empty">Selecteer een basispakket om te beginnen</p>
+          </div>
+        </div>
+
+        <div class="quote-form">
+          <h3 class="form-title">Vraag Offerte Aan</h3>
+          <form id="package-builder-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <input type="hidden" name="package_details" id="package-details-input">
+            <input type="hidden" name="total_price" id="total-price-input">
+            <input type="hidden" name="_subject" value="Nieuwe Offerte Aanvraag - Custom Package">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="builder-name">Naam *</label>
+                <input type="text" id="builder-name" name="name" required placeholder="Jouw naam">
+              </div>
+            </div>
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label for="builder-email">Email *</label>
+                <input type="email" id="builder-email" name="email" required placeholder="jouw@email.com">
+              </div>
+              <div class="form-group">
+                <label for="builder-phone">Telefoon *</label>
+                <input type="tel" id="builder-phone" name="phone" required placeholder="+31 6 12345678">
+              </div>
+            </div>
+            <div class="form-row form-row-2">
+              <div class="form-group">
+                <label for="builder-date">Eventdatum *</label>
+                <input type="date" id="builder-date" name="event_date" required>
+              </div>
+              <div class="form-group">
+                <label for="builder-event-type">Type Event *</label>
+                <select id="builder-event-type" name="event_type" required>
+                  <option value="">Selecteer type</option>
+                  <option value="bruiloft">Bruiloft</option>
+                  <option value="bedrijfsfeest">Bedrijfsfeest</option>
+                  <option value="verjaardag">Verjaardag</option>
+                  <option value="anders">Anders</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="builder-location">Event Locatie *</label>
+                <input type="text" id="builder-location" name="event_location" required placeholder="Stad of adres">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="builder-message">Opmerkingen</label>
+                <textarea id="builder-message" name="message" placeholder="Vertel ons meer over je event..."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="quote-btn" id="submit-quote-btn" disabled>
+              <span class="btn-text">Vraag Offerte Aan</span>
+            </button>
+            <p class="form-note">Dit is een offerte aanvraag, geen bestelling. Wij nemen binnen 24 uur contact op.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-modal" id="quote-success-modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeQuoteModal()"></div>
+    <div class="modal-content">
+      <div class="modal-icon">V</div>
+      <h3 class="modal-title">Offerte Aanvraag Ontvangen!</h3>
+      <p class="modal-text">Bedankt voor je aanvraag. Wij nemen binnen 24 uur contact met je op om je custom pakket te bespreken.</p>
+      <button class="modal-btn" onclick="closeQuoteModal()">Sluiten</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">WEN360</div>
+    <p class="footer-text">Premium 360 Photo Booth Experiences</p>
+  </footer>
+
+  <script>
+  (function() {
+    var MINIMUM_PRICE = 250;
+    var baseOptions = document.querySelectorAll('input[name="base_package"]');
+    var addonOptions = document.querySelectorAll('.addon-options input[type="checkbox"]');
+    var extraHoursCheckbox = document.querySelector('input[name="addon_extra_hours"]');
+    var extraHoursQty = document.querySelector('input[name="extra_hours_qty"]');
+    var quantitySelector = document.querySelector('.quantity-selector');
+    var qtyMinus = document.querySelector('.qty-minus');
+    var qtyPlus = document.querySelector('.qty-plus');
+    var basePriceLine = document.querySelector('.base-price-line');
+    var addonsPriceLine = document.querySelector('.addons-price-line');
+    var basePriceDisplay = document.getElementById('base-price-display');
+    var addonsPriceDisplay = document.getElementById('addons-price-display');
+    var totalPriceDisplay = document.getElementById('total-price-display');
+    var minimumWarning = document.getElementById('minimum-warning');
+    var minimumSuccess = document.getElementById('minimum-success');
+    var remainingAmount = document.getElementById('remaining-amount');
+    var selectedSummary = document.getElementById('selected-summary');
+    var submitBtn = document.getElementById('submit-quote-btn');
+    var packageDetailsInput = document.getElementById('package-details-input');
+    var totalPriceInput = document.getElementById('total-price-input');
+    var form = document.getElementById('package-builder-form');
+
+    var currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
+
+    function init() {
+      baseOptions.forEach(function(option) { option.addEventListener('change', handleBaseChange); });
+      addonOptions.forEach(function(option) { option.addEventListener('change', handleAddonChange); });
+      if (qtyMinus) qtyMinus.addEventListener('click', function() { updateQuantity(-1); });
+      if (qtyPlus) qtyPlus.addEventListener('click', function() { updateQuantity(1); });
+      if (extraHoursQty) extraHoursQty.addEventListener('change', handleQuantityInput);
+      if (form) form.addEventListener('submit', handleSubmit);
+      var dateInput = document.getElementById('builder-date');
+      if (dateInput) { dateInput.setAttribute('min', new Date().toISOString().split('T')[0]); }
+      updateDisplay();
+    }
+
+    function handleBaseChange(e) {
+      currentSelection.basePrice = parseInt(e.target.dataset.price);
+      currentSelection.base = e.target.value + ' uur';
+      calculateTotal();
+      updateDisplay();
+    }
+
+    function handleAddonChange(e) {
+      var checkbox = e.target;
+      var price = parseInt(checkbox.dataset.price);
+      var parent = checkbox.closest('.addon-option') || checkbox.closest('.addon-quantity-label');
+      var name = parent.querySelector('.addon-name').textContent;
+      var isQuantity = checkbox.dataset.quantity === 'true';
+
+      if (checkbox.checked) {
+        if (isQuantity) {
+          if (quantitySelector) quantitySelector.style.display = 'flex';
+          var qty = parseInt(extraHoursQty.value) || 1;
+          currentSelection.addons.push({ name: name, price: price * qty, quantity: qty, isQuantity: true });
+        } else {
+          currentSelection.addons.push({ name: name, price: price, isQuantity: false });
+        }
+      } else {
+        if (isQuantity && quantitySelector) quantitySelector.style.display = 'none';
+        currentSelection.addons = currentSelection.addons.filter(function(a) { return a.name !== name; });
+      }
+      calculateTotal();
+      updateDisplay();
+    }
+
+    function updateQuantity(delta) {
+      if (!extraHoursQty) return;
+      var newValue = parseInt(extraHoursQty.value) + delta;
+      newValue = Math.max(1, Math.min(5, newValue));
+      extraHoursQty.value = newValue;
+      updateExtraHoursPrice();
+    }
+
+    function handleQuantityInput() {
+      var value = parseInt(extraHoursQty.value);
+      if (isNaN(value) || value < 1) value = 1;
+      if (value > 5) value = 5;
+      extraHoursQty.value = value;
+      updateExtraHoursPrice();
+    }
+
+    function updateExtraHoursPrice() {
+      if (!extraHoursCheckbox || !extraHoursCheckbox.checked) return;
+      var qty = parseInt(extraHoursQty.value) || 1;
+      var addon = currentSelection.addons.find(function(a) { return a.isQuantity; });
+      if (addon) { addon.price = 75 * qty; addon.quantity = qty; }
+      calculateTotal();
+      updateDisplay();
+    }
+
+    function calculateTotal() {
+      currentSelection.addonsPrice = currentSelection.addons.reduce(function(sum, a) { return sum + a.price; }, 0);
+      currentSelection.total = currentSelection.basePrice + currentSelection.addonsPrice;
+    }
+
+    function updateDisplay() {
+      if (basePriceDisplay) {
+        basePriceDisplay.textContent = 'EUR ' + currentSelection.basePrice;
+        basePriceLine.style.display = currentSelection.basePrice > 0 ? 'flex' : 'none';
+      }
+      if (addonsPriceDisplay) {
+        addonsPriceDisplay.textContent = 'EUR ' + currentSelection.addonsPrice;
+        addonsPriceLine.style.display = currentSelection.addonsPrice > 0 ? 'flex' : 'none';
+      }
+      if (totalPriceDisplay) totalPriceDisplay.textContent = 'EUR ' + currentSelection.total;
+
+      var meetsMinimum = currentSelection.total >= MINIMUM_PRICE && currentSelection.basePrice > 0;
+      if (minimumWarning) {
+        if (currentSelection.total < MINIMUM_PRICE) {
+          minimumWarning.style.display = 'flex';
+          if (remainingAmount) remainingAmount.textContent = 'EUR ' + (MINIMUM_PRICE - currentSelection.total);
+        } else {
+          minimumWarning.style.display = 'none';
+        }
+      }
+      if (minimumSuccess) minimumSuccess.style.display = meetsMinimum ? 'flex' : 'none';
+      if (submitBtn) submitBtn.disabled = !meetsMinimum;
+      updateSummary();
+      updateHiddenFields();
+    }
+
+    function updateSummary() {
+      if (!selectedSummary) return;
+      if (!currentSelection.base && currentSelection.addons.length === 0) {
+        selectedSummary.innerHTML = '<p class="summary-empty">Selecteer een basispakket om te beginnen</p>';
+        return;
+      }
+      var html = '<ul class="summary-list">';
+      if (currentSelection.base) html += '<li>Basispakket: ' + currentSelection.base + ' (EUR ' + currentSelection.basePrice + ')</li>';
+      currentSelection.addons.forEach(function(addon) {
+        if (addon.isQuantity) html += '<li>' + addon.name + ' x' + addon.quantity + ' (EUR ' + addon.price + ')</li>';
+        else html += '<li>' + addon.name + ' (EUR ' + addon.price + ')</li>';
+      });
+      html += '</ul>';
+      selectedSummary.innerHTML = html;
+    }
+
+    function updateHiddenFields() {
+      if (!packageDetailsInput || !totalPriceInput) return;
+      var details = [];
+      if (currentSelection.base) details.push('Basispakket: ' + currentSelection.base + ' - EUR ' + currentSelection.basePrice);
+      currentSelection.addons.forEach(function(addon) {
+        if (addon.isQuantity) details.push(addon.name + ' x' + addon.quantity + ' - EUR ' + addon.price);
+        else details.push(addon.name + ' - EUR ' + addon.price);
+      });
+      packageDetailsInput.value = details.join('\n');
+      totalPriceInput.value = 'EUR ' + currentSelection.total;
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      if (currentSelection.total < MINIMUM_PRICE) { alert('Minimum bestelbedrag is EUR ' + MINIMUM_PRICE); return; }
+      if (!currentSelection.base) { alert('Selecteer eerst een basispakket'); return; }
+
+      var formData = new FormData(form);
+      fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+        .then(function(response) {
+          if (response.ok) { showSuccessModal(); form.reset(); resetSelection(); }
+          else { throw new Error('Failed'); }
+        })
+        .catch(function() { alert('Er is iets misgegaan. Probeer het opnieuw.'); });
+    }
+
+    function resetSelection() {
+      currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
+      baseOptions.forEach(function(opt) { opt.checked = false; });
+      addonOptions.forEach(function(opt) { opt.checked = false; });
+      if (quantitySelector) quantitySelector.style.display = 'none';
+      if (extraHoursQty) extraHoursQty.value = 1;
+      updateDisplay();
+    }
+
+    function showSuccessModal() {
+      var modal = document.getElementById('quote-success-modal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    window.closeQuoteModal = function() {
+      var modal = document.getElementById('quote-success-modal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>
