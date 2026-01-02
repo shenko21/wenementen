@@ -71,7 +71,7 @@ De formuliergegevens worden verstuurd via [Formspree](https://formspree.io/) - e
       "type": "text",
       "id": "form_endpoint",
       "label": "Form Endpoint URL",
-      "default": "https://formspree.io/f/YOUR_FORM_ID"  ← Vervang dit
+      "default": "https://formspree.io/f/xeejvbdp"
     }
   ]
 }
