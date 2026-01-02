@@ -759,194 +759,208 @@
     <p class="footer-text">Premium 360 Photo Booth Experiences</p>
   </footer>
 
-  <script>
-  (function() {
-    var MINIMUM_PRICE = 250;
-    var baseOptions = document.querySelectorAll('input[name="base_package"]');
-    var addonOptions = document.querySelectorAll('.addon-options input[type="checkbox"]');
-    var extraHoursCheckbox = document.querySelector('input[name="addon_extra_hours"]');
-    var extraHoursQty = document.querySelector('input[name="extra_hours_qty"]');
-    var quantitySelector = document.querySelector('.quantity-selector');
-    var qtyMinus = document.querySelector('.qty-minus');
-    var qtyPlus = document.querySelector('.qty-plus');
-    var basePriceLine = document.querySelector('.base-price-line');
-    var addonsPriceLine = document.querySelector('.addons-price-line');
-    var basePriceDisplay = document.getElementById('base-price-display');
-    var addonsPriceDisplay = document.getElementById('addons-price-display');
-    var totalPriceDisplay = document.getElementById('total-price-display');
-    var minimumWarning = document.getElementById('minimum-warning');
-    var minimumSuccess = document.getElementById('minimum-success');
-    var remainingAmount = document.getElementById('remaining-amount');
-    var selectedSummary = document.getElementById('selected-summary');
-    var submitBtn = document.getElementById('submit-quote-btn');
-    var packageDetailsInput = document.getElementById('package-details-input');
-    var totalPriceInput = document.getElementById('total-price-input');
-    var form = document.getElementById('package-builder-form');
+<script>
+(function() {
+  var MINIMUM_PRICE = 250;
+  var baseOptions = document.querySelectorAll('input[name="base_package"]');
+  var addonOptions = document.querySelectorAll('.addon-options input[type="checkbox"]');
+  var extraHoursCheckbox = document.querySelector('input[name="addon_extra_hours"]');
+  var extraHoursQty = document.querySelector('input[name="extra_hours_qty"]');
+  var quantitySelector = document.querySelector('.quantity-selector');
+  var qtyMinus = document.querySelector('.qty-minus');
+  var qtyPlus = document.querySelector('.qty-plus');
+  var basePriceLine = document.querySelector('.base-price-line');
+  var addonsPriceLine = document.querySelector('.addons-price-line');
+  var basePriceDisplay = document.getElementById('base-price-display');
+  var addonsPriceDisplay = document.getElementById('addons-price-display');
+  var totalPriceDisplay = document.getElementById('total-price-display');
+  var minimumWarning = document.getElementById('minimum-warning');
+  var minimumSuccess = document.getElementById('minimum-success');
+  var remainingAmount = document.getElementById('remaining-amount');
+  var selectedSummary = document.getElementById('selected-summary');
+  var submitBtn = document.getElementById('submit-quote-btn');
+  var packageDetailsInput = document.getElementById('package-details-input');
+  var totalPriceInput = document.getElementById('total-price-input');
+  var form = document.getElementById('package-builder-form');
 
-    var currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
+  var currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
 
-    function init() {
-      baseOptions.forEach(function(option) { option.addEventListener('change', handleBaseChange); });
-      addonOptions.forEach(function(option) { option.addEventListener('change', handleAddonChange); });
-      if (qtyMinus) qtyMinus.addEventListener('click', function() { updateQuantity(-1); });
-      if (qtyPlus) qtyPlus.addEventListener('click', function() { updateQuantity(1); });
-      if (extraHoursQty) extraHoursQty.addEventListener('change', handleQuantityInput);
-      if (form) form.addEventListener('submit', handleSubmit);
-      var dateInput = document.getElementById('builder-date');
-      if (dateInput) { dateInput.setAttribute('min', new Date().toISOString().split('T')[0]); }
-      updateDisplay();
+  function init() {
+    for (var i = 0; i < baseOptions.length; i++) {
+      baseOptions[i].addEventListener('change', handleBaseChange);
     }
-
-    function handleBaseChange(e) {
-      currentSelection.basePrice = parseInt(e.target.dataset.price);
-      currentSelection.base = e.target.value + ' uur';
-      calculateTotal();
-      updateDisplay();
+    for (var j = 0; j < addonOptions.length; j++) {
+      addonOptions[j].addEventListener('change', handleAddonChange);
     }
+    if (qtyMinus) qtyMinus.addEventListener('click', function() { updateQuantity(-1); });
+    if (qtyPlus) qtyPlus.addEventListener('click', function() { updateQuantity(1); });
+    if (extraHoursQty) extraHoursQty.addEventListener('change', handleQuantityInput);
+    if (form) form.addEventListener('submit', handleSubmit);
+    var dateInput = document.getElementById('builder-date');
+    if (dateInput) { dateInput.setAttribute('min', new Date().toISOString().split('T')[0]); }
+    updateDisplay();
+  }
 
-    function handleAddonChange(e) {
-      var checkbox = e.target;
-      var price = parseInt(checkbox.dataset.price);
-      var parent = checkbox.closest('.addon-option') || checkbox.closest('.addon-quantity-label');
-      var name = parent.querySelector('.addon-name').textContent;
-      var isQuantity = checkbox.dataset.quantity === 'true';
+  function handleBaseChange(e) {
+    currentSelection.basePrice = parseInt(e.target.getAttribute('data-price'));
+    currentSelection.base = e.target.value + ' uur';
+    calculateTotal();
+    updateDisplay();
+  }
 
-      if (checkbox.checked) {
-        if (isQuantity) {
-          if (quantitySelector) quantitySelector.style.display = 'flex';
-          var qty = parseInt(extraHoursQty.value) || 1;
-          currentSelection.addons.push({ name: name, price: price * qty, quantity: qty, isQuantity: true });
-        } else {
-          currentSelection.addons.push({ name: name, price: price, isQuantity: false });
-        }
+  function handleAddonChange(e) {
+    var checkbox = e.target;
+    var price = parseInt(checkbox.getAttribute('data-price'));
+    var parent = checkbox.closest('.addon-option') || checkbox.closest('.addon-quantity-label');
+    var name = parent.querySelector('.addon-name').textContent;
+    var isQuantity = checkbox.getAttribute('data-quantity') === 'true';
+
+    if (checkbox.checked) {
+      if (isQuantity) {
+        if (quantitySelector) quantitySelector.style.display = 'flex';
+        var qty = parseInt(extraHoursQty.value) || 1;
+        currentSelection.addons.push({ name: name, price: price * qty, quantity: qty, isQuantity: true });
       } else {
-        if (isQuantity && quantitySelector) quantitySelector.style.display = 'none';
-        currentSelection.addons = currentSelection.addons.filter(function(a) { return a.name !== name; });
+        currentSelection.addons.push({ name: name, price: price, isQuantity: false });
       }
-      calculateTotal();
-      updateDisplay();
+    } else {
+      if (isQuantity && quantitySelector) quantitySelector.style.display = 'none';
+      currentSelection.addons = currentSelection.addons.filter(function(a) { return a.name !== name; });
     }
+    calculateTotal();
+    updateDisplay();
+  }
 
-    function updateQuantity(delta) {
-      if (!extraHoursQty) return;
-      var newValue = parseInt(extraHoursQty.value) + delta;
-      newValue = Math.max(1, Math.min(5, newValue));
-      extraHoursQty.value = newValue;
-      updateExtraHoursPrice();
-    }
+  function updateQuantity(delta) {
+    if (!extraHoursQty) return;
+    var newValue = parseInt(extraHoursQty.value) + delta;
+    newValue = Math.max(1, Math.min(5, newValue));
+    extraHoursQty.value = newValue;
+    updateExtraHoursPrice();
+  }
 
-    function handleQuantityInput() {
-      var value = parseInt(extraHoursQty.value);
-      if (isNaN(value) || value < 1) value = 1;
-      if (value > 5) value = 5;
-      extraHoursQty.value = value;
-      updateExtraHoursPrice();
-    }
+  function handleQuantityInput() {
+    var value = parseInt(extraHoursQty.value);
+    if (isNaN(value) || value < 1) value = 1;
+    if (value > 5) value = 5;
+    extraHoursQty.value = value;
+    updateExtraHoursPrice();
+  }
 
-    function updateExtraHoursPrice() {
-      if (!extraHoursCheckbox || !extraHoursCheckbox.checked) return;
-      var qty = parseInt(extraHoursQty.value) || 1;
-      var addon = currentSelection.addons.find(function(a) { return a.isQuantity; });
-      if (addon) { addon.price = 75 * qty; addon.quantity = qty; }
-      calculateTotal();
-      updateDisplay();
-    }
-
-    function calculateTotal() {
-      currentSelection.addonsPrice = currentSelection.addons.reduce(function(sum, a) { return sum + a.price; }, 0);
-      currentSelection.total = currentSelection.basePrice + currentSelection.addonsPrice;
-    }
-
-    function updateDisplay() {
-      if (basePriceDisplay) {
-        basePriceDisplay.textContent = 'EUR ' + currentSelection.basePrice;
-        basePriceLine.style.display = currentSelection.basePrice > 0 ? 'flex' : 'none';
+  function updateExtraHoursPrice() {
+    if (!extraHoursCheckbox || !extraHoursCheckbox.checked) return;
+    var qty = parseInt(extraHoursQty.value) || 1;
+    for (var i = 0; i < currentSelection.addons.length; i++) {
+      if (currentSelection.addons[i].isQuantity) {
+        currentSelection.addons[i].price = 75 * qty;
+        currentSelection.addons[i].quantity = qty;
+        break;
       }
-      if (addonsPriceDisplay) {
-        addonsPriceDisplay.textContent = 'EUR ' + currentSelection.addonsPrice;
-        addonsPriceLine.style.display = currentSelection.addonsPrice > 0 ? 'flex' : 'none';
+    }
+    calculateTotal();
+    updateDisplay();
+  }
+
+  function calculateTotal() {
+    currentSelection.addonsPrice = 0;
+    for (var i = 0; i < currentSelection.addons.length; i++) {
+      currentSelection.addonsPrice += currentSelection.addons[i].price;
+    }
+    currentSelection.total = currentSelection.basePrice + currentSelection.addonsPrice;
+  }
+
+  function updateDisplay() {
+    if (basePriceDisplay) {
+      basePriceDisplay.textContent = 'EUR ' + currentSelection.basePrice;
+      basePriceLine.style.display = currentSelection.basePrice > 0 ? 'flex' : 'none';
+    }
+    if (addonsPriceDisplay) {
+      addonsPriceDisplay.textContent = 'EUR ' + currentSelection.addonsPrice;
+      addonsPriceLine.style.display = currentSelection.addonsPrice > 0 ? 'flex' : 'none';
+    }
+    if (totalPriceDisplay) totalPriceDisplay.textContent = 'EUR ' + currentSelection.total;
+
+    var meetsMinimum = currentSelection.total >= MINIMUM_PRICE && currentSelection.basePrice > 0;
+    if (minimumWarning) {
+      if (currentSelection.total < MINIMUM_PRICE) {
+        minimumWarning.style.display = 'flex';
+        if (remainingAmount) remainingAmount.textContent = 'EUR ' + (MINIMUM_PRICE - currentSelection.total);
+      } else {
+        minimumWarning.style.display = 'none';
       }
-      if (totalPriceDisplay) totalPriceDisplay.textContent = 'EUR ' + currentSelection.total;
-
-      var meetsMinimum = currentSelection.total >= MINIMUM_PRICE && currentSelection.basePrice > 0;
-      if (minimumWarning) {
-        if (currentSelection.total < MINIMUM_PRICE) {
-          minimumWarning.style.display = 'flex';
-          if (remainingAmount) remainingAmount.textContent = 'EUR ' + (MINIMUM_PRICE - currentSelection.total);
-        } else {
-          minimumWarning.style.display = 'none';
-        }
-      }
-      if (minimumSuccess) minimumSuccess.style.display = meetsMinimum ? 'flex' : 'none';
-      if (submitBtn) submitBtn.disabled = !meetsMinimum;
-      updateSummary();
-      updateHiddenFields();
     }
+    if (minimumSuccess) minimumSuccess.style.display = meetsMinimum ? 'flex' : 'none';
+    if (submitBtn) submitBtn.disabled = !meetsMinimum;
+    updateSummary();
+    updateHiddenFields();
+  }
 
-    function updateSummary() {
-      if (!selectedSummary) return;
-      if (!currentSelection.base && currentSelection.addons.length === 0) {
-        selectedSummary.innerHTML = '<p class="summary-empty">Selecteer een basispakket om te beginnen</p>';
-        return;
-      }
-      var html = '<ul class="summary-list">';
-      if (currentSelection.base) html += '<li>Basispakket: ' + currentSelection.base + ' (EUR ' + currentSelection.basePrice + ')</li>';
-      currentSelection.addons.forEach(function(addon) {
-        if (addon.isQuantity) html += '<li>' + addon.name + ' x' + addon.quantity + ' (EUR ' + addon.price + ')</li>';
-        else html += '<li>' + addon.name + ' (EUR ' + addon.price + ')</li>';
-      });
-      html += '</ul>';
-      selectedSummary.innerHTML = html;
+  function updateSummary() {
+    if (!selectedSummary) return;
+    if (!currentSelection.base && currentSelection.addons.length === 0) {
+      selectedSummary.innerHTML = '<p class="summary-empty">Selecteer een basispakket om te beginnen</p>';
+      return;
     }
-
-    function updateHiddenFields() {
-      if (!packageDetailsInput || !totalPriceInput) return;
-      var details = [];
-      if (currentSelection.base) details.push('Basispakket: ' + currentSelection.base + ' - EUR ' + currentSelection.basePrice);
-      currentSelection.addons.forEach(function(addon) {
-        if (addon.isQuantity) details.push(addon.name + ' x' + addon.quantity + ' - EUR ' + addon.price);
-        else details.push(addon.name + ' - EUR ' + addon.price);
-      });
-      packageDetailsInput.value = details.join('\n');
-      totalPriceInput.value = 'EUR ' + currentSelection.total;
+    var html = '<ul class="summary-list">';
+    if (currentSelection.base) html += '<li>Basispakket: ' + currentSelection.base + ' (EUR ' + currentSelection.basePrice + ')</li>';
+    for (var i = 0; i < currentSelection.addons.length; i++) {
+      var addon = currentSelection.addons[i];
+      if (addon.isQuantity) html += '<li>' + addon.name + ' x' + addon.quantity + ' (EUR ' + addon.price + ')</li>';
+      else html += '<li>' + addon.name + ' (EUR ' + addon.price + ')</li>';
     }
+    html += '</ul>';
+    selectedSummary.innerHTML = html;
+  }
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      if (currentSelection.total < MINIMUM_PRICE) { alert('Minimum bestelbedrag is EUR ' + MINIMUM_PRICE); return; }
-      if (!currentSelection.base) { alert('Selecteer eerst een basispakket'); return; }
-
-      var formData = new FormData(form);
-      fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-        .then(function(response) {
-          if (response.ok) { showSuccessModal(); form.reset(); resetSelection(); }
-          else { throw new Error('Failed'); }
-        })
-        .catch(function() { alert('Er is iets misgegaan. Probeer het opnieuw.'); });
+  function updateHiddenFields() {
+    if (!packageDetailsInput || !totalPriceInput) return;
+    var details = [];
+    if (currentSelection.base) details.push('Basispakket: ' + currentSelection.base + ' - EUR ' + currentSelection.basePrice);
+    for (var i = 0; i < currentSelection.addons.length; i++) {
+      var addon = currentSelection.addons[i];
+      if (addon.isQuantity) details.push(addon.name + ' x' + addon.quantity + ' - EUR ' + addon.price);
+      else details.push(addon.name + ' - EUR ' + addon.price);
     }
+    packageDetailsInput.value = details.join('\n');
+    totalPriceInput.value = 'EUR ' + currentSelection.total;
+  }
 
-    function resetSelection() {
-      currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
-      baseOptions.forEach(function(opt) { opt.checked = false; });
-      addonOptions.forEach(function(opt) { opt.checked = false; });
-      if (quantitySelector) quantitySelector.style.display = 'none';
-      if (extraHoursQty) extraHoursQty.value = 1;
-      updateDisplay();
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (currentSelection.total < MINIMUM_PRICE) { alert('Minimum bestelbedrag is EUR ' + MINIMUM_PRICE); return; }
+    if (!currentSelection.base) { alert('Selecteer eerst een basispakket'); return; }
 
-    function showSuccessModal() {
-      var modal = document.getElementById('quote-success-modal');
-      if (modal) modal.style.display = 'flex';
-    }
+    var formData = new FormData(form);
+    fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+      .then(function(response) {
+        if (response.ok) { showSuccessModal(); form.reset(); resetSelection(); }
+        else { throw new Error('Failed'); }
+      })
+      .catch(function() { alert('Er is iets misgegaan. Probeer het opnieuw.'); });
+  }
 
-    window.closeQuoteModal = function() {
-      var modal = document.getElementById('quote-success-modal');
-      if (modal) modal.style.display = 'none';
-    };
+  function resetSelection() {
+    currentSelection = { base: null, basePrice: 0, addons: [], addonsPrice: 0, total: 0 };
+    for (var i = 0; i < baseOptions.length; i++) baseOptions[i].checked = false;
+    for (var j = 0; j < addonOptions.length; j++) addonOptions[j].checked = false;
+    if (quantitySelector) quantitySelector.style.display = 'none';
+    if (extraHoursQty) extraHoursQty.value = 1;
+    updateDisplay();
+  }
 
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-    else init();
-  })();
-  </script>
+  function showSuccessModal() {
+    var modal = document.getElementById('quote-success-modal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  window.closeQuoteModal = function() {
+    var modal = document.getElementById('quote-success-modal');
+    if (modal) modal.style.display = 'none';
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 </body>
 </html>
