@@ -1105,77 +1105,32 @@
       transform: scale(1.15) rotate(10deg);
     }
 
-    /* Language Toggle - Switch Style */
+    /* Language Toggle */
     .language-toggle {
       display: flex;
-      align-items: center;
+      gap: 5px;
       margin-left: 20px;
     }
 
-    .lang-switch {
-      position: relative;
-      width: 70px;
-      height: 32px;
-      background: var(--charcoal);
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.4s ease;
-      border: 2px solid var(--gold);
-      overflow: hidden;
-    }
-
-    .lang-switch::before {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 24px;
-      height: 24px;
-      background: var(--gold);
-      border-radius: 50%;
-      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .lang-switch.en::before {
-      transform: translateX(38px);
-    }
-
-    .lang-switch:active::before {
-      width: 28px;
-    }
-
-    .lang-switch-labels {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 8px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      pointer-events: none;
-    }
-
-    .lang-switch-labels span {
-      color: var(--champagne);
-      transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .lang-switch:not(.en) .lang-switch-labels .nl-label {
-      color: var(--black);
-      transform: scale(1.1);
-    }
-
-    .lang-switch.en .lang-switch-labels .en-label {
-      color: var(--black);
-      transform: scale(1.1);
-    }
-
-    /* Hidden buttons for JS compatibility */
     .lang-btn {
-      display: none;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--charcoal);
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .lang-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+    }
+
+    .lang-btn.active {
+      background: var(--gold);
+      color: var(--black);
     }
 
     /* Fix cursor for interactive elements */
@@ -1955,12 +1910,8 @@
     <li><a href="#contact" data-en="Contact" data-nl="Contact">Contact</a></li>
   </ul>
   <div class="language-toggle">
-    <div class="lang-switch" id="lang-switch">
-      <div class="lang-switch-labels">
-        <span class="nl-label">NL</span>
-        <span class="en-label">EN</span>
-      </div>
-    </div>
+    <button class="lang-btn active" data-lang="nl">NL</button>
+    <button class="lang-btn" data-lang="en">EN</button>
   </div>
   <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">
     <span></span>
@@ -2490,7 +2441,7 @@
       this.loadLanguage();
       this.setupEventListeners();
       this.applyLanguage();
-      this.updateSwitch();
+      this.updateButtons();
     },
 
     loadLanguage: function() {
@@ -2505,26 +2456,25 @@
     },
 
     setupEventListeners: function() {
-      const langSwitch = document.getElementById('lang-switch');
-      if (langSwitch) {
-        langSwitch.addEventListener('click', () => {
-          this.currentLang = this.currentLang === 'nl' ? 'en' : 'nl';
+      const langBtns = document.querySelectorAll('.lang-btn');
+      langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.currentLang = btn.dataset.lang;
           this.saveLanguage();
           this.applyLanguage();
-          this.updateSwitch();
+          this.updateButtons();
         });
-      }
+      });
     },
 
-    updateSwitch: function() {
-      const langSwitch = document.getElementById('lang-switch');
-      if (langSwitch) {
-        if (this.currentLang === 'en') {
-          langSwitch.classList.add('en');
-        } else {
-          langSwitch.classList.remove('en');
+    updateButtons: function() {
+      const langBtns = document.querySelectorAll('.lang-btn');
+      langBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.lang === this.currentLang) {
+          btn.classList.add('active');
         }
-      }
+      });
     },
 
     applyLanguage: function() {
