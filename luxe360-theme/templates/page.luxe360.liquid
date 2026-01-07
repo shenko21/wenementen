@@ -1119,8 +1119,9 @@
       background: var(--charcoal);
       border-radius: 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background 0.4s ease;
       border: 2px solid var(--gold);
+      overflow: hidden;
     }
 
     .lang-switch::before {
@@ -1132,11 +1133,16 @@
       height: 24px;
       background: var(--gold);
       border-radius: 50%;
-      transition: all 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .lang-switch.en::before {
       transform: translateX(38px);
+    }
+
+    .lang-switch:active::before {
+      width: 28px;
     }
 
     .lang-switch-labels {
@@ -1154,15 +1160,17 @@
 
     .lang-switch-labels span {
       color: var(--champagne);
-      transition: color 0.3s ease;
+      transition: color 0.3s ease, transform 0.3s ease;
     }
 
     .lang-switch:not(.en) .lang-switch-labels .nl-label {
       color: var(--black);
+      transform: scale(1.1);
     }
 
     .lang-switch.en .lang-switch-labels .en-label {
       color: var(--black);
+      transform: scale(1.1);
     }
 
     /* Hidden buttons for JS compatibility */
