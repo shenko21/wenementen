@@ -1105,32 +1105,69 @@
       transform: scale(1.15) rotate(10deg);
     }
 
-    /* Language Toggle */
+    /* Language Toggle - Switch Style */
     .language-toggle {
       display: flex;
-      gap: 5px;
+      align-items: center;
       margin-left: 20px;
     }
 
-    .lang-btn {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--charcoal);
-      padding: 5px 10px;
-      font-size: 0.8rem;
+    .lang-switch {
+      position: relative;
+      width: 70px;
+      height: 32px;
+      background: var(--charcoal);
+      border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
-      letter-spacing: 1px;
-      font-weight: 600;
+      border: 2px solid var(--gold);
     }
 
-    .lang-btn:hover {
-      background: rgba(212, 175, 55, 0.2);
-    }
-
-    .lang-btn.active {
+    .lang-switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
       background: var(--gold);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .lang-switch.en::before {
+      transform: translateX(38px);
+    }
+
+    .lang-switch-labels {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .lang-switch-labels span {
+      color: var(--champagne);
+      transition: color 0.3s ease;
+    }
+
+    .lang-switch:not(.en) .lang-switch-labels .nl-label {
       color: var(--black);
+    }
+
+    .lang-switch.en .lang-switch-labels .en-label {
+      color: var(--black);
+    }
+
+    /* Hidden buttons for JS compatibility */
+    .lang-btn {
+      display: none;
     }
 
     /* Fix cursor for interactive elements */
@@ -1726,6 +1763,168 @@
       .footer-content {
         padding: 40px 20px;
       }
+
+      .lang-switch {
+        width: 60px;
+        height: 28px;
+      }
+
+      .lang-switch::before {
+        width: 20px;
+        height: 20px;
+      }
+
+      .lang-switch.en::before {
+        transform: translateX(32px);
+      }
+
+      .lang-switch-labels {
+        font-size: 0.6rem;
+        padding: 0 6px;
+      }
+    }
+
+    /* Mobile hamburger menu */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 1001;
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: var(--gold);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(250, 248, 245, 0.98);
+        flex-direction: column;
+        padding: 20px;
+        gap: 0;
+        border-bottom: 2px solid var(--gold);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 15px;
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      }
+
+      .nav-links li:last-child a {
+        border-bottom: none;
+      }
+
+      .luxe360-nav {
+        padding: 15px 5%;
+      }
+
+      .logo-image {
+        height: 40px;
+      }
+
+      .language-toggle {
+        margin-left: auto;
+        margin-right: 10px;
+      }
+
+      /* Custom pricing grid mobile */
+      .custom-pricing-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 300px !important;
+      }
+
+      /* Gallery on mobile - 2x4 grid */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+
+      /* Form buttons stack on mobile */
+      .form-btn-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .form-btn-group .submit-btn {
+        width: 100%;
+      }
+    }
+
+    /* Tablet optimizations */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .packages-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .experience-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 700px;
+      }
+    }
+
+    /* Large desktop */
+    @media (min-width: 1400px) {
+      .hero h1 {
+        font-size: 6rem;
+      }
+
+      .section-title {
+        font-size: 4rem;
+      }
+
+      .packages-grid {
+        max-width: 1400px;
+      }
+
+      .gallery-grid {
+        max-width: 1600px;
+      }
     }
   </style>
 </head>
@@ -1741,16 +1940,25 @@
       id="site-logo"
     >
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-links">
     <li><a href="#experience" data-en="Experience" data-nl="Ervaring">Ervaring</a></li>
     <li><a href="#packages" data-en="Packages" data-nl="Pakketten">Pakketten</a></li>
     <li><a href="#gallery" data-en="Gallery" data-nl="Galerij">Galerij</a></li>
     <li><a href="#contact" data-en="Contact" data-nl="Contact">Contact</a></li>
   </ul>
   <div class="language-toggle">
-    <button class="lang-btn active" data-lang="nl">NL</button>
-    <button class="lang-btn" data-lang="en">EN</button>
+    <div class="lang-switch" id="lang-switch">
+      <div class="lang-switch-labels">
+        <span class="nl-label">NL</span>
+        <span class="en-label">EN</span>
+      </div>
+    </div>
   </div>
+  <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
 
 <!-- Announcement Bar -->
@@ -2224,6 +2432,33 @@
     });
   });
 
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const navLinks = document.getElementById('nav-links');
+
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenuBtn.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenuBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+        mobileMenuBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+      }
+    });
+  }
+
   // Parallax effect for hero
   const hero = document.querySelector('.hero');
   if (hero) {
@@ -2247,6 +2482,7 @@
       this.loadLanguage();
       this.setupEventListeners();
       this.applyLanguage();
+      this.updateSwitch();
     },
 
     loadLanguage: function() {
@@ -2261,25 +2497,26 @@
     },
 
     setupEventListeners: function() {
-      const langBtns = document.querySelectorAll('.lang-btn');
-      langBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          this.currentLang = btn.dataset.lang;
+      const langSwitch = document.getElementById('lang-switch');
+      if (langSwitch) {
+        langSwitch.addEventListener('click', () => {
+          this.currentLang = this.currentLang === 'nl' ? 'en' : 'nl';
           this.saveLanguage();
           this.applyLanguage();
-          this.updateButtons();
+          this.updateSwitch();
         });
-      });
+      }
     },
 
-    updateButtons: function() {
-      const langBtns = document.querySelectorAll('.lang-btn');
-      langBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.lang === this.currentLang) {
-          btn.classList.add('active');
+    updateSwitch: function() {
+      const langSwitch = document.getElementById('lang-switch');
+      if (langSwitch) {
+        if (this.currentLang === 'en') {
+          langSwitch.classList.add('en');
+        } else {
+          langSwitch.classList.remove('en');
         }
-      });
+      }
     },
 
     applyLanguage: function() {
@@ -2364,9 +2601,27 @@
     });
   }, observerOptions);
 
-  document.querySelectorAll('.gallery-item, .package-card').forEach((el, index) => {
+  // Enhanced gallery scroll animation
+  document.querySelectorAll('.gallery-item').forEach((el, index) => {
+    const row = Math.floor(index / 4);
+    const col = index % 4;
+    const directions = [
+      { x: -50, y: 30 },  // from left
+      { x: 0, y: 50 },    // from bottom
+      { x: 50, y: 30 },   // from right
+      { x: 0, y: -30 }    // from top
+    ];
+    const dir = directions[col];
     el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
+    el.style.transform = `translate(${dir.x}px, ${dir.y}px) scale(0.9)`;
+    el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${(row * 0.2) + (col * 0.1)}s`;
+    observer.observe(el);
+  });
+
+  // Package cards animation
+  document.querySelectorAll('.package-card').forEach((el, index) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(40px) scale(0.95)';
     el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s`;
     observer.observe(el);
   });
